@@ -1,4 +1,4 @@
-# jsg-cds
+# jsg-cdss
 
 #### Description
 临床决策支持（规则）系统
