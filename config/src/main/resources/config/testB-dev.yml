@@ -1,0 +1,41 @@
+spring:
+  datasource:
+    sqlserver:
+      jdbcUrl: jdbc:sqlserver://localhost:1433;DatabaseName=mycat_test
+      username: bigdata
+      password: 12345678
+      #使用druid数据源
+      type: com.alibaba.druid.pool.DruidDataSource
+      driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
+      initialSize: 3
+      minIdle: 3
+      maxIdle: 20
+      maxActive: 30
+      maxWait: 30000
+      validationQuery: SELECT 'x'
+      testWhileIdle: true
+      testOnBorrow: false
+      numTestsPerEvictionRun: 3
+      timeBetweenEvictionRunsMillis: 30000
+      minEvictableIdleTimeMillis: 1800000
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+
+
+mybatis:
+  mapper-locations: mapping/*.xml
+
+# 分布式事物
+## tx-manager 配置
+tx-lcn:
+  client:
+    manager-address: 127.0.0.1:8070
+  ribbon:
+    loadbalancer:
+      dtx:
+        enabled: true

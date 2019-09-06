@@ -1,0 +1,52 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: zuul
+  profiles:
+    active: dev
+
+zuul:
+  host:
+    connect-timeout-millis: 8000
+    socket-timeout-millis: 10000
+  ignoredServices: '*'
+  ignoreSecurityHeaders: false
+  sensitiveHeaders:
+  routes:
+    aaa:
+      path: /testa-api/**
+      serviceId: testA
+    bbb:
+      path: /testb-api/**
+      serviceId: testB
+      #rpc:
+      #path: /rpc-api/**
+      #serviceId: rpc
+
+security:
+  basic:
+    enabled: false
+
+
+feign:
+  hystrix:
+    enabled: true #开启Hystrix以支持服务熔断[高版本默认false关闭]，如果置为false，则请求超时交给ribbon控制.
+  httpclient:
+    connection-timeout: 5000
+
+##设置服务熔断超时时间[默认1s]
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 10000
+
+ribbon:
+  eureka:
+    enable: true
+  ReadTimeout: 5000 #ribbon请求处理的超时时间
+  ConnectTimeout: 5000 #ribbon请求连接的超时时间

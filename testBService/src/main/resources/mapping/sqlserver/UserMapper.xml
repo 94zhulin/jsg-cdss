@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jsg.dao.sqlserver.UserMapper">
+    <resultMap type="com.jsg.entity.sqlserver.User" id="userMap">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+    </resultMap>
+
+    <!-- 查询记录总数 -->
+    <select id="selectAll" resultMap="userMap">
+        SELECT id, name FROM t_user
+    </select>
+
+    <!-- 查询 -->
+    <select id="selectById" parameterType="com.jsg.dto.UserDTO" resultType="com.jsg.entity.sqlserver.User">
+        SELECT id, name FROM t_user WHERE id=#{id}
+    </select>
+
+    <!-- 查询 -->
+    <update id="updateById" parameterType="com.jsg.dto.UserDTO">
+        UPDATE t_user SET name=#{name} WHERE id=#{id}
+    </update>
+
+</mapper>

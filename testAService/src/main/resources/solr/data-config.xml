@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataConfig>
+    <dataSource name="source_demo"
+                type="JdbcDataSource"
+                driver="com.mysql.jdbc.Driver"
+                url="jdbc:mysql://120.27.0.230:8066/MYCAT_DB"
+                user="mycat"
+                password="12345678"
+                batchSize="-1"/>
+    <document name="demo_doc">
+        <!-- 增量导入数据配置 -->
+        <!-- 
+                         transformer 格式转化：HTMLStripTransformer 索引中忽略HTML标签
+            query：查询数据库表符合记录数据
+            deltaQuery：增量索引查询主键ID  注意这个只能返回ID字段   
+            deltaImportQuery：增量索引查询导入的数据 
+            deletedPkQuery：增量索引删除主键ID查询 注意这个只能返回ID字段 
+        -->
+        <entity name="solr_demo"
+                dataSource="source_demo"
+                pk="id"
+                query="select * from solr_demo where 1=1 and isDeleted=0"
+                deltaImportQuery="select * from solr_demo where 1=1 and id='${dih.delta.id}'"
+                deltaQuery="select id from solr_demo where 1=1 and updateTime > '${dataimporter.last_index_time}' and isDeleted=0"
+                deletedPkQuery="select id from solr_demo where 1=1 and isDeleted=1">
+            <field column="id" name="id"/>　　
+            <field column="name" name="name"/>
+            <field column="sex" name="sex"/>
+            <field column="address" name="address"/>　
+            <field column="updateTime" name="updateTime"/>
+            <field column="isDeleted" name="isDeleted"/>
+        </entity>
+    </document>
+</dataConfig>

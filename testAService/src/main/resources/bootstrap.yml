@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: testA
+  cloud:
+    config:
+      uri: http://localhost:8769
+      enabled: true
+      profile: dev
+      fail-fast: true

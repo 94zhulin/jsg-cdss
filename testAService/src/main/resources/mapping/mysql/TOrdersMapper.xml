@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jsg.dao.mysql.TOrdersMapper">
+    <resultMap type="com.jsg.entity.mysql.TOrders" id="rtMap">
+        <result property="id" column="id"/>
+        <result property="orderNum" column="order_num"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.jsg.entity.mysql.TOrders">
+        insert into t_orders(id,order_num,create_time)
+        values (
+          #{id,jdbcType=INTEGER},
+          #{orderNum,jdbcType=VARCHAR},
+          #{createTime,jdbcType=DATE}
+        )
+    </insert>
+
+</mapper>
