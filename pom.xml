@@ -251,6 +251,7 @@
         <module>proxy</module>
         <module>config</module>
         <module>txManager</module>
+        <module>systemService</module>
     </modules>
 
     <repositories>
