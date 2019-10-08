@@ -245,6 +245,7 @@
         <!-- Service -->
         <module>testAService</module>
         <module>testBService</module>
+		<module>ssoService</module>
         <!--cloud-->
         <module>registry</module>
         <module>proxy</module>

@@ -1,0 +1,60 @@
+spring:
+  application:
+    name: tx-manager
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://118.114.244.93:13306/bi_dev?useUnicode=true&characterEncoding=utf-8&useSSL=truee
+    username: root
+    password: root
+server:
+  port: 7970
+ #指定注册中心地址
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true # 这样操作不会起作用
+    use-generated-keys: true
+  # 开启日志
+tx-lcn:
+  logger:
+    enabled: true
+  manager:
+    host: 127.0.0.1
+    port: 8070
+    heart-time: 15000
+    dtx-time: 30000
+    netty:
+      attr-delay-time=10000: 10000
+    concurrent-level: 128
+logging.level:
+  org.springframework.data.mongodb.core.MongoTemplate: DEBU
+logging:
+  file:
+    max-size: 100MB
+    max-history: 60
+  path: /home/leve/logs/${spring.application.name}
+redis:
+  #数据库索引
+  database: 0
+  host: 27.0.0.1
+  port: 6379
+  password: ''
+  jedis:
+    pool:
+      #最大连接数
+      max-active: 8
+      #最大阻塞等待时间(负数表示没限制)
+      max-wait: -1
+      #最大空闲
+      max-idle: 8
+      #最小空闲
+      min-idle: 1
+  timeout: 10000 # 连接超时时间（毫秒）
