@@ -1,24 +1,23 @@
 spring:
   datasource:
-    sqlserver:
-      jdbcUrl: jdbc:sqlserver://localhost:1433;DatabaseName=mycat_test
-      username: bigdata
-      password: 12345678
-      #使用druid数据源
-      type: com.alibaba.druid.pool.DruidDataSource
-      driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
-      initialSize: 3
-      minIdle: 3
-      maxIdle: 20
-      maxActive: 30
-      maxWait: 30000
-      validationQuery: SELECT 'x'
-      testWhileIdle: true
-      testOnBorrow: false
-      numTestsPerEvictionRun: 3
-      timeBetweenEvictionRunsMillis: 30000
-      minEvictableIdleTimeMillis: 1800000
-
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://118.114.244.93:13306/bi_dev?useUnicode=true&characterEncoding=utf-8&useSSL=true
+    username: root
+    password: root
+    initialSize: 10
+    maxActive: 30
+    maxIdle: 20
+    maxWait: 60000
+    minEvictableIdleTimeMillis: 300000
+    minIdle: 10
+    numTestsPerEvictionRun: 3
+    testOnBorrow: false
+    testWhileIdle: true
+    removeAbandoned: true
+    removeAbandonedTimeout: 180
+    timeBetweenEvictionRunsMillis: 60000
+    validationQuery: 'SELECT ''x'' '
 eureka:
   client:
     service-url:
