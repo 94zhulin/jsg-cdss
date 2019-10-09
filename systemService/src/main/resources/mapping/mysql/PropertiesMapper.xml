@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jsg.dao.mysql.PropertiesMapper">
+    <resultMap id="SysPropertiesMap" type="com.jsg.entity.Properties">
+        <result property="propName" column="prop_name"/>
+        <result property="propValue" column="prop_value"/>
+        <result property="createTime" column="create_time" javaType="java.util.Date"/>
+        <result property="updateTime" column="update_time" javaType="java.util.Date"/>
+        <result property="createUserId" column="create_userId"/>
+        <result property="updateUserId" column="update_userId"/>
+    </resultMap>
+
+    <select id="list" parameterType="java.lang.String" resultMap="SysPropertiesMap">
+        SELECT
+        prop_name,
+        prop_value,
+        type,
+        status,
+        create_time,
+        update_time,
+        create_userId,
+        update_userId
+        FROM sys_properties
+        WHERE 1=1
+        <if test="queryKey != null">
+            AND concat(prop_name,prop_value) like ('%' #{queryKey} '%')
+        </if>
+    </select>
+
+
+    <delete id="del" parameterType="string">
+     DELETE FROM sys_properties WHERE prop_name = #{propName,jdbcType=INTEGER}
+
+    </delete>
+
+
+    <insert id="add" parameterType="com.jsg.entity.Properties" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO sys_properties (
+          prop_name,
+          prop_value,
+          type,
+          status,
+          create_time,
+          update_time,
+          create_userId,
+          update_userId
+        )
+        VALUES (
+          #{propName,jdbcType=VARCHAR},
+          #{propValue,jdbcType=VARCHAR},
+          #{type,jdbcType=INTEGER},
+          #{status,jdbcType=INTEGER},
+          #{createTime,jdbcType=TIMESTAMP},
+          #{updateTime,jdbcType=TIMESTAMP},
+          #{createUserId,jdbcType=INTEGER},
+          #{updateUserId,jdbcType=INTEGER}
+        )
+    </insert>
+
+    <update id="edi" parameterType="com.jsg.entity.Properties">
+        UPDATE sys_properties
+        <set>
+            <if test="propValue != null">
+                prop_value = #{propValue,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                type = #{type,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserId != null">
+                create_userId = #{createUserId,jdbcType=INTEGER},
+            </if>
+            <if test="updateUserId != null">
+                update_userId = #{updateUserId,jdbcType=INTEGER},
+            </if>
+        </set>
+        WHERE prop_name = #{propName,jdbcType=INTEGER}
+    </update>
+
+
+    <select id="selectByPropName" parameterType="java.lang.String"
+            resultMap="SysPropertiesMap">
+        SELECT
+        prop_name,
+        prop_value,
+        type,
+        status,
+        create_time,
+        update_time,
+        create_userId,
+        update_userId
+        FROM sys_properties
+        WHERE 1=1
+        <if test="propName != null">
+            AND prop_name = #{propName}
+        </if>
+    </select>
+</mapper>

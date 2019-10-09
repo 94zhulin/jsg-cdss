@@ -29,7 +29,7 @@
         <mysql.connector.version>5.1.35</mysql.connector.version>
         <oracle.connector.version>11.1.0.6.0</oracle.connector.version>
         <sharding.jdbc.core.version>1.5.4.1</sharding.jdbc.core.version>
-        <alibaba.durid.version>1.0.26</alibaba.durid.version>
+        <alibaba.durid.version>1.1.13</alibaba.durid.version>
         <alibaba.durid.springboot.version>1.1.0</alibaba.durid.springboot.version>
         <httpclient.version>4.5.2</httpclient.version>
         <commons.logging.version>1.2</commons.logging.version>
@@ -128,7 +128,6 @@
                 <artifactId>sharding-jdbc-core</artifactId>
                 <version>${sharding.jdbc.core.version}</version>
             </dependency>
-
             <!-- alibaba的druid数据库连接池 -->
             <dependency>
                 <groupId>com.alibaba</groupId>
@@ -141,12 +140,12 @@
                 <artifactId>pagehelper-spring-boot-starter</artifactId>
                 <version>${springboot.pagehelper.version}</version>
             </dependency>
-            <!-- alibaba的druid数据库连接池 -->
+<!--            &lt;!&ndash; alibaba的druid数据库连接池 &ndash;&gt;
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>druid-spring-boot-starter</artifactId>
                 <version>${alibaba.durid.springboot.version}</version>
-            </dependency>
+            </dependency>-->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-thymeleaf</artifactId>

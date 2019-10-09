@@ -17,7 +17,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableFeignClients
 @EnableConfigurationProperties
 @SpringBootApplication
-@MapperScan("com.gg.dao")
+@MapperScan("com.jsg.dao")
 public class SystemServiceApplication {
     public static void main(String[] args) {
         SpringApplication.run(SystemServiceApplication.class, args);
