@@ -98,9 +98,7 @@
         create_userId,
         update_userId
         FROM sys_properties
-        WHERE 1=1
-        <if test="propName != null">
-            AND prop_name = #{propName}
-        </if>
+        WHERE
+        prop_name = #{propName}
     </select>
 </mapper>

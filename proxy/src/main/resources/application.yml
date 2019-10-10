@@ -21,13 +21,16 @@ zuul:
     bbb:
       path: /testb-api/**
       serviceId: testB
+    system:
+      path: /system-api/**
+      serviceId: system
       #rpc:
       #path: /rpc-api/**
       #serviceId: rpc
 
 security:
   basic:
-    enabled: false
+  enabled: false
 
 
 feign:

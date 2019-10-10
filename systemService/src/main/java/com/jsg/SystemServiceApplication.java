@@ -9,8 +9,10 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
 /**
- * @author jeanson 进生
- * @date 2019/10/8 19:36
+ *
+ *
+ * @author weidong
+ * @date 2019/6/3
  */
 @EnableDistributedTransaction
 @EnableDiscoveryClient

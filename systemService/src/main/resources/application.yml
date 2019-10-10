@@ -1,6 +1,5 @@
 server:
   port: 60104
-
 apiStatus:
   failure: 999
   exc: 500

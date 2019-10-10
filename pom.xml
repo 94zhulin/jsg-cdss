@@ -140,12 +140,12 @@
                 <artifactId>pagehelper-spring-boot-starter</artifactId>
                 <version>${springboot.pagehelper.version}</version>
             </dependency>
-<!--            &lt;!&ndash; alibaba的druid数据库连接池 &ndash;&gt;
+<!--            &lt;!&ndash; alibaba的druid数据库连接池 &ndash;&gt;-->
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>druid-spring-boot-starter</artifactId>
                 <version>${alibaba.durid.springboot.version}</version>
-            </dependency>-->
+            </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-thymeleaf</artifactId>
