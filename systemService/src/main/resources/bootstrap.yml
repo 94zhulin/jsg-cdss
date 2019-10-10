@@ -8,7 +8,10 @@ spring:
       profile: dev
       fail-fast: true
 logging:
+  level:
+    com.example.demo.dao: debug
   file:
     max-size: 100MB
     max-history: 60
   path: /home/leve/logs/${spring.application.name}
+
