@@ -58,9 +58,7 @@ public class ModuleController {
 
 
     @ApiOperation(value = "删除模块", notes = "模块id删除模块")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "moduleId", value = "模块ID", dataType = "int")
-    })
+    @ApiImplicitParam(name = "moduleId", value = "模块ID", dataType = "int")
     @PostMapping(value = "/del", produces = APPLICATION_JSON_UTF8_VALUE)
     public ResultBase del(Integer moduleId) {
         return moduleService.del(moduleId);
@@ -68,7 +66,7 @@ public class ModuleController {
 
     @ApiOperation(value = "编辑模块", notes = "系统管理-模块管理-编辑模块")
     @PostMapping(value = "/edi", consumes = APPLICATION_JSON_UTF8_VALUE)
-    public ResultBase edi(@RequestBody  Module module) {
+    public ResultBase edi(@RequestBody Module module) {
         return moduleService.edi(module);
     }
 

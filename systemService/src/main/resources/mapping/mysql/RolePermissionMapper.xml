@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jsg.dao.mysql.RolePermissionMapper">
+    <resultMap id="BaseResultMap" type="com.jsg.entity.RolePermission">
+        <id column="role_id" jdbcType="INTEGER" property="roleId"/>
+        <id column="permission_id" jdbcType="INTEGER" property="permissionId"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.jsg.entity.RolePermission">
+        insert into sys_role_permission (role_id, permission_id)
+        values
+        <foreach collection="list" item="info" separator=",">
+            (#{roleId,jdbcType=INTEGER}, #{permissionId,jdbcType=INTEGER})
+        </foreach>
+
+    </insert>
+
+
+    <delete id="del" parameterType="java.lang.Integer">
+        delete from sys_role_permission
+        where role_id = #{roleId,jdbcType=INTEGER}
+    </delete>
+
+</mapper>
