@@ -6,11 +6,11 @@
         <id column="permission_id" jdbcType="INTEGER" property="permissionId"/>
     </resultMap>
 
-    <insert id="insert" parameterType="com.jsg.entity.RolePermission">
+    <insert id="addBatch" parameterType="com.jsg.entity.RolePermission">
         insert into sys_role_permission (role_id, permission_id)
         values
         <foreach collection="list" item="info" separator=",">
-            (#{roleId,jdbcType=INTEGER}, #{permissionId,jdbcType=INTEGER})
+            (#{info.roleId,jdbcType=INTEGER}, #{info.permissionId,jdbcType=INTEGER})
         </foreach>
 
     </insert>

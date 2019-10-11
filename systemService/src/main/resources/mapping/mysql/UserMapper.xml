@@ -21,7 +21,7 @@
     </resultMap>
 
 
-    <select id="selectUserByRoleId" parameterType="int" parameterMap="SysUserMap">
+    <select id="selectUserByRoleId" parameterType="int" resultMap="SysUserMap">
     select  * from sys_user where role_id = #{roleId}
     </select>
 </mapper>
