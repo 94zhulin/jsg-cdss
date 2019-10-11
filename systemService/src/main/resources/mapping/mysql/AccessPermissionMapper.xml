@@ -1,5 +1,94 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.jsg.dao.mysql.AccessPermissionsMapper">
+    <resultMap id="SysAccessAuthMap" type="com.jsg.entity.AccessAuth">
+        <result property="id" column="id"/>
+        <result property="appName" column="app_name"/>
+        <result property="appCode" column="app_code"/>
+        <result property="authKey" column="auth_key"/>
+        <result property="isExpired" column="is_expired"/>
+        <result property="authIpList" column="auth_ip_list"/>
+        <result property="expiredDate" column="expired_date" javaType="java.util.Date"/>
+        <result property="status" column="status"/>
+        <result property="createTime" column="create_time" javaType="java.util.Date"/>
+        <result property="updateTime" column="update_time" javaType="java.util.Date"/>
+        <result property="createUserId" column="create_userId"/>
+        <result property="updateUserId" column="update_userId"/>
+    </resultMap>
+
+    <insert id="add" parameterType="com.jsg.entity.AccessAuth" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_access_auth (id, app_name, app_code,auth_key,is_expired ,auth_ip_list,
+        expired_date, status , create_time,
+        update_time, create_userId, update_userId
+        )
+        values (#{id}, #{appName}, #{appCode},#{authKey}, #{isExpired},  #{authIpList},
+        #{expiredDate},#{status}, #{createTime},
+        #{updateTime}, #{createUserId}, #{updateUserId}
+        )
+    </insert>
+
+
+    <delete id="del" parameterType="java.lang.Integer">
+        delete from sys_access_auth
+        where id = #{accessAuthId,jdbcType=INTEGER}
+    </delete>
+
+
+    <update id="edi" parameterType="com.jsg.entity.AccessAuth">
+        update sys_access_auth
+        <set>
+            <if test="appName != null">
+                app_name = #{appName},
+            </if>
+            <if test="appCode != null">
+                app_code = #{appCode},
+            </if>
+            <if test="authKey != null">
+                auth_key = #{authKey},
+            </if>
+            <if test="isExpired != null ">
+                is_expired = #{isExpired},
+            </if>
+            <if test="authIpList != null">
+                auth_ip_list = #{authIpList},
+            </if>
+            <if test="expiredDate != null">
+                expired_date = #{expiredDate},
+            </if>
+
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <if test="createUserId != null">
+                create_userId = #{createUserId},
+            </if>
+            <if test="updateUserId != null">
+                update_userId = #{updateUserId},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="list" parameterType="String" resultMap="SysAccessAuthMap">
+        SELECT * from sys_access_auth
+        where 1=1
+        <if test="queryKey != null">
+            AND concat(app_name,app_code) like ('%' #{queryKey} '%')
+        </if>
+
+    </select>
+
+
+    <select id="search" parameterType="com.jsg.entity.AccessAuth" resultMap="SysAccessAuthMap">
+        select * from sys_access_auth where  app_name  =#{appName} or  app_code = #{appCode}
+
+    </select>
+
 
 </mapper>

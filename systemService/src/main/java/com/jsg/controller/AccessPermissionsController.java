@@ -1,12 +1,19 @@
 package com.jsg.controller;
 
 import com.jsg.base.result.ResultBase;
-import com.jsg.entity.User;
+import com.jsg.entity.AccessAuth;
+import com.jsg.entity.Pageable;
+import com.jsg.service.AccessPermissionsService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
@@ -16,24 +23,39 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
  */
 @RestController
 @RequestMapping("/access-permissions")
-@Api(value = "/access-permissions", tags = "访问权限模块")
+@Api(value = "/access-permissions", tags = "访问权限")
 @Slf4j
 public class AccessPermissionsController {
 
 
-    @ApiOperation(value = "测试接口", notes = "自定义请求头sessionId，sessionId的值是登陆接口返回的")
-    @PostMapping(value = "/test", consumes = APPLICATION_JSON_UTF8_VALUE, produces = APPLICATION_JSON_UTF8_VALUE)
-    @ResponseBody
-    public ResultBase test(@RequestBody @Validated User users) {
-        ResultBase resultBase = new ResultBase();
-        resultBase.setStatus(1);
-        User user = new User();
-        user.setAge(15);
-        user.setKsCode("1111");
-        user.setMobileNum("13266890407");
-        resultBase.setData(user);
-        resultBase.setMsg("成功!");
-        return resultBase;
+    @Autowired
+    private AccessPermissionsService accessPermissionsService;
+
+    @ApiOperation(value = "添加应用")
+    @PostMapping(value = "/add", consumes = APPLICATION_JSON_UTF8_VALUE, produces = APPLICATION_JSON_UTF8_VALUE)
+    public ResultBase add(@RequestBody @Validated AccessAuth accessAuth) {
+        return accessPermissionsService.add(accessAuth);
     }
+
+    @ApiOperation(value = "检索应用列表")
+    @ApiImplicitParam(name = "queryKey", value = "应用名", dataType = "string")
+    @PostMapping(value = "/list", produces = APPLICATION_JSON_UTF8_VALUE)
+    public ResultBase list(String queryKey, Pageable pageable) {
+        return accessPermissionsService.list(queryKey, pageable);
+    }
+
+    @ApiOperation(value = "删除应用")
+    @ApiImplicitParam(name = "accessAuthId", value = "应用id", dataType = "int")
+    @PostMapping(value = "/del", produces = APPLICATION_JSON_UTF8_VALUE)
+    public ResultBase del(Integer accessAuthId) {
+        return accessPermissionsService.del(accessAuthId);
+    }
+
+    @ApiOperation(value = "编辑应用")
+    @PostMapping(value = "/edi", produces = APPLICATION_JSON_UTF8_VALUE)
+    public ResultBase edi(@RequestBody AccessAuth accessAuth) {
+        return accessPermissionsService.edi(accessAuth);
+    }
+
 
 }
