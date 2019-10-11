@@ -1,4 +1,4 @@
-package com.jsg.controller.sysManagement;
+package com.jsg.controller.system;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/heartbeat")
 @Slf4j
-public class UserController {
+public class DictionaryController {
 
 }

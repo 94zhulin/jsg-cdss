@@ -36,9 +36,9 @@ public class User {
     @ApiModelProperty(position = 11, value = "状态：0-停用；1-启用", required = true)
     private Integer status;
     @ApiModelProperty(position = 12, value = "创建时间", readOnly = true)
-    private Date createTime;
+    private Date createTime = new Date();
     @ApiModelProperty(position = 13, value = "修改时间", readOnly = true)
-    private Date updateTime;
+    private Date updateTime = new Date();
     @ApiModelProperty(position = 14, value = "创建人", required = true)
     private Integer createUserId;
     @ApiModelProperty(position = 15, value = "修改人", required = true)
@@ -47,4 +47,8 @@ public class User {
     private Date lastLoginTime;
     @ApiModelProperty(position = 17, value = "最近登录IP", readOnly = true)
     private String lastLoginIp;
+    @ApiModelProperty(position = 18, value = "role权限名(只读)", readOnly = true)
+    private String name;
+    @ApiModelProperty(position = 19, value = "科室名称(只读)", readOnly = true)
+    private String ksName;
 }

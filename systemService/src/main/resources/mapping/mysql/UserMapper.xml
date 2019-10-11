@@ -9,6 +9,8 @@
         <result property="ysCode" column="ys_code"/>
         <result property="ksCode" column="ks_code"/>
         <result property="fullName" column="full_name"/>
+        <result property="name" column="name"/>
+        <result property="ksName" column="ks_name"/>
         <result property="age" column="age"/>
         <result property="mobileNum" column="mobile_num"/>
         <result property="jobTitle" column="job_title"/>
@@ -24,4 +26,119 @@
     <select id="selectUserByRoleId" parameterType="int" resultMap="SysUserMap">
     select  * from sys_user where role_id = #{roleId}
     </select>
+
+
+    <select id="selectUserRoleByUserId" parameterType="int" resultMap="SysUserMap">
+    SELECT
+    t1.*
+    FROM
+    sys_user t1
+    LEFT JOIN (SELECT * FROM sys_role  ) t2 ON t1.role_id = t2.id
+    WHERE
+    t1.id =#{userId}  and  t2.code = 'SYS_ADMIN'
+    </select>
+
+    <delete id="del" parameterType="java.lang.Integer">
+        delete from sys_user
+        where id = #{userId,jdbcType=INTEGER}
+    </delete>
+
+
+    <insert id="add" parameterType="com.jsg.entity.User">
+        insert into sys_user (id, role_id, user_name,ys_code,ks_code,
+        password, full_name,
+        sex, age, mobile_num,
+        job_title,  status,
+        create_time, update_time, create_userId,
+        update_userId, last_login_time, last_login_ip
+        )
+        values (#{id,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR},#{ysCode},#{ksCode},
+        #{password,jdbcType=VARCHAR}, #{fullName,jdbcType=VARCHAR},
+        #{sex,jdbcType=INTEGER}, #{age,jdbcType=INTEGER}, #{mobileNum,jdbcType=VARCHAR},
+        #{jobTitle,jdbcType=VARCHAR},#{status,jdbcType=INTEGER},
+        #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=INTEGER},
+        #{updateUserId,jdbcType=INTEGER}, #{lastLoginTime,jdbcType=TIMESTAMP}, #{lastLoginIp,jdbcType=VARCHAR}
+        )
+    </insert>
+
+
+    <update id="edi" parameterType="com.jsg.entity.User">
+        update sys_user
+        <set>
+            <if test="roleId != null">
+                role_id = #{roleId,jdbcType=INTEGER},
+            </if>
+            <if test="userName != null">
+                user_name = #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                password = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="fullName != null">
+                full_name = #{fullName,jdbcType=VARCHAR},
+            </if>
+            <if test="sex != null">
+                sex = #{sex,jdbcType=INTEGER},
+            </if>
+            <if test="age != null">
+                age = #{age,jdbcType=INTEGER},
+            </if>
+            <if test="mobileNum != null">
+                mobile_num = #{mobileNum,jdbcType=VARCHAR},
+            </if>
+            <if test="jobTitle != null">
+                job_title = #{jobTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="ysCode != null">
+                ys_code = #{ysCode},
+            </if>
+            <if test="ksCode != null">
+                ks_code = #{ksCode},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserId != null">
+                create_userId = #{createUserId,jdbcType=INTEGER},
+            </if>
+            <if test="updateUserId != null">
+                update_userId = #{updateUserId,jdbcType=INTEGER},
+            </if>
+            <if test="lastLoginTime != null">
+                last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastLoginIp != null">
+                last_login_ip = #{lastLoginIp,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="list" parameterType="string" resultMap="SysUserMap">
+        SELECT
+        t1.*,
+        t2.`name`,
+        t3.ks_name
+        FROM
+        sys_user t1
+        LEFT JOIN sys_role t2 ON t1.role_id = t2.id
+        LEFT JOIN sys_department t3 ON t1.ks_code = t3.ks_code where 1=1
+        <if test="queryKey != null">
+            AND concat(user_name,full_name,mobile_num) like ('%' #{queryKey} '%')
+        </if>
+
+    </select>
+
+
+    <select id="search" parameterType="com.jsg.entity.User" resultMap="SysUserMap">
+        select * from sys_user where  user_name  =#{userName} or  mobile_num = #{mobileNum}
+
+    </select>
+
 </mapper>

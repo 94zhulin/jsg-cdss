@@ -14,14 +14,13 @@ public class ResultUtil {
     /**
      * ！！！成功：code =200 ；提示有关用户信息
      *
-     * @param code
      * @param msg
      * @param object
      * @return
      */
-    public static ResultBase success(Integer code, String msg, Object object) {
+    public static ResultBase success(String msg, Object object) {
         ResultBase result = new ResultBase();
-        result.setStatus(code);
+        result.setStatus(SUCCESS);
         result.setMsg(msg);
         result.setData(object);
         return result;
@@ -30,13 +29,12 @@ public class ResultUtil {
     /**
      * ！！！异常：code =500 （后台系统异常，第三方调用异常，app端参数异常）
      *
-     * @param code
      * @param msg
      * @return
      */
-    public static ResultBase exception(Integer code, String msg) {
+    public static ResultBase exception(String msg) {
         ResultBase result = new ResultBase();
-        result.setStatus(code);
+        result.setStatus(EXCEPTION);
         result.setMsg(msg);
         // 默认为空
         result.setData(null);
@@ -46,13 +44,12 @@ public class ResultUtil {
     /**
      * ！！！失败：code =999 用户逻辑错误
      *
-     * @param code
      * @param msg
      * @return
      */
-    public static ResultBase fail(Integer code, String msg) {
+    public static ResultBase fail(String msg) {
         ResultBase result = new ResultBase();
-        result.setStatus(code);
+        result.setStatus(FAIL);
         result.setMsg(msg);
         // 默认为空
         result.setData(null);

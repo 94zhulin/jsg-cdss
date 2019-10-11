@@ -14,4 +14,17 @@ import java.util.List;
 public interface UserMapper {
     List<User> selectUserByRoleId(@Param("roleId") Integer roleId);
 
+    List<User> search(User user);
+
+    int add(User user);
+
+    List<User> list(@Param("queryKey") String queryKey);
+
+    int edi(User user);
+
+    int del(@Param("userId") Integer userId);
+
+    User selectUserRoleByUserId(@Param("userId") Integer userId);
+
+
 }
