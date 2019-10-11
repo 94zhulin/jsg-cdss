@@ -3,14 +3,12 @@ package com.jsg.dao.mysql;
 import com.jsg.entity.DictionaryCatalog;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 /**
  * @author jeanson 进生
- * @date 2019/10/8 19:54
+ * @date 2019/10/11 21:31
  */
 @Repository
-public interface DictionaryMapper {
-    List<DictionaryCatalog> search(DictionaryCatalog dictionaryCatalog);
+public interface DictionaryCatalogMapper {
+    void addDictionaryType(DictionaryCatalog dictionaryCatalog);
 
 }
