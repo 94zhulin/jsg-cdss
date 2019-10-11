@@ -17,18 +17,18 @@ public class Hospital {
     private String name;
     @ApiModelProperty(position = 2, value = "医院编码", required = true)
     private String code;
-    @ApiModelProperty(position = 3, value = "医院Logo图片链接", readOnly = true)
+    @ApiModelProperty(position = 3, value = "医院Logo图片链接", required = true)
     private String logoUrl;
-    @ApiModelProperty(position = 4, value = "联系人", readOnly = true)
+    @ApiModelProperty(position = 4, value = "联系人", required = true)
     private String contactPerson;
-    @ApiModelProperty(position = 5, value = "联系电话", readOnly = true)
+    @ApiModelProperty(position = 5, value = "联系电话", required = true)
     private String contactPhoneNum;
-    @ApiModelProperty(position = 6, value = "联系地址", readOnly = true)
+    @ApiModelProperty(position = 6, value = "联系地址", required = true)
     private String contactAddress;
     @ApiModelProperty(position = 7, value = "创建时间", readOnly = true)
-    private Date createTime;
-    @ApiModelProperty(position = 8, value = "修改时间",readOnly = true)
-    private Date updateTime;
+    private Date createTime = new Date();
+    @ApiModelProperty(position = 8, value = "修改时间", readOnly = true)
+    private Date updateTime = new Date();
     @ApiModelProperty(position = 9, value = "创建人", required = true)
     private Integer createUserId;
     @ApiModelProperty(position = 10, value = "修改人", required = true)
