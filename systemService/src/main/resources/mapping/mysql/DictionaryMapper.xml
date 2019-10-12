@@ -1,15 +1,110 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.jsg.dao.mysql.DictionaryMapper">
-    <resultMap id="SysDictionaryMap"   type="com.jsg.entity.Dictionary" >
+    <resultMap id="SysDictionaryMap" type="com.jsg.entity.Dictionary">
         <result property="id" column="id"/>
         <result property="catalogId" column="catalog_id"/>
         <result property="name" column="name"/>
         <result property="code" column="code"/>
-        <result property="createTime" column="create_time"  javaType="java.util.Date"/>
-        <result property="updateTime" column="update_time"  javaType="java.util.Date"/>
+        <result property="status" column="status"/>
+        <result property="createTime" column="create_time" javaType="java.util.Date"/>
+        <result property="updateTime" column="update_time" javaType="java.util.Date"/>
         <result property="createUserId" column="create_userId"/>
         <result property="updateUserId" column="update_userId"/>
     </resultMap>
 
+
+    <insert id="addDictionary" parameterType="com.jsg.entity.Dictionary" useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO sys_dictionary (
+          id,
+          catalog_id,
+          name,
+          code,
+              status,
+          create_time,
+          update_time,
+          create_userId,
+          update_userId
+        )
+        VALUES (
+          #{id},
+          #{catalogId},
+          #{name},
+          #{code},
+          #{status},
+          #{createTime},
+          #{updateTime},
+          #{createUserId},
+          #{updateUserId}
+        )
+    </insert>
+
+    <update id="ediDictionary" parameterType="com.jsg.entity.Dictionary">
+        UPDATE sys_dictionary
+        <set>
+            <if test="catalogId != null">
+                catalog_id = #{catalogId},
+            </if>
+            <if test="name != null">
+                name = #{name},
+            </if>
+
+            <if test="code != null">
+                code = #{code},
+            </if>
+
+
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+
+            <if test="createUserId != null">
+                create_userId = #{createUserId},
+            </if>
+
+            <if test="updateUserId != null">
+                update_userId = #{updateUserId},
+            </if>
+
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <delete id="delDictionary" parameterType="int">
+        delete from sys_dictionary
+        where id = #{dictionaryId}
+    </delete>
+
+
+    <select id="listDictionary" resultMap="SysDictionaryMap">
+        SELECT * from sys_dictionary WHERE 1=1
+        <if test="dictionaryCatalogId != null">
+            and catalog_id = #{dictionaryCatalogId}
+        </if>
+        <if test="status != null">
+            and status = #{status}
+        </if>
+        <if test="queryKey != null">
+            AND concat(name,code) like ('%' #{queryKey} '%')
+        </if>
+    </select>
+
+
+    <select id="search" parameterType="com.jsg.entity.Dictionary" resultMap="SysDictionaryMap">
+        SELECT * from sys_dictionary WHERE 1=1
+            and name = #{name} and code = #{code}
+    </select>
+
+    <select id="findOneByDictionaryId" parameterType="com.jsg.entity.Dictionary" resultMap="SysDictionaryMap">
+        SELECT * from sys_dictionary WHERE  id =#{dictionaryId}
+    </select>
 </mapper>

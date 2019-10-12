@@ -1,7 +1,10 @@
 package com.jsg.dao.mysql;
 
 import com.jsg.entity.DictionaryCatalog;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * @author jeanson 进生
@@ -11,4 +14,13 @@ import org.springframework.stereotype.Repository;
 public interface DictionaryCatalogMapper {
     void addDictionaryType(DictionaryCatalog dictionaryCatalog);
 
+    int ediDictionaryType(DictionaryCatalog dictionaryCatalog);
+
+    DictionaryCatalog findOneByDictionaryCatalogId(@Param("dictionaryCatalogId") Integer dictionaryCatalogId);
+
+    List<DictionaryCatalog> listDictionaryType(@Param("dictionaryCatalogId") Integer dictionaryCatalogId, @Param("queryKey") String queryKey);
+
+    int DelDictionaryType(@Param("dictionaryTypeId") Integer dictionaryTypeId);
+
+    List<DictionaryCatalog> search(DictionaryCatalog dictionaryCatalog);
 }

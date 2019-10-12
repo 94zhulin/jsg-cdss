@@ -23,7 +23,7 @@ public interface DictionaryService {
 
     ResultBase addDictionary(Dictionary dictionary);
 
-    ResultBase delDictionary(Integer dictionaryId);
+    ResultBase delDictionary(Integer dictionaryId, Integer dictionaryCatalogId);
 
     ResultBase ediDictionary(Dictionary dictionary);
 }

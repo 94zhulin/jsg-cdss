@@ -85,10 +85,13 @@ public class DictionaryController {
 
 
     @ApiOperation(value = "删除字典", notes = "删除字典")
-    @ApiImplicitParam(name = "dictionaryId", value = "字典Id", dataType = "int")
+    @ApiImplicitParams(
+            {@ApiImplicitParam(name = "dictionaryId", value = "字典id", dataType = "int"),
+                    @ApiImplicitParam(name = "dictionaryCatalogId", value = "字典类型", dataType = "int")
+            })
     @PostMapping(value = "/del/dictionary", produces = APPLICATION_JSON_UTF8_VALUE)
-    public ResultBase delDictionary(Integer dictionaryId) {
-        return dictionaryService.delDictionary(dictionaryId);
+    public ResultBase delDictionary(Integer dictionaryId, Integer dictionaryCatalogId) {
+        return dictionaryService.delDictionary(dictionaryId, dictionaryCatalogId);
     }
 
     @ApiOperation(value = "编辑字典")
