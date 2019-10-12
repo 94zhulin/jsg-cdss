@@ -6,6 +6,7 @@ import com.jsg.entity.Role;
 import com.jsg.service.RoleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,10 +60,12 @@ public class RoleController {
     }
 
     @ApiOperation(value = "查看用户", notes = "系统管理-角色管理-查询指定角色下的用户")
-    @ApiImplicitParam(name = "roleId", value = "角色ID", dataType = "int")
+    @ApiImplicitParams({@ApiImplicitParam(name = "roleId", value = "角色ID", dataType = "int"),
+            @ApiImplicitParam(name = "queryKey", value = "编码/名称", dataType = "string")
+    })
     @PostMapping(value = "/list-user", produces = APPLICATION_JSON_UTF8_VALUE)
-    public ResultBase listByUser(Integer roleId, Pageable pageable) {
-        return roleService.listByUser(roleId, pageable);
+    public ResultBase listByUser(String queryKey, Integer roleId, Pageable pageable) {
+        return roleService.listByUser(queryKey, roleId, pageable);
     }
 
 
@@ -71,4 +74,15 @@ public class RoleController {
     public ResultBase distributionPermissions(@PathVariable("roleId") Integer roleId, @RequestParam(value = "permissions") List<Integer> permissions) {
         return roleService.distributionPermissions(roleId, permissions);
     }
+
+
+    @ApiOperation(value = "角色拥有的权限", notes = "角色拥有的权限")
+    @ApiImplicitParams({@ApiImplicitParam(name = "roleId", value = "角色ID", dataType = "int"),
+    })
+    @PostMapping(value = "/permissions/{roleId}", produces = APPLICATION_JSON_UTF8_VALUE)
+    public ResultBase permissions(@PathVariable("roleId") Integer roleId) {
+        return roleService.permissions(roleId);
+    }
+
+
 }

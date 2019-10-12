@@ -93,11 +93,25 @@
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="create_userId" jdbcType="INTEGER" property="createUserId"/>
         <result column="update_userId" jdbcType="INTEGER" property="updateUserId"/>
-        <!-- <collection property="permissions" ofType="com.hospital.bi.pojo.Permission" select="findPermsByModuleId" column="id"/> -->
+        <collection property="permissions" ofType="com.jsg.entity.Permission" select="findPermsByModuleId" column="id"/>
         <collection property="children" ofType="com.jsg.entity.Module" select="list" column="id"/>
     </resultMap>
     <select id="list" parameterType="int" resultMap="selectModule">
         select * from sys_module where parent_module_id=#{moduleId} order by order_index asc
+    </select>
+
+    <resultMap id="selectPermissions" type="com.jsg.entity.Permission">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="code" jdbcType="VARCHAR" property="code"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="create_userId" jdbcType="INTEGER" property="createUserId"/>
+        <result column="update_userId" jdbcType="INTEGER" property="updateUserId"/>
+    </resultMap>
+    <select id="findPermsByModuleId" resultMap="selectPermissions">
+        select * from sys_permission where id IN (select permission_id from sys_module_permission where module_id=#{moduleId})
     </select>
 
     <select id="search" resultMap="SysModuleMap">

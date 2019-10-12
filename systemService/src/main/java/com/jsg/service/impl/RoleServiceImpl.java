@@ -3,6 +3,7 @@ package com.jsg.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.jsg.base.result.ResultBase;
+import com.jsg.base.result.ResultUtil;
 import com.jsg.dao.mysql.RoleMapper;
 import com.jsg.dao.mysql.RolePermissionMapper;
 import com.jsg.dao.mysql.UserMapper;
@@ -65,7 +66,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public ResultBase del(Integer roleId) {
-        List<User> list = userMapper.selectUserByRoleId(roleId);
+        List<User> list = userMapper.selectUserByRoleId(null, roleId);
         ResultBase resultBase = ResultBase.initializeBase(null, success, null);
         if (list.size() > 0) {
             resultBase.setStatus(failure);
@@ -91,11 +92,19 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public ResultBase listByUser(Integer roleId, Pageable pageable) {
+    public ResultBase listByUser(String queryKey, Integer roleId, Pageable pageable) {
         PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
-        List<User> list = userMapper.selectUserByRoleId(roleId);
+        List<User> list = userMapper.selectUserByRoleId(queryKey, roleId);
         PageInfo<User> pageInfo = new PageInfo<>(list);
         return ResultBase.initializeBase(pageInfo, success, null);
+    }
+
+    @Override
+    public ResultBase permissions(Integer roleId) {
+        Role role = roleMapper.selectRoleById(roleId);
+      //  rolePermissionMapper.
+        return ResultUtil.success(null,null);
+
     }
 
     @Override

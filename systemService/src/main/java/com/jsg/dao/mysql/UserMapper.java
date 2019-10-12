@@ -12,7 +12,7 @@ import java.util.List;
  */
 @Repository
 public interface UserMapper {
-    List<User> selectUserByRoleId(@Param("roleId") Integer roleId);
+    List<User> selectUserByRoleId(@Param("queryKey") String queryKey, @Param("roleId") Integer roleId);
 
     List<User> search(User user);
 

@@ -21,6 +21,7 @@ public interface RoleService {
 
     ResultBase distributionPermissions(Integer roleId, List<Integer> permissions);
 
-    ResultBase listByUser(Integer roleId, Pageable pageable);
+    ResultBase listByUser(String queryKey, Integer roleId, Pageable pageable);
 
+    ResultBase permissions(Integer roleId);
 }

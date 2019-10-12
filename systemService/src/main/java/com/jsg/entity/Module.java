@@ -49,5 +49,7 @@ public class Module {
     private Integer updateUserId;
     @ApiModelProperty(position = 9, value = "子目录", readOnly = true)
     private List<Module> children;
+    @ApiModelProperty(position = 10, value = "权限列表", readOnly = true)
+    private List<Permission> permissions;
 
 }

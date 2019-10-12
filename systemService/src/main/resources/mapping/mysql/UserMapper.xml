@@ -23,8 +23,11 @@
     </resultMap>
 
 
-    <select id="selectUserByRoleId" parameterType="int" resultMap="SysUserMap">
-    select  * from sys_user where role_id = #{roleId}
+    <select id="selectUserByRoleId" resultMap="SysUserMap">
+        select * from sys_user where role_id = #{roleId}
+        <if test="queryKey != null">
+            AND concat(user_name,full_name,mobile_num) like ('%' #{queryKey} '%')
+        </if>
     </select>
 
 

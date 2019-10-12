@@ -21,4 +21,6 @@ public interface RoleMapper {
     int del(@Param("roleId") Integer roleId);
 
     int edi(Role role);
+
+    Role selectRoleById(@Param("roleId") Integer roleId);
 }

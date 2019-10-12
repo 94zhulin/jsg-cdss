@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author jeanson 进生
@@ -31,4 +32,7 @@ public class Role {
     private Integer createUserId;
     @ApiModelProperty(position = 9, value = "修改人", required = true)
     private Integer updateUserId;
+
+    @ApiModelProperty(position = 6, value = "权限列表", readOnly = true)
+    private List<Permission> permissions;
 }
