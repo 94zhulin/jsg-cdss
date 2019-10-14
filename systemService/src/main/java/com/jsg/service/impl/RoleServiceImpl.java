@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.jsg.base.result.ResultBase;
 import com.jsg.base.result.ResultUtil;
+import com.jsg.dao.mysql.PermissionMapper;
 import com.jsg.dao.mysql.RoleMapper;
 import com.jsg.dao.mysql.RolePermissionMapper;
 import com.jsg.dao.mysql.UserMapper;
@@ -33,7 +34,8 @@ public class RoleServiceImpl implements RoleService {
     private UserMapper userMapper;
     @Autowired
     private RolePermissionMapper rolePermissionMapper;
-
+    @Autowired
+    private PermissionMapper permissionMapper;
     @Value("${apiStatus.failure}")
     private Integer failure;
 
@@ -46,7 +48,7 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public ResultBase add(Role role) {
         List<Role> list = roleMapper.search(role);
-        ResultBase resultBase = ResultBase.initializeBase(role, success, null);
+        ResultBase resultBase = ResultUtil.success(null, role);
         if (list.size() > 0) {
             resultBase.setStatus(failure);
             resultBase.setMsg("名称或者编码已存在");
@@ -61,13 +63,13 @@ public class RoleServiceImpl implements RoleService {
         PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
         List<Role> list = roleMapper.list(queryKey);
         PageInfo<Role> pageInfo = new PageInfo<>(list);
-        return ResultBase.initializeBase(pageInfo, success, null);
+        return ResultUtil.success(null, pageInfo);
     }
 
     @Override
     public ResultBase del(Integer roleId) {
         List<User> list = userMapper.selectUserByRoleId(null, roleId);
-        ResultBase resultBase = ResultBase.initializeBase(null, success, null);
+        ResultBase resultBase = ResultUtil.success(null, null);
         if (list.size() > 0) {
             resultBase.setStatus(failure);
             resultBase.setMsg("该角色有用户关联，不能直接删除");
@@ -81,7 +83,7 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public ResultBase edi(Role role) {
         List<Role> list = roleMapper.search(role);
-        ResultBase resultBase = ResultBase.initializeBase(role, success, null);
+        ResultBase resultBase = ResultUtil.success(null, role);
         if (list.size() > 1) {
             resultBase.setStatus(failure);
             resultBase.setMsg("名称或者编码已存在");
@@ -96,14 +98,12 @@ public class RoleServiceImpl implements RoleService {
         PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
         List<User> list = userMapper.selectUserByRoleId(queryKey, roleId);
         PageInfo<User> pageInfo = new PageInfo<>(list);
-        return ResultBase.initializeBase(pageInfo, success, null);
+        return ResultUtil.success(null, pageInfo);
     }
 
     @Override
     public ResultBase permissions(Integer roleId) {
-        Role role = roleMapper.selectRoleById(roleId);
-      //  rolePermissionMapper.
-        return ResultUtil.success(null,null);
+        return ResultUtil.success(null, permissionMapper.selectRolePermissions(roleId));
 
     }
 
@@ -125,6 +125,6 @@ public class RoleServiceImpl implements RoleService {
         role.setId(roleId);
         role.setPermissionNum(permissions.size());
         roleMapper.edi(role);
-        return ResultBase.initializeBase(null, success, null);
+        return ResultUtil.success(null, permissions);
     }
 }

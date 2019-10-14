@@ -11,4 +11,5 @@ public interface RolePermissionMapper {
     int del(@Param("roleId") Integer roleId);
 
     void addBatch(List<RolePermission> lists);
+
 }

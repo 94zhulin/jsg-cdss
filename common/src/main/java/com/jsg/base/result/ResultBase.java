@@ -20,14 +20,6 @@ public class ResultBase<T> implements Serializable {
      */
     private static final long serialVersionUID = -3018692804320692301L;
 
-    public static ResultBase initializeBase(Object data, Integer status, String msg) {
-        ResultBase resultBase = new ResultBase();
-        resultBase.setStatus(status);
-        resultBase.setMsg(msg);
-        resultBase.setData(data);
-        return resultBase;
-    }
-
     // 999 失败，用户逻辑错误，用户将msg直接返回给用户
     // 500 系统异常，msg返回系统异常
     // 200 成功，data返回结果

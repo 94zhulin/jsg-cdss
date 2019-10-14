@@ -81,4 +81,9 @@
         select * from sys_role where  name  =#{name} or  code = #{code}
 
     </select>
+
+
+    <select id="selectRoleById" parameterType="int" resultMap="RoleResultMap">
+  select * from sys_role where  id  =#{roleId}
+    </select>
 </mapper>

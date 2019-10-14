@@ -3,6 +3,7 @@ package com.jsg.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.jsg.base.result.ResultBase;
+import com.jsg.base.result.ResultUtil;
 import com.jsg.dao.mysql.PropertiesMapper;
 import com.jsg.entity.Pageable;
 import com.jsg.entity.Properties;
@@ -40,13 +41,13 @@ public class PropertiesServiceImpl implements PropertiesService {
         PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
         List<Properties> lists = propertiesMapper.list(queryKey);
         PageInfo pageInfo = new PageInfo(lists);
-        return ResultBase.initializeBase(pageInfo, success, null);
+        return ResultUtil.success(null, pageInfo);
     }
 
     @Override
     public ResultBase del(String propName) {
         int opFlag = propertiesMapper.del(propName);
-        ResultBase resultBase = ResultBase.initializeBase(opFlag, success, null);
+        ResultBase resultBase = ResultUtil.success(null, null);
         if (opFlag < 0) {
             resultBase.setStatus(failure);
             resultBase.setMsg("删除失败,请检查参数是否正确 ！");
@@ -56,10 +57,8 @@ public class PropertiesServiceImpl implements PropertiesService {
 
     @Override
     public ResultBase add(Properties properties) {
-
-
         List<Properties> propList = propertiesMapper.selectByPropName(properties.getPropName());
-        ResultBase resultBase = ResultBase.initializeBase(1, success, null);
+        ResultBase resultBase = ResultUtil.success(null, properties);
         if (propList.size() > 0) {
             resultBase.setStatus(failure);
             resultBase.setMsg("属性名重复！");
@@ -80,7 +79,7 @@ public class PropertiesServiceImpl implements PropertiesService {
         @NotNull Integer status = properties.getStatus();
         @NotNull Integer updateUserId = properties.getUpdateUserId();
         List<Properties> Lists = propertiesMapper.selectByPropName(propName);
-        ResultBase resultBase = ResultBase.initializeBase(1, success, null);
+        ResultBase resultBase = ResultUtil.success(null, properties);
         if (Lists.size() > 1) {
             resultBase.setStatus(failure);
             resultBase.setMsg("属性名重复 ！");
@@ -97,7 +96,7 @@ public class PropertiesServiceImpl implements PropertiesService {
     @Override
     public ResultBase selectByPropName(String propName) {
         List<Properties> propList = propertiesMapper.selectByPropName(propName);
-        ResultBase resultBase = ResultBase.initializeBase(propList, success, null);
+        ResultBase resultBase = ResultUtil.success(null, propList);
         if (propList.size() > 0) {
             resultBase.setStatus(failure);
             resultBase.setMsg("属性名重复！");

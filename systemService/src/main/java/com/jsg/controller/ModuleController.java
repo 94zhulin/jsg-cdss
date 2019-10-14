@@ -11,10 +11,9 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
@@ -68,6 +67,20 @@ public class ModuleController {
     @PostMapping(value = "/edi", consumes = APPLICATION_JSON_UTF8_VALUE)
     public ResultBase edi(@RequestBody Module module) {
         return moduleService.edi(module);
+    }
+
+
+    @ApiOperation(value = "模板拥有的权限", notes = "模板拥有的权限")
+    @PostMapping(value = "/permissions/{moduleId}", produces = APPLICATION_JSON_UTF8_VALUE)
+    public ResultBase permissions(@PathVariable("moduleId") Integer roleId) {
+        return moduleService.permissions(roleId);
+    }
+
+
+    @ApiOperation(value = "分配权限", notes = "系统管理-模块管理-给模块分配权限")
+    @PostMapping(value = "/distribution-permissions/{moduleId}", produces = APPLICATION_JSON_UTF8_VALUE)
+    public ResultBase distributionPermissions(@PathVariable("moduleId") Integer moduleId, @RequestParam(value = "permissions") List<Integer> permissions) {
+        return moduleService.distributionPermissions(moduleId, permissions);
     }
 
 }

@@ -22,5 +22,6 @@ public interface ModuleMapper {
 
     int del(@Param("moduleId") Integer moduleId);
 
-    void edi(Module module);
+    int edi(Module module);
+
 }

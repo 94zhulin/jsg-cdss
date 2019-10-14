@@ -101,4 +101,5 @@
         WHERE
         prop_name = #{propName}
     </select>
+
 </mapper>
