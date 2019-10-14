@@ -1,6 +1,6 @@
 package com.jsg.service.impl;
 
-import com.jsg.service.StaffBaseinfoService;
+import com.jsg.service.BaseinfoService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -8,5 +8,5 @@ import org.springframework.stereotype.Service;
  * @date 2019/10/14 15:47
  */
 @Service
-public class StaffBaseinfoServiceImpl implements StaffBaseinfoService {
+public class BaseinfoServiceImpl implements BaseinfoService {
 }

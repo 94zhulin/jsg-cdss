@@ -1,6 +1,6 @@
 package com.jsg.controller;
 
-import com.jsg.service.StaffQualificationsService;
+import com.jsg.service.QualificationsService;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class QualificationsController {
     @Autowired
-    private StaffQualificationsService staffQualificationsService;
+    private QualificationsService staffQualificationsService;
 
 
 }

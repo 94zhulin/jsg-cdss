@@ -1,6 +1,6 @@
 package com.jsg.service.impl;
 
-import com.jsg.service.StaffQualificationsService;
+import com.jsg.service.QualificationsService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -9,5 +9,5 @@ import org.springframework.stereotype.Service;
  */
 
 @Service
-public class StaffQualificationsServiceImpl implements StaffQualificationsService {
+public class QualificationsServiceImpl implements QualificationsService {
 }
