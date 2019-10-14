@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jsg.dao.mysql.StaffBaseinfoMapper">
+    <resultMap id="QlfStaffBaseinfoMap" type="com.jsg.entity.Baseinfo">
+        <result property="id" column="id"/>
+        <result property="fullName" column="full_name"/>
+        <result property="age" column="age"/>
+        <result property="ysCode" column="ys_code"/>
+        <result property="ksCode" column="ks_code"/>
+        <result property="ksName" column="ks_name"/>
+        <result property="mobileNum" column="mobile_num"/>
+        <result property="jobTitle" column="job_title"/>
+        <result property="profTitle" column="prof_title"/>
+        <result property="joinDate" column="join_date" javaType="java.util.Date"/>
+        <result property="yxzy" column="yxzy"/>
+        <result property="ysjb" column="ysjb"/>
+        <result property="zgzsBh" column="zgzs_bh"/>
+        <result property="zyzsBh" column="zyzs_bh"/>
+        <result property="zylb" column="zylb"/>
+        <result property="zykm" column="zykm"/>
+        <result property="zyzt" column="zyzt"/>
+        <result property="comment" column="comment"/>
+        <result property="createTime" column="create_time" javaType="java.util.Date"/>
+        <result property="createUserId" column="create_userId"/>
+        <result property="updateTime" column="update_time" javaType="java.util.Date"/>
+        <result property="updateUserId" column="update_userId"/>
+    </resultMap>
+
+</mapper>

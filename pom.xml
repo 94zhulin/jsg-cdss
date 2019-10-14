@@ -260,6 +260,7 @@
         <module>testAService</module>
         <module>testBService</module>
         <module>ssoService</module>
+        <module>qualificationService</module>
         <!--cloud-->
         <module>registry</module>
         <module>proxy</module>
