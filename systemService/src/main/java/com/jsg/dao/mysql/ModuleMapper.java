@@ -18,7 +18,7 @@ public interface ModuleMapper {
 
     List<Module> list(@Param("moduleId") Integer moduleId);
 
-    List<Module> search(@Param("queryKey") String queryKey, @Param("moduleId") Integer moduleId);
+    List<Module> search(@Param("queryKey") String queryKey, @Param("moduleId") Integer moduleId, @Param("status") Integer status);
 
     int del(@Param("moduleId") Integer moduleId);
 

@@ -17,7 +17,7 @@ public interface AccessPermissionsMapper {
 
     void add(AccessAuth accessAuth);
 
-    List<Module> list(@Param("queryKey") String queryKey);
+    List<Module> list(@Param("queryKey") String queryKey, @Param("status") Integer status);
 
     int del(@Param("accessAuthId") Integer accessAuthId);
 

@@ -11,7 +11,7 @@ import com.jsg.entity.User;
 public interface UserService {
     ResultBase add(User user);
 
-    ResultBase list(String queryKey, Pageable pageable);
+    ResultBase list(String queryKey, Integer status, Pageable pageable);
 
     ResultBase edi(User user);
 

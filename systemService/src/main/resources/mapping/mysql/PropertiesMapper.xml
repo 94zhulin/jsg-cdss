@@ -25,6 +25,9 @@
         <if test="queryKey != null">
             AND concat(prop_name,prop_value) like ('%' #{queryKey} '%')
         </if>
+        <if test="status != null">
+            AND status =#{status}
+        </if>
     </select>
 
 

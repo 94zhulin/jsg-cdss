@@ -135,6 +135,9 @@
         <if test="queryKey != null">
             AND concat(user_name,full_name,mobile_num) like ('%' #{queryKey} '%')
         </if>
+        <if test="status != null">
+            AND status = #{status}
+        </if>
 
     </select>
 

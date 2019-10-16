@@ -12,7 +12,7 @@ import java.util.List;
  */
 @Repository
 public interface RoleMapper {
-    List<Role> list(@Param("queryKey") String queryKey);
+    List<Role> list(@Param("queryKey") String queryKey, @Param("status") Integer status);
 
     int add(Role role);
 

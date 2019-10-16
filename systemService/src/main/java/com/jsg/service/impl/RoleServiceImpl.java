@@ -59,9 +59,9 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public ResultBase list(String queryKey, Pageable pageable) {
+    public ResultBase list(String queryKey, Integer status, Pageable pageable) {
         PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
-        List<Role> list = roleMapper.list(queryKey);
+        List<Role> list = roleMapper.list(queryKey, status);
         PageInfo<Role> pageInfo = new PageInfo<>(list);
         return ResultUtil.success(null, pageInfo);
     }

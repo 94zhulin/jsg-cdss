@@ -37,9 +37,9 @@ public class PropertiesServiceImpl implements PropertiesService {
     private Integer success;
 
     @Override
-    public ResultBase list(String queryKey, Pageable pageable) {
+    public ResultBase list(String queryKey, Integer status, Pageable pageable) {
         PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
-        List<Properties> lists = propertiesMapper.list(queryKey);
+        List<Properties> lists = propertiesMapper.list(queryKey, status);
         PageInfo pageInfo = new PageInfo(lists);
         return ResultUtil.success(null, pageInfo);
     }

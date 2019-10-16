@@ -11,7 +11,7 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface PropertiesService {
     //属性列表
-    ResultBase list(String queryKey, Pageable pageable);
+    ResultBase list(String queryKey, Integer status, Pageable pageable);
 
     //删除属性
     ResultBase del(String propName);

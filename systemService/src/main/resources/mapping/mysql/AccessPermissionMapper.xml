@@ -75,11 +75,14 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
 
-    <select id="list" parameterType="String" resultMap="SysAccessAuthMap">
+    <select id="list" resultMap="SysAccessAuthMap">
         SELECT * from sys_access_auth
         where 1=1
         <if test="queryKey != null">
             AND concat(app_name,app_code) like ('%' #{queryKey} '%')
+        </if>
+        <if test="status != null">
+            AND status =#{status}
         </if>
 
     </select>

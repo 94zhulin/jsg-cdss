@@ -18,7 +18,7 @@ public interface UserMapper {
 
     int add(User user);
 
-    List<User> list(@Param("queryKey") String queryKey);
+    List<User> list(@Param("queryKey") String queryKey, @Param("status") Integer status);
 
     int edi(User user);
 

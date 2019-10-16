@@ -30,10 +30,12 @@ public class PropertiesController {
 
     @ApiOperation(value = "属性列表", notes = "返回所有的属性列表数据")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "queryKey", value = "属性名/值", dataType = "string", required = false)})
+            @ApiImplicitParam(name = "queryKey", value = "属性名/值", dataType = "string"),
+            @ApiImplicitParam(name = "status", value = "是否启用", dataType = "int"),
+    })
     @PostMapping(value = "/list", produces = APPLICATION_JSON_UTF8_VALUE)
-    public ResultBase list(String queryKey, Pageable pageable) {
-        return propertiesService.list(queryKey, pageable);
+    public ResultBase list(String queryKey, Integer status, Pageable pageable) {
+        return propertiesService.list(queryKey, status, pageable);
     }
 
     @ApiOperation(value = "删除属性", notes = "删除属性")

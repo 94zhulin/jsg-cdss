@@ -50,10 +50,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResultBase list(String queryKey, Pageable pageable) {
+    public ResultBase list(String queryKey, Integer status, Pageable pageable) {
 
         PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
-        List<User> list = userMapper.list(queryKey);
+        List<User> list = userMapper.list(queryKey, status);
         PageInfo<User> pageInfo = new PageInfo<>(list);
         return ResultUtil.success(null, pageInfo);
     }

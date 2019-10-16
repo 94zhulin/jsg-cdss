@@ -39,10 +39,13 @@ public class RoleController {
 
 
     @ApiOperation(value = "检索角色列表", notes = "可检索的角色列表接口")
-    @ApiImplicitParam(name = "queryKey", value = "编码/名称", dataType = "string")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "queryKey", value = "编码/名称", dataType = "string"),
+            @ApiImplicitParam(name = "status", value = "是否启用", dataType = "int")
+    })
     @PostMapping(value = "/list", produces = APPLICATION_JSON_UTF8_VALUE)
-    public ResultBase list(String queryKey, Pageable pageable) {
-        return roleService.list(queryKey, pageable);
+    public ResultBase list(String queryKey, Integer status, Pageable pageable) {
+        return roleService.list(queryKey, status, pageable);
     }
 
 

@@ -15,7 +15,7 @@ public interface ModuleService {
 
     ResultBase list(Pageable pageable);
 
-    ResultBase search(String queryKey, Integer moduleId, Pageable pageable);
+    ResultBase search(String queryKey, Integer moduleId, Integer status, Pageable pageable);
 
     ResultBase del(Integer moduleId);
 

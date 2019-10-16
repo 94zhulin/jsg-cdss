@@ -66,13 +66,17 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
 
-    <select id="list" parameterType="string" resultMap="RoleResultMap">
+    <select id="list" resultMap="RoleResultMap">
         select
         *
         from sys_role
         WHERE 1=1
         <if test="queryKey != null">
             AND concat(name,code) like ('%' #{queryKey} '%')
+        </if>
+
+        <if test="status != null">
+            AND status=#{status}
         </if>
     </select>
 

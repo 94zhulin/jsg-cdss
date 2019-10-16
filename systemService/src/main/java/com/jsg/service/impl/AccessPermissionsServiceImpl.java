@@ -52,9 +52,9 @@ public class AccessPermissionsServiceImpl implements AccessPermissionsService {
     }
 
     @Override
-    public ResultBase list(String queryKey, Pageable pageable) {
+    public ResultBase list(String queryKey, Integer status, Pageable pageable) {
         PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
-        List<Module> list = accessPermissionsMapper.list(queryKey);
+        List<Module> list = accessPermissionsMapper.list(queryKey, status);
         PageInfo<Module> pageInfo = new PageInfo<>(list);
         return ResultUtil.success(null, pageInfo);
     }

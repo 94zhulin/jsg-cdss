@@ -48,11 +48,12 @@ public class ModuleController {
     @ApiOperation(value = "检索模块列表", notes = "可检索的模块列表接口")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "queryKey", value = "编码/名称", dataType = "string"),
-            @ApiImplicitParam(name = "moduleId", value = "模块ID/root目录为0", dataType = "int")
+            @ApiImplicitParam(name = "moduleId", value = "模块ID/root目录为0", dataType = "int"),
+            @ApiImplicitParam(name = "status", value = "是否启用", dataType = "int"),
     })
     @PostMapping(value = "/search", produces = APPLICATION_JSON_UTF8_VALUE)
-    public ResultBase list(String queryKey, Integer moduleId, Pageable pageable) {
-        return moduleService.search(queryKey, moduleId, pageable);
+    public ResultBase list(String queryKey, Integer moduleId, Integer status, Pageable pageable) {
+        return moduleService.search(queryKey, moduleId, status, pageable);
     }
 
 

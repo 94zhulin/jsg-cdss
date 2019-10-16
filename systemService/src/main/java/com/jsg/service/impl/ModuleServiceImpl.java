@@ -67,9 +67,9 @@ public class ModuleServiceImpl implements ModuleService {
     }
 
     @Override
-    public ResultBase search(String queryKey, Integer moduleId, Pageable pageable) {
+    public ResultBase search(String queryKey, Integer moduleId, Integer status, Pageable pageable) {
         PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
-        List<Module> list = moduleMapper.search(queryKey, moduleId);
+        List<Module> list = moduleMapper.search(queryKey, moduleId,status);
         PageInfo<Module> pageInfo = new PageInfo<>(list);
         return ResultUtil.success(null, pageInfo);
     }

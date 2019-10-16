@@ -1,6 +1,5 @@
 package com.jsg.dao.mysql;
 
-import com.jsg.entity.Permission;
 import com.jsg.entity.Properties;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -14,7 +13,7 @@ import java.util.List;
 @Repository
 public interface PropertiesMapper {
     //属性列表
-    List<Properties> list(@Param("queryKey") String queryKey);
+    List<Properties> list(@Param("queryKey") String queryKey, @Param("status") Integer status);
 
     //删除属性
     int del(@Param("propName") String propName);
@@ -26,7 +25,6 @@ public interface PropertiesMapper {
     int edi(Properties properties);
 
     List<Properties> selectByPropName(@Param("propName") String propName);
-
 
 
 }

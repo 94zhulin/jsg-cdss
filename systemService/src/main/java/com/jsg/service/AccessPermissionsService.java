@@ -11,7 +11,7 @@ import com.jsg.entity.Pageable;
 public interface AccessPermissionsService {
     ResultBase add(AccessAuth accessAuth);
 
-    ResultBase list(String queryKey, Pageable pageable);
+    ResultBase list(String queryKey, Integer status, Pageable pageable);
 
     ResultBase del(Integer accessAuthId);
 

@@ -6,6 +6,7 @@ import com.jsg.entity.Pageable;
 import com.jsg.service.AccessPermissionsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,10 +39,15 @@ public class AccessPermissionsController {
     }
 
     @ApiOperation(value = "检索应用列表")
-    @ApiImplicitParam(name = "queryKey", value = "应用名", dataType = "string")
+    @ApiImplicitParams({
+
+            @ApiImplicitParam(name = "queryKey", value = "检索关键词", dataType = "string"),
+            @ApiImplicitParam(name = "status", value = "是否启用(0-已停用；1-已启用)", dataType = "int")
+    })
+
     @PostMapping(value = "/list", produces = APPLICATION_JSON_UTF8_VALUE)
-    public ResultBase list(String queryKey, Pageable pageable) {
-        return accessPermissionsService.list(queryKey, pageable);
+    public ResultBase list(String queryKey, Integer status, Pageable pageable) {
+        return accessPermissionsService.list(queryKey, status, pageable);
     }
 
     @ApiOperation(value = "删除应用")

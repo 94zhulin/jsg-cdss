@@ -13,7 +13,7 @@ import java.util.List;
 public interface RoleService {
     ResultBase add(Role role);
 
-    ResultBase list(String queryKey, Pageable pageable);
+    ResultBase list(String queryKey, Integer status, Pageable pageable);
 
     ResultBase del(Integer roleId);
 

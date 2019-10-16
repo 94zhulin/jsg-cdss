@@ -119,6 +119,9 @@
         <if test="queryKey != null">
             AND concat(name,code) like ('%' #{queryKey} '%')
         </if>
+        <if test="status != null">
+            AND status =#{status}
+        </if>
         order by order_index asc
     </select>
 

@@ -6,6 +6,7 @@ import com.jsg.entity.User;
 import com.jsg.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,10 +40,14 @@ public class UserController {
 
 
     @ApiOperation(value = "检索用户列表")
-    @ApiImplicitParam(name = "queryKey", value = "编码/名称", dataType = "string")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "queryKey", value = "编码/名称", dataType = "string"),
+            @ApiImplicitParam(name = "status", value = "是否启用", dataType = "int")
+    }
+    )
     @PostMapping(value = "/list", produces = APPLICATION_JSON_UTF8_VALUE)
-    public ResultBase list(String queryKey, Pageable pageable) {
-        return userService.list(queryKey, pageable);
+    public ResultBase list(String queryKey, Integer status, Pageable pageable) {
+        return userService.list(queryKey, status, pageable);
     }
 
 
