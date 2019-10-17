@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jsg.dao.mysql.HistoryallergyMapper">
+    <resultMap id="KlgbaseHistoryallergyMap" type="com.jsg.entity.Historyallergy">
+        <result property="id" column="id"/>
+        <result property="catalogId" column="catalog_id"/>
+        <result property="name" column="name"/>
+        <result property="code" column="code"/>
+        <result property="gmy" column="gmy"/>
+        <result property="zz" column="zz"/>
+        <result property="createTime" column="create_time" javaType="java.util.Date"/>
+        <result property="updateTime" column="update_time" javaType="java.util.Date"/>
+        <result property="createUserId" column="create_userId"/>
+        <result property="updateUserId" column="update_userId"/>
+    </resultMap>
+
+    <delete id="del" parameterType="java.lang.Integer">
+        delete from klgbase_historyallergy
+        where id = #{hospitalId,jdbcType=INTEGER}
+    </delete>
+
+
+    <insert id="add" parameterType="com.jsg.entity.Historyallergy" useGeneratedKeys="true" keyProperty="id">
+insert into  klgbase_historyallergy
+(id,catalog_id,name,code,gmy,zz,create_time,update_time,create_userId,update_userId)
+values (
+#{id},
+#{catalogId},
+#{name},
+#{code},
+#{gmy},
+#{zz},
+#{createTime},
+#{updateTime},
+#{createUserId},
+#{updateUserId}
+)
+    </insert>
+
+
+    <update id="edi" parameterType="com.jsg.entity.Historyallergy">
+        update klgbase_historyallergy
+        <set>
+            <if test="catalogId != null">
+                catalog_id = #{catalogId},
+            </if>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="code != null">
+                code = #{code},
+            </if>
+            <if test="gmy != null">
+                gmy = #{gmy},
+            </if>
+            <if test="zz != null">
+                zz = #{zz},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <if test="createUserId != null">
+                create_userId = #{createUserId},
+            </if>
+            <if test="updateUserId != null">
+                update_userId = #{updateUserId},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+
+</mapper>

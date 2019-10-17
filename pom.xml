@@ -267,6 +267,7 @@
         <module>ssoService</module>
         <module>qualificationService</module>
         <module>generalService</module>
+        <module>klgbaseService</module>
         <!--cloud-->
         <module>registry</module>
         <module>proxy</module>

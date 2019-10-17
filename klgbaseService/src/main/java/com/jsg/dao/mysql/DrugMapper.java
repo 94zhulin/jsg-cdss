@@ -1,0 +1,26 @@
+package com.jsg.dao.mysql;
+
+import com.jsg.entity.Diagnosis;
+import com.jsg.entity.Drug;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+/**
+ * @author jeanson 进生
+ * @date 2019/10/17 10:02
+ */
+@Repository
+public interface DrugMapper {
+    List<Drug> selectByCode(@Param("code") String code);
+
+    int add(Drug drug);
+
+    List<Diagnosis> list(@Param("queryKey") String queryKey, @Param("jxCode") String jxCode, @Param("pcCode") String pcCode, @Param("gyfsCode") String gyfsCode, @Param("yysjCode") String yysjCode);
+
+    int edi(Drug drug);
+
+    int del(@Param("drugId") Integer drugId);
+
+}
