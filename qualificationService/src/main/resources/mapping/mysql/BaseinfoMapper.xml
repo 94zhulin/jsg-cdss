@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.jsg.dao.mysql.StaffBaseinfoMapper">
+<mapper namespace="com.jsg.dao.mysql.BaseinfoMapper">
     <resultMap id="QlfStaffBaseinfoMap" type="com.jsg.entity.Baseinfo">
         <result property="id" column="id"/>
         <result property="fullName" column="full_name"/>
@@ -25,5 +25,29 @@
         <result property="updateTime" column="update_time" javaType="java.util.Date"/>
         <result property="updateUserId" column="update_userId"/>
     </resultMap>
+
+    <select id="list" resultMap="QlfStaffBaseinfoMap">
+        SELECT
+        *
+        FROM
+        qlf_staff_baseinfo
+        WHERE
+        1 = 1
+        <if test="sex != null">
+            sex = #{sex}
+        </if>
+        <if test="ksCode != null">
+            ks_code = #{ksCode}
+        </if>
+        <if test="profTitle != null">
+            prof_title = #{profTitle}
+        </if>
+        <if test="profTitle != null">
+            prof_title = #{profTitle}
+        </if>
+        <if test="zzName != null">
+            ${zzName} = 1
+        </if>
+    </select>
 
 </mapper>

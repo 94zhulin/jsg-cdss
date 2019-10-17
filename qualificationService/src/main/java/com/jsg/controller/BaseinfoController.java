@@ -11,9 +11,10 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
@@ -36,19 +37,22 @@ public class BaseinfoController {
             @ApiImplicitParam(name = "sex", value = "性别", dataType = "int"),
             @ApiImplicitParam(name = "ksCode", value = "科室编码", dataType = "string"),
             @ApiImplicitParam(name = "position", value = "职务", dataType = "int"),
-            @ApiImplicitParam(name = "qlf", value = "资质类型", dataType = "string"),
+            @ApiImplicitParam(name = "zzName", value = "资质名称", dataType = "string"),
     })
     @PostMapping(value = "/list", produces = APPLICATION_JSON_UTF8_VALUE)
-    public ResultBase list(String queryKey, Integer sex, String ksCode, Integer position, String qlf, Pageable pageable) {
-        return baseinfoService.list(queryKey, sex, ksCode, position, qlf, pageable);
+    public ResultBase list(String queryKey, Integer sex, String ksCode, Integer position, String zzName, Pageable pageable) {
+        return baseinfoService.list(queryKey, sex, ksCode, position, zzName, pageable);
     }
 
 
     @ApiOperation(value = "停用/启用人员资质")
-    @ApiImplicitParam(name = "staffId", value = "人员id", dataType = "int")
-    @PostMapping(value = "/edi-status-qlf", produces = APPLICATION_JSON_UTF8_VALUE)
-    public ResultBase ediStatusQlf(String staffId) {
-        return baseinfoService.ediStatusQlf(staffId);
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "staffId", value = "人员id", dataType = "int"),
+            @ApiImplicitParam(name = "status", value = "是否启用", dataType = "int")
+    })
+    @PostMapping(value = "/edi-status-qualifications", produces = APPLICATION_JSON_UTF8_VALUE)
+    public ResultBase ediStatusQualifications(Integer staffId, Integer status) {
+        return baseinfoService.ediStatusQualifications(staffId, status);
     }
 
 
@@ -59,9 +63,14 @@ public class BaseinfoController {
     }
 
     @ApiOperation(value = "停用/启用资质")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "qualificationsId", value = "资质id", dataType = "int"),
+            @ApiImplicitParam(name = "status", value = "是否启用", dataType = "int")
+    })
     @PostMapping(value = "/edi-status-zz", produces = APPLICATION_JSON_UTF8_VALUE)
-    public ResultBase ediStatusZz() {
-        return baseinfoService.ediStatusZz();
+    public ResultBase ediStatusZz(Integer qualificationsId, Integer status) {
+        return baseinfoService.ediStatusZz(qualificationsId, status);
+
     }
 
 
@@ -77,26 +86,6 @@ public class BaseinfoController {
     @PostMapping(value = "/del", produces = APPLICATION_JSON_UTF8_VALUE)
     public ResultBase del(Integer qualificationId) {
         return baseinfoService.del(qualificationId);
-    }
-
-
-    @ApiOperation(value = "添加/修改关联规则")
-    @PostMapping(value = "/add-or-edi-rule/{staffId}/{qualificationId}", produces = APPLICATION_JSON_UTF8_VALUE)
-    public ResultBase addOrEdiRule(@PathVariable("staffId") Integer staffId, @PathVariable("qualificationId") Integer qualificationId, @RequestParam(value = "rules") List<Integer> rules) {
-        return baseinfoService.addOrEdiRule(staffId, qualificationId, rules);
-    }
-
-
-    @ApiOperation(value = "删除已关联规则")
-    @PostMapping(value = "/del-rule/{qualificationId}/{ruleId}", produces = APPLICATION_JSON_UTF8_VALUE)
-    public ResultBase delRule(Integer qualificationId, Integer ruleId) {
-        return baseinfoService.delRule(qualificationId, ruleId);
-    }
-
-    @ApiOperation(value = "清空已关联规则")
-    @PostMapping(value = "/del-rule/all/{qualificationId}", produces = APPLICATION_JSON_UTF8_VALUE)
-    public ResultBase delRuleAll(Integer qualificationId) {
-        return baseinfoService.delRuleAll(qualificationId);
     }
 
 

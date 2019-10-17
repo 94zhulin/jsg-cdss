@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jsg.dao.mysql.QualificationsMapper">
+    <resultMap id="QlfStaffQualificationsMap" type="com.jsg.entity.Qualifications">
+        <result property="id" column="id"/>
+        <result property="staffId" column="staff_id"/>
+        <result property="catalogId" column="catalog_id"/>
+        <result property="zzmcId" column="zzmc_id"/>
+        <result property="admDate" column="adm_date" javaType="java.util.Date"/>
+        <result property="admComment" column="adm_comment"/>
+        <result property="sskmId" column="sskm_id"/>
+        <result property="ssjbId" column="ssjb_id"/>
+        <result property="isKsApproved" column="is_ks_approved"/>
+        <result property="isYyApproved" column="is_yy_approved"/>
+        <result property="status" column="status"/>
+        <result property="createTime" column="create_time" javaType="java.util.Date"/>
+        <result property="createUserId" column="create_userId"/>
+        <result property="updateTime" column="update_time" javaType="java.util.Date"/>
+        <result property="updateUserId" column="update_userId"/>
+    </resultMap>
+
+    <update id="ediStatusQualifications">
+        UPDATE qlf_staff_qualifications
+        <set>
+            <if test="status != null">
+                status = #{status},
+            </if>
+
+        </set>
+        WHERE staff_id = #{staffId}
+    </update>
+
+
+    <insert id="add" parameterType="com.jsg.entity.Qualifications" useGeneratedKeys="true"
+            keyProperty="id">
+ INSERT INTO qlf_staff_qualifications (
+          staff_id,
+catalog_id,
+          zzmc_id,
+          adm_date,
+          adm_comment,
+          sskm_id,
+          ssjb_id,
+		  is_ks_approved,
+		  is_yy_approved,
+		  status,
+		  create_time,
+		  create_userId,
+		  update_time,
+		  update_userId
+        )
+        VALUES (
+          #{staffId},
+          #{catalogId},
+          #{zzmcId},
+          #{admDate},
+          #{admComment},
+          #{sskmId},
+          #{ssjbId},
+          #{isKsApproved},
+          #{isYyApproved},
+          #{status},
+          #{createTime},
+          #{createUserId},
+          #{updateTime},
+		   #{updateUserId}
+        )
+    </insert>
+
+
+    <update id="edi" parameterType="com.jsg.entity.Qualifications">
+        UPDATE qlf_staff_qualifications
+        <set>
+            <if test="staffId != null">
+                staff_id = #{staffId},
+            </if>
+            <if test="catalogId != null">
+                catalog_id = #{catalogId},
+            </if>
+            <if test="zzmcId != null">
+                zzmc_id = #{zzmcId},
+            </if>
+            <if test="admDate != null">
+                adm_date = #{admDate},
+            </if>
+            <if test="admComment != null">
+                adm_comment = #{admComment},
+            </if>
+            <if test="sskmId != null">
+                sskm_id = #{sskmId},
+            </if>
+            <if test="ssjbId != null">
+                ssjb_id = #{ssjbId},
+            </if>
+            <if test="isKsApproved != null">
+                is_ks_approved = #{isKsApproved},
+            </if>
+            <if test="isYyApproved != null">
+                is_yy_approved = #{isYyApproved},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="createUserId != null">
+                create_userId = #{createUserId},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <if test="updateUserId != null">
+                update_userId = #{updateUserId},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="del" parameterType="int">
+        delete from qlf_staff_qualifications
+        where id = #{qualificationId}
+    </delete>
+    <resultMap id="listByassociationListQualificationMap" type="com.jsg.entity.QualificationsObj">
+        <id column="zzName" property="zzName"/>
+        <result column="zzCode" property="zzCode"/>
+        <!-- property: 指的是集合属性的值, ofType：指的是集合中元素的类型 -->
+        <collection property="gzList" ofType="com.jsg.entity.RuleObj">
+            <result column="gzName" property="gzName"/>
+            <result column="gzCode" property="gzCode"/>
+        </collection>
+    </resultMap>
+    <select id="listByassociationListQualification" resultMap="listByassociationListQualificationMap">
+        SELECT
+        t5.`name` AS 'zzName',
+        t5.`code` AS 'zzCode',
+        t4.`name` AS 'gzName',
+        t4.`code` AS 'gzCode'
+        FROM
+        qlf_staff_qualifications t1
+        LEFT JOIN rule_conditions_object t2 ON t1.zzmc_id = t2.`value`
+        LEFT JOIN rule_base t3 ON t2.rule_id = t3.id
+        LEFT JOIN sys_dictionary t4 ON t3.true_project_id = t4.id
+        LEFT JOIN sys_dictionary t5 ON t1.zzmc_id = t5.id
+        WHERE
+        t1.staff_id = #{staffId}
+        <if test="qualificationId != null ">
+            and t1.qlf_staff_qualifications = #{qualificationId}
+        </if>
+        <if test="qualificationId != null ">
+            and t1.qlf_staff_qualifications = #{qualificationId}
+        </if>
+        <if test="queryKey != null">
+            AND concat(t5.`name`, t4.`name`) like ('%' #{queryKey} '%')
+        </if>
+    </select>
+
+</mapper>
