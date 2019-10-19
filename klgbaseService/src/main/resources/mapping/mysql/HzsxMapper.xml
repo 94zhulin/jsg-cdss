@@ -6,6 +6,8 @@
         <result property="catalogId" column="catalog_id"/>
         <result property="name" column="name"/>
         <result property="code" column="code"/>
+        <result property="valueType" column="value_type"/>
+        <result property="status" column="status"/>
         <result property="createTime" column="create_time" javaType="java.util.Date"/>
         <result property="updateTime" column="update_time" javaType="java.util.Date"/>
         <result property="createUserId" column="create_userId"/>
@@ -24,6 +26,8 @@ insert into  klgbase_hzsx
 catalog_id,
 name,
 code,
+value_type,
+status,
 create_time,
 update_time,
 create_userId,
@@ -33,6 +37,8 @@ values (
 #{catalogId},
 #{name},
 #{code},
+#{valueType},
+#{status},
 #{createTime},
 #{updateTime},
 #{createUserId},
@@ -53,6 +59,13 @@ values (
             <if test="code != null">
                 code = #{code},
             </if>
+            <if test="valueType != null">
+                value_type = #{valueType},
+            </if>
+
+            <if test="status != null">
+                status = #{status},
+            </if>
             <if test="createTime != null">
                 create_time = #{createTime},
             </if>
@@ -69,5 +82,21 @@ values (
         where id = #{id,jdbcType=INTEGER}
     </update>
 
+
+    <select id="selectByCode" parameterType="string" resultMap="KlgbaseHzsxMap">
+    select  * from  klgbase_hzsx t1 where  t1.code=#{code}
+    </select>
+
+
+    <select id="list" resultMap="KlgbaseHzsxMap">
+        select * from klgbase_hzsx t1 where t1.catalog_id=#{catalogId}
+        <if test="queryKey != null ">
+            AND concat(name,code) like ('%' #{queryKey} '%')
+        </if>
+
+        <if test="valueType != null ">
+            AND t1.value_type= #{valueType}
+        </if>
+    </select>
 
 </mapper>

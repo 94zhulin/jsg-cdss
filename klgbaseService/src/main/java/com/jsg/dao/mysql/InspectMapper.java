@@ -15,11 +15,11 @@ import java.util.List;
 public interface InspectMapper {
     int del(@Param("inspectId") Integer inspectId);
 
-    List<Inspect> selectByNameCode(Inspect inspect);
+    List<Inspect> selectByCode(Inspect inspect);
 
     int edi(Inspect inspect);
 
-    List<Diagnosis> list(@Param("queryKey") String queryKey, @Param("bw") String bw, @Param("jcTypeCode") String jcTypeCode, @Param("yxFlagCode") String yxFlagCode);
+    List<Diagnosis> list(@Param("catalogId") Integer catalogId, @Param("queryKey") String queryKey, @Param("bw") String bw, @Param("jcTypeCode") String jcTypeCode, @Param("yxFlagCode") String yxFlagCode);
 
     int add(Inspect inspect);
 

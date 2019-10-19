@@ -23,16 +23,17 @@
     <insert id="add" parameterType="com.jsg.entity.Diagnosis" useGeneratedKeys="true" keyProperty="id">
         insert into klgbase_diagnosis (id, catalog_id, name,
         icd10_code, type, zzd_flag_code,
+        status,
         create_time, update_time,
         create_userId, update_userId
         )
-        values (#{id},#{catalogId},#{name},#{icd10Code},#{type},#{zzdFlagCode},#{createTime},
+        values (#{id},#{catalogId},#{name},#{icd10Code},#{type},#{zzdFlagCode},#{status},#{createTime},
 		#{updateTime},#{createUserId},#{updateUserId}
         )
     </insert>
 
 
-    <update id="edi" parameterType="com.jsg.entity.Hospital">
+    <update id="edi" parameterType="com.jsg.entity.Diagnosis">
         update klgbase_diagnosis
         <set>
             <if test="catalogId != null">
@@ -49,6 +50,9 @@
             </if>
             <if test="zzdFlagCode != null">
                 zzd_flag_code = #{zzdFlagCode},
+            </if>
+            <if test="status != null">
+                status = #{status},
             </if>
             <if test="createTime != null">
                 create_time = #{createTime},
@@ -67,7 +71,25 @@
     </update>
 
 
-    <select id="find" parameterType="int" resultMap="SysHospitalMap">
-        select  * from sys_hospital  where  id = #{hospitalId}
+    <select id="selectByIcd10Code" parameterType="string" resultMap="KlgbaseDiagnosisMap">
+        select  * from klgbase_diagnosis  where  icd10_code = #{icd10Code}
+    </select>
+
+
+    <select id="list" resultMap="KlgbaseDiagnosisMap">
+        SELECT
+        *
+        FROM
+        klgbase_diagnosis t1
+        WHERE t1.catalog_id = #{catalogId}
+        <if test="queryKey != null ">
+            AND concat(name,icd10_code) like ('%' #{queryKey} '%')
+        </if>
+        <if test="type != null ">
+            and t1.type = #{type}
+        </if>
+        <if test="zzdFlagCode != null ">
+            and t1.zzd_flag_code = #{zzdFlagCode}
+        </if>
     </select>
 </mapper>

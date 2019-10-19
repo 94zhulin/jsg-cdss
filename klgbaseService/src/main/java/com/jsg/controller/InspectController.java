@@ -39,14 +39,15 @@ public class InspectController {
 
     @ApiOperation(value = "检索列表")
     @ApiImplicitParams({
+            @ApiImplicitParam(name = "catalogId", value = "分类Id", dataType = "int"),
             @ApiImplicitParam(name = "queryKey", value = "编码/名称", dataType = "string"),
             @ApiImplicitParam(name = "bw", value = "部位名称/编码", dataType = "string"),
             @ApiImplicitParam(name = "jcTypeCode", value = "检查类型：来自字典定义", dataType = "string"),
             @ApiImplicitParam(name = "yxFlagCode", value = "阳性标识：来自字典定义（多个值用逗号分隔）", dataType = "string")
     })
     @PostMapping(value = "/list", produces = APPLICATION_JSON_UTF8_VALUE)
-    public ResultBase list(String queryKey, String bw, String jcTypeCode, String yxFlagCode, Pageable pageable) {
-        return inspectService.list(queryKey, bw, jcTypeCode, yxFlagCode, pageable);
+    public ResultBase list(Integer catalogId, String queryKey, String bw, String jcTypeCode, String yxFlagCode, Pageable pageable) {
+        return inspectService.list(catalogId, queryKey, bw, jcTypeCode, yxFlagCode, pageable);
     }
 
     @ApiOperation(value = "编辑检查")

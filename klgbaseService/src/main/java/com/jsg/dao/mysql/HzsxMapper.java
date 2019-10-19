@@ -19,7 +19,7 @@ public interface HzsxMapper {
 
     int edi(Hzsx hzsx);
 
-    List<Diagnosis> list(@Param("queryKey") String queryKey, @Param("valueType") Integer valueType);
+    List<Hzsx> list(@Param("catalogId") Integer catalogId, @Param("queryKey") String queryKey, @Param("valueType") Integer valueType);
 
     int add(Hzsx hzsx);
 }

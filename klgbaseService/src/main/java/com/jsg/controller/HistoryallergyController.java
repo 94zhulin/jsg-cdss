@@ -40,11 +40,13 @@ public class HistoryallergyController {
 
     @ApiOperation(value = "检索列表")
     @ApiImplicitParams({
+            @ApiImplicitParam(name = "catalogId", value = "分类Id", dataType = "int"),
             @ApiImplicitParam(name = "queryKey", value = "编码/名称", dataType = "string"),
+
     })
     @PostMapping(value = "/list", produces = APPLICATION_JSON_UTF8_VALUE)
-    public ResultBase list(String queryKey, Pageable pageable) {
-        return historyallergyService.list(queryKey, pageable);
+    public ResultBase list(Integer catalogId, String queryKey, Pageable pageable) {
+        return historyallergyService.list(catalogId, queryKey, pageable);
     }
 
     @ApiOperation(value = "编辑过敏史")
@@ -59,7 +61,7 @@ public class HistoryallergyController {
             @ApiImplicitParam(name = "catalogId", value = "分类id", dataType = "int")
     })
     @PostMapping(value = "/del", produces = APPLICATION_JSON_UTF8_VALUE)
-    public ResultBase del(Integer diagnosisId, Integer catalogId) {
-        return historyallergyService.del(diagnosisId, catalogId);
+    public ResultBase del(Integer historyallergyId, Integer catalogId) {
+        return historyallergyService.del(historyallergyId, catalogId);
     }
 }

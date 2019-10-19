@@ -42,8 +42,8 @@ public class DrugServiceImpl implements DrugService {
 
     @Override
     public ResultBase add(Drug drug) {
-        List<Drug> diagnosisList = drugMapper.selectByCode(drug.getCode());
-        ResultBase resultBase = ResultUtil.success(null, diagnosisList);
+        List<Drug> diagnosisList = drugMapper.selectDrugs(drug);
+        ResultBase resultBase = ResultUtil.success(null, drug);
         if (diagnosisList.size() > 0) {
             resultBase.setStatus(failure);
             resultBase.setMsg("编码重复!");
@@ -57,20 +57,20 @@ public class DrugServiceImpl implements DrugService {
     }
 
     @Override
-    public ResultBase list(String queryKey, String jxCode, String pcCode, String gyfsCode, String yysjCode, Pageable pageable) {
+    public ResultBase list(Integer catalogId, String queryKey, String jxCode, String pcCode, String gyfsCode, String yysjCode, Pageable pageable) {
         PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
-        List<Diagnosis> list = drugMapper.list(queryKey, jxCode, pcCode, gyfsCode, yysjCode);
-        PageInfo<Diagnosis> pageInfo = new PageInfo<>(list);
+        List<Drug> list = drugMapper.list(catalogId,queryKey, jxCode, pcCode, gyfsCode, yysjCode);
+        PageInfo<Drug> pageInfo = new PageInfo<>(list);
         return ResultUtil.success(null, pageInfo);
     }
 
     @Override
     public ResultBase edi(Drug drug) {
-        List<Drug> drugList = drugMapper.selectByCode(drug.getCode());
-        ResultBase resultBase = ResultUtil.success(null, drugList);
-        if (drugList.size() > 1) {
+        List<Drug> diagnosisList = drugMapper.selectDrugs(drug);
+        ResultBase resultBase = ResultUtil.success(null, drug);
+        if (diagnosisList.size() > 1) {
             resultBase.setStatus(failure);
-            resultBase.setMsg("编码重复！");
+            resultBase.setMsg("医保标准编码或院内编码重复！");
         } else {
             int opFlag = drugMapper.edi(drug);
         }

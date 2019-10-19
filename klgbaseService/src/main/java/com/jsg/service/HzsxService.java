@@ -13,7 +13,7 @@ public interface HzsxService {
 
     ResultBase edi(Hzsx hzsx);
 
-    ResultBase list(String queryKey, Integer valueType, Pageable pageable);
+    ResultBase list(Integer catalogId, String queryKey, Integer valueType, Pageable pageable);
 
     ResultBase add(Hzsx hzsx);
 }

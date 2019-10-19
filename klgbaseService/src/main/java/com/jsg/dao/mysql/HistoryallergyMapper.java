@@ -16,9 +16,9 @@ public interface HistoryallergyMapper {
 
     int add(Historyallergy historyallergy);
 
-    List<Historyallergy> list(@Param("queryKey") String queryKey);
+    List<Historyallergy> list(@Param("catalogId") Integer catalogId, @Param("queryKey") String queryKey);
 
     int edi(Historyallergy historyallergy);
 
-    int del(@Param("diagnosisId") Integer diagnosisId);
+    int del(@Param("historyallergyId") Integer historyallergyId);
 }

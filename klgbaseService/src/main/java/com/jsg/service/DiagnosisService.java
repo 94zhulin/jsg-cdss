@@ -15,5 +15,5 @@ public interface DiagnosisService {
 
     ResultBase add(Diagnosis diagnosis);
 
-    ResultBase list(String queryKey, Integer type, Integer zzd_flag_code, Pageable pageable);
+    ResultBase list(Integer catalogId, String queryKey, Integer type, String zzd_flag_code, Pageable pageable);
 }

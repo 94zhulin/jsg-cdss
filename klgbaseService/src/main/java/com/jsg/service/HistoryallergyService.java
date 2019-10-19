@@ -11,7 +11,7 @@ import com.jsg.entity.Pageable;
 public interface HistoryallergyService {
     ResultBase add(Historyallergy historyallergy);
 
-    ResultBase list(String queryKey, Pageable pageable);
+    ResultBase list(Integer catalogId, String queryKey, Pageable pageable);
 
     ResultBase edi(Historyallergy historyallergy);
 

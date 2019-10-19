@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author jeanson 进生
@@ -37,4 +38,6 @@ public class Catalog {
     private Integer createUserId;
     @ApiModelProperty(position = 12, value = "    修改人", required = true)
     private Integer updateUserId;
+    @ApiModelProperty(position = 13, value = "    子目录", readOnly = true)
+    private List<Catalog> children;
 }

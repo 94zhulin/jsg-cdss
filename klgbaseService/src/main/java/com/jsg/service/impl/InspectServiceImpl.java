@@ -48,8 +48,8 @@ public class InspectServiceImpl implements InspectService {
 
     @Override
     public ResultBase edi(Inspect inspect) {
-        List<Inspect> inspectList = inspectMapper.selectByNameCode(inspect);
-        ResultBase resultBase = ResultUtil.success(null, inspectList);
+        List<Inspect> inspectList = inspectMapper.selectByCode(inspect);
+        ResultBase resultBase = ResultUtil.success(null, inspect);
         if (inspectList.size() > 1) {
             resultBase.setStatus(failure);
             resultBase.setMsg("编码或项目名重复！");
@@ -60,16 +60,16 @@ public class InspectServiceImpl implements InspectService {
     }
 
     @Override
-    public ResultBase list(String queryKey, String bw, String jcTypeCode, String yxFlagCode, Pageable pageable) {
+    public ResultBase list(Integer catalogId, String queryKey, String bw, String jcTypeCode, String yxFlagCode, Pageable pageable) {
         PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
-        List<Diagnosis> list = inspectMapper.list(queryKey, bw, jcTypeCode, yxFlagCode);
+        List<Diagnosis> list = inspectMapper.list(catalogId, queryKey, bw, jcTypeCode, yxFlagCode);
         PageInfo<Diagnosis> pageInfo = new PageInfo<>(list);
         return ResultUtil.success(null, pageInfo);
     }
 
     @Override
     public ResultBase add(Inspect inspect) {
-        List<Inspect> inspectList = inspectMapper.selectByNameCode(inspect);
+        List<Inspect> inspectList = inspectMapper.selectByCode(inspect);
         ResultBase resultBase = ResultUtil.success(null, inspect);
         if (inspectList.size() > 0) {
             resultBase.setStatus(failure);

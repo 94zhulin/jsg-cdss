@@ -20,7 +20,7 @@
 
     <delete id="del" parameterType="java.lang.Integer">
         delete from klgbase_inspect
-        where id = #{hospitalId,jdbcType=INTEGER}
+        where id = #{inspectId}
     </delete>
 
 
@@ -36,6 +36,7 @@ jc_type_code,
 yx_flag_code,
 syz,
 jjz,
+status,
 create_time,
 update_time,
 create_userId,
@@ -53,6 +54,7 @@ update_userId
  #{yxFlagCode},
  #{syz},
  #{jjz},
+ #{status},
  #{createTime},
  #{updateTime},
  #{createUserId},
@@ -90,6 +92,9 @@ update_userId
             <if test="jjz != null">
                 jjz = #{jjz},
             </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
             <if test="createTime != null">
                 create_time = #{createTime},
             </if>
@@ -109,7 +114,26 @@ update_userId
     </update>
 
 
-    <select id="find" parameterType="int" resultMap="SysHospitalMap">
-        select  * from sys_hospital  where  id = #{hospitalId}
+    <select id="selectByCode" parameterType="com.jsg.entity.Inspect" resultMap="KlgbaseInspectMap">
+        select  * from  klgbase_inspect t1 where  t1.xm_code = #{xmCode} or t1.bw_code = #{bwCode}
+    </select>
+
+    <select id="list" resultMap="KlgbaseInspectMap">
+        select * from klgbase_inspect t1 where t1.catalog_id = #{catalogId}
+        <if test="queryKey != null ">
+            AND concat(xm_code,xm_name) like ('%' #{queryKey} '%')
+        </if>
+
+        <if test="bw != null ">
+            AND concat(bw_code,bw_name) like ('%' #{bw} '%')
+        </if>
+
+        <if test="jcTypeCode != null ">
+            AND t1.jc_type_code =#{jcTypeCode}
+        </if>
+
+        <if test="yxFlagCode != null ">
+            AND t1.yx_flag_code =#{yxFlagCode}
+        </if>
     </select>
 </mapper>

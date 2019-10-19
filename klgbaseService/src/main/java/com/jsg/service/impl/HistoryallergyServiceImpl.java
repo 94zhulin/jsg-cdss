@@ -41,7 +41,7 @@ public class HistoryallergyServiceImpl implements HistoryallergyService {
     @Override
     public ResultBase add(Historyallergy historyallergy) {
         List<Historyallergy> historyallergyList = historyallergyMapper.selectByCode(historyallergy.getCode());
-        ResultBase resultBase = ResultUtil.success(null, historyallergyList);
+        ResultBase resultBase = ResultUtil.success(null, historyallergy);
         if (historyallergyList.size() > 0) {
             resultBase.setStatus(failure);
             resultBase.setMsg("编码重复!");
@@ -55,9 +55,9 @@ public class HistoryallergyServiceImpl implements HistoryallergyService {
     }
 
     @Override
-    public ResultBase list(String queryKey, Pageable pageable) {
+    public ResultBase list(Integer catalogId, String queryKey, Pageable pageable) {
         PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
-        List<Historyallergy> list = historyallergyMapper.list(queryKey);
+        List<Historyallergy> list = historyallergyMapper.list(catalogId, queryKey);
         PageInfo<Historyallergy> pageInfo = new PageInfo<>(list);
         return ResultUtil.success(null, pageInfo);
     }
@@ -65,7 +65,7 @@ public class HistoryallergyServiceImpl implements HistoryallergyService {
     @Override
     public ResultBase edi(Historyallergy historyallergy) {
         List<Historyallergy> historyallergyList = historyallergyMapper.selectByCode(historyallergy.getCode());
-        ResultBase resultBase = ResultUtil.success(null, historyallergyList);
+        ResultBase resultBase = ResultUtil.success(null, historyallergy);
         if (historyallergyList.size() > 1) {
             resultBase.setStatus(failure);
             resultBase.setMsg("编码重复!");
@@ -79,8 +79,8 @@ public class HistoryallergyServiceImpl implements HistoryallergyService {
     }
 
     @Override
-    public ResultBase del(Integer diagnosisId, Integer catalogId) {
-        int del = historyallergyMapper.del(diagnosisId);
+    public ResultBase del(Integer historyallergyId, Integer catalogId) {
+        int del = historyallergyMapper.del(historyallergyId);
         if (del > 0) {
             knowledgeService.itemNumSub(catalogId);
         }

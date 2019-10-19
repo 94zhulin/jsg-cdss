@@ -11,7 +11,7 @@ import com.jsg.entity.Pageable;
 public interface DrugService {
     ResultBase add(Drug drug);
 
-    ResultBase list(String queryKey, String jxCode, String pcCode, String gyfsCode, String yysjCode, Pageable pageable);
+    ResultBase list(Integer catalogId, String queryKey, String jxCode, String pcCode, String gyfsCode, String yysjCode, Pageable pageable);
 
     ResultBase edi(Drug drug);
 

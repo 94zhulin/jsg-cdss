@@ -5,7 +5,17 @@
         <result property="id" column="id"/>
         <result property="catalogId" column="catalog_id"/>
         <result property="name" column="name"/>
-        <result property="code" column="code"/>
+        <result property="codeGb" column="code_gb"/>
+        <result property="codeYy" column="code_yy"/>
+        <result property="zlCode" column="zl_code"/>
+        <result property="fwCode" column="fw_code"/>
+        <result property="tclbCode" column="tclb_code"/>
+        <result property="kssCode" column="kss_code"/>
+        <result property="tsywCode" column="tsyw_code"/>
+        <result property="kjywCode" column="kjyw_code"/>
+        <result property="xzyyCode" column="xzyy_code"/>
+        <result property="zfbl" column="zfbl"/>
+        <result property="jslyCode" column="jsly_code"/>
         <result property="jxCode" column="jx_code"/>
         <result property="pcCode" column="pc_code"/>
         <result property="gyfsCode" column="gyfs_code"/>
@@ -13,6 +23,16 @@
         <result property="jldwCode" column="jldw_code"/>
         <result property="yysjCode" column="yysj_code"/>
         <result property="sysm" column="sysm"/>
+        <result property="isGw" column="is_gw"/>
+        <result property="isMz" column="is_mz"/>
+        <result property="isDx" column="is_dx"/>
+        <result property="isRl" column="is_rl"/>
+        <result property="isZdjkGj" column="is_zdjk_gj"/>
+        <result property="isZdjkSf" column="is_zdjk_sf"/>
+        <result property="isZdjkYy" column="is_zdjk_yy"/>
+        <result property="isCfq" column="is_cfq"/>
+        <result property="isJzcf" column="is_jzcf"/>
+        <result property="status" column="status"/>
         <result property="createTime" column="create_time" javaType="java.util.Date"/>
         <result property="updateTime" column="update_time" javaType="java.util.Date"/>
         <result property="createUserId" column="create_userId"/>
@@ -21,24 +41,44 @@
 
     <delete id="del" parameterType="java.lang.Integer">
         delete from klgbase_drug
-        where id = #{hospitalId,jdbcType=INTEGER}
+        where id = #{drugId}
     </delete>
 
 
-    <insert id="add" parameterType="com.jsg.entity.Hospital" useGeneratedKeys="true" keyProperty="id">
+    <insert id="add" parameterType="com.jsg.entity.Drug" useGeneratedKeys="true" keyProperty="id">
         insert into
 		klgbase_drug (
 		id,
 		catalog_id,
 		name,
-        code,
+		code_gb,
+		code_yy,
+        zl_code,
+		fw_code,
+        tclb_code,
+		kss_code,
+		tsyw_code,
+		kjyw_code,
+		xzyy_code,
+		zfbl,
+		jsly_code,
 		jx_code,
 		pc_code,
-        gyfs_code,
+		gyfs_code,
 		dcjl,
-        jldw_code,
+		jldw_code,
 		yysj_code,
 		sysm,
+        is_gw,
+        is_mz,
+        is_dx,
+        is_rl,
+        is_zdjk_gj,
+        is_zdjk_sf,
+        is_zdjk_yy,
+        is_cfq,
+        is_jzcf,
+        status,
 		create_time,
 		update_time,
 		create_userId,
@@ -48,7 +88,17 @@
 			#{id},
 			#{catalogId},
 			#{name},
-			#{code},
+			#{codeGb},
+			#{codeYy},
+			#{zlCode},
+			#{fwCode},
+			#{tclbCode},
+			#{kssCode},
+			#{tsywCode},
+			#{kjywCode},
+			#{xzyyCode},
+			#{zfbl},
+			#{jslyCode},
 			#{jxCode},
 			#{pcCode},
 			#{gyfsCode},
@@ -56,6 +106,16 @@
 			#{jldwCode},
 			#{yysjCode},
 			#{sysm},
+             #{isGw},
+             #{isMz},
+        #{isDx},
+        #{isRl},
+        #{isZdjkGj},
+        #{isZdjkSf},
+        #{isZdjkYy},
+         #{isCfq},
+        #{isJzcf},
+        #{status},
 			#{createTime},
 			#{updateTime},
 			#{createUserId},
@@ -64,7 +124,7 @@
     </insert>
 
 
-    <update id="edi" parameterType="com.jsg.entity.Hospital">
+    <update id="edi" parameterType="com.jsg.entity.Drug">
         update klgbase_drug
         <set>
             <if test="catalogId != null">
@@ -73,8 +133,38 @@
             <if test="name != null">
                 name = #{name },
             </if>
-            <if test="code != null">
-                code = #{code },
+            <if test="codeGb != null">
+                code_gb = #{codeGb },
+            </if>
+            <if test="codeYy != null">
+                code_yy = #{codeYy },
+            </if>
+            <if test="zlCode != null">
+                zl_code = #{zlCode },
+            </if>
+            <if test="fwCode != null">
+                fw_code = #{fwCode },
+            </if>
+            <if test="tclbCode != null">
+                tclb_code = #{tclbCode },
+            </if>
+            <if test="kssCode != null">
+                kss_code = #{kssCode },
+            </if>
+            <if test="tsywCode != null">
+                tsyw_code = #{tsywCode },
+            </if>
+            <if test="kjywCode != null">
+                kjyw_code = #{kjywCode },
+            </if>
+            <if test="xzyyCode != null">
+                xzyy_code = #{xzyyCode },
+            </if>
+            <if test="zfbl != null">
+                zfbl = #{zfbl },
+            </if>
+            <if test="jslyCode != null">
+                jsly_code = #{jslyCode },
             </if>
             <if test="jxCode != null">
                 jx_code = #{jxCode },
@@ -97,6 +187,37 @@
             <if test="sysm != null">
                 sysm = #{sysm },
             </if>
+
+            <if test="isGw != null">
+                is_gw = #{isGw },
+            </if>
+            <if test="isMz != null">
+                is_mz = #{isMz },
+            </if>
+            <if test="isDx != null">
+                is_dx = #{isDx },
+            </if>
+            <if test="isRl != null">
+                is_rl = #{isRl },
+            </if>
+            <if test="isZdjkGj != null">
+                is_zdjk_gj = #{isZdjkGj },
+            </if>
+            <if test="isZdjkSf != null">
+                is_zdjk_sf = #{isZdjkSf },
+            </if>
+            <if test="isZdjkYy != null">
+                is_zdjk_yy = #{isZdjkYy },
+            </if>
+            <if test="isCfq != null">
+                is_cfq = #{isCfq },
+            </if>
+            <if test="isJzcf != null">
+                is_jzcf = #{isJzcf },
+            </if>
+            <if test="status != null">
+                status = #{status },
+            </if>
             <if test="createTime != null">
                 create_time = #{createTime },
             </if>
@@ -109,9 +230,32 @@
             <if test="updateUserId != null">
                 update_userId = #{updateUserId },
             </if>
+
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
 
+    <select id="selectDrugs" parameterType="com.jsg.entity.Drug" resultMap="KlgbaseDrugMap">
+        select  * from  klgbase_drug t1 where  t1.code_gb = #{codeGb} or t1. code_yy = #{codeYy}
+    </select>
 
+
+    <select id="list" resultMap="KlgbaseDrugMap">
+        select * from klgbase_drug t1 WHERE t1.catalog_id =#{catalogId}
+        <if test="queryKey != null">
+            AND concat(name,code_gb,code_yy) like ('%' #{queryKey} '%')
+        </if>
+        <if test="jxCode !=null">
+            AND t1.jx_code = #{jxCode}
+        </if>
+        <if test="pcCode !=null">
+            AND t1.pc_code = #{pcCode}
+        </if>
+        <if test="gyfsCode !=null">
+            AND t1.gyfs_code = #{gyfsCode}
+        </if>
+        <if test="yysjCode !=null">
+            AND t1.yysj_code = #{yysjCode}
+        </if>
+    </select>
 </mapper>

@@ -10,6 +10,7 @@ import com.jsg.entity.Catalog;
 import com.jsg.entity.Pageable;
 import com.jsg.service.KnowledgeService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,9 +51,16 @@ public class KnowledgeController {
 
     @ApiOperation(value = "全部分类列表")
     @PostMapping(value = "/list/class", produces = APPLICATION_JSON_UTF8_VALUE)
-    public ResultBase list(Pageable pageable) {
-        return knowledgeService.classList(pageable);
+    public ResultBase list(String parentId, Pageable pageable) {
+        return knowledgeService.classList(parentId, pageable);
     }
 
+
+    @ApiOperation(value = "删除分类")
+    @ApiImplicitParam(name = "catalogId", value = "分类Id", dataType = "int")
+    @PostMapping(value = "/del", produces = APPLICATION_JSON_UTF8_VALUE)
+    public ResultBase addClass(Integer catalogId) {
+        return knowledgeService.del(catalogId);
+    }
 
 }

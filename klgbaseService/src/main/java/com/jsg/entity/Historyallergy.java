@@ -26,9 +26,9 @@ public class Historyallergy {
     @ApiModelProperty(position = 6, value = "状态：1-启用；0-停用", required = true)
     private Integer status;
     @ApiModelProperty(position = 7, value = "创建时间", readOnly = true)
-    private Date createTime;
+    private Date createTime = new Date();
     @ApiModelProperty(position = 8, value = "修改时间", readOnly = true)
-    private Date updateTime;
+    private Date updateTime = new Date();
     @ApiModelProperty(position = 9, value = "创建人", required = true)
     private Integer createUserId;
     @ApiModelProperty(position = 10, value = "修改人", required = true)

@@ -13,7 +13,7 @@ public interface InspectService {
 
     ResultBase edi(Inspect inspect);
 
-    ResultBase list(String queryKey, String bw, String jcTypeCode, String yxFlagCode, Pageable pageable);
+    ResultBase list(Integer catalogId, String queryKey, String bw, String jcTypeCode, String yxFlagCode, Pageable pageable);
 
     ResultBase add(Inspect inspect);
 

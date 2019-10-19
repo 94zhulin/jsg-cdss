@@ -50,7 +50,7 @@ public class DiagnosisServiceImpl implements DiagnosisService {
     @Override
     public ResultBase edi(Diagnosis diagnosis) {
         List<Diagnosis> diagnosisList = diagnosisMapper.selectByIcd10Code(diagnosis.getIcd10Code());
-        ResultBase resultBase = ResultUtil.success(null, diagnosisList);
+        ResultBase resultBase = ResultUtil.success(null, diagnosis);
         if (diagnosisList.size() > 1) {
             resultBase.setStatus(failure);
             resultBase.setMsg("ICD10编码重复！");
@@ -63,7 +63,7 @@ public class DiagnosisServiceImpl implements DiagnosisService {
     @Override
     public ResultBase add(Diagnosis diagnosis) {
         List<Diagnosis> diagnosisList = diagnosisMapper.selectByIcd10Code(diagnosis.getIcd10Code());
-        ResultBase resultBase = ResultUtil.success(null, diagnosisList);
+        ResultBase resultBase = ResultUtil.success(null, diagnosis);
         if (diagnosisList.size() > 0) {
             resultBase.setStatus(failure);
             resultBase.setMsg("ICD10编码重复！");
@@ -77,9 +77,9 @@ public class DiagnosisServiceImpl implements DiagnosisService {
     }
 
     @Override
-    public ResultBase list(String queryKey, Integer type, Integer zzdFlagCode, Pageable pageable) {
+    public ResultBase list(Integer catalogId, String queryKey, Integer type, String zzdFlagCode, Pageable pageable) {
         PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
-        List<Diagnosis> list = diagnosisMapper.list(queryKey, type, zzdFlagCode);
+        List<Diagnosis> list = diagnosisMapper.list(catalogId, queryKey, type, zzdFlagCode);
         PageInfo<Diagnosis> pageInfo = new PageInfo<>(list);
         return ResultUtil.success(null, pageInfo);
     }

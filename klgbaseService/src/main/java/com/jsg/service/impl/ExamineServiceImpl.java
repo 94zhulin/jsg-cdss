@@ -40,13 +40,13 @@ public class ExamineServiceImpl implements ExamineService {
     @Override
     public ResultBase add(Examine examine) {
         List<Examine> examineList = examineMapper.selectByCode(examine.getXmCode());
-        ResultBase resultBase = ResultUtil.success(null, examineList);
+        ResultBase resultBase = ResultUtil.success(null, examine);
         if (examineList.size() > 0) {
             resultBase.setStatus(failure);
             resultBase.setMsg("编码重复!");
         } else {
             int opFlag = examineMapper.add(examine);
-            if (examine.getId() != null) {
+            if (opFlag > 0) {
                 knowledgeService.itemNumAdd(examine.getCatalogId());
             }
         }
@@ -54,9 +54,9 @@ public class ExamineServiceImpl implements ExamineService {
     }
 
     @Override
-    public ResultBase list(String queryKey, String xmlxCode, String jyTypeCode, String yblxCode, Pageable pageable) {
+    public ResultBase list(Integer catalogId, String queryKey, String xmlxCode, String jyTypeCode, String yblxCode, Pageable pageable) {
         PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
-        List<Examine> list = examineMapper.list(queryKey, xmlxCode, jyTypeCode, yblxCode);
+        List<Examine> list = examineMapper.list(catalogId, queryKey, xmlxCode, jyTypeCode, yblxCode);
         PageInfo<Examine> pageInfo = new PageInfo<>(list);
         return ResultUtil.success(null, pageInfo);
     }
@@ -64,7 +64,7 @@ public class ExamineServiceImpl implements ExamineService {
     @Override
     public ResultBase edi(Examine examine) {
         List<Examine> examineList = examineMapper.selectByCode(examine.getXmCode());
-        ResultBase resultBase = ResultUtil.success(null, examineList);
+        ResultBase resultBase = ResultUtil.success(null, examine);
         if (examineList.size() > 1) {
             resultBase.setStatus(failure);
             resultBase.setMsg("编码重复!");

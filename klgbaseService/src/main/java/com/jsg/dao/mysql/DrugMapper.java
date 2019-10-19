@@ -13,14 +13,13 @@ import java.util.List;
  */
 @Repository
 public interface DrugMapper {
-    List<Drug> selectByCode(@Param("code") String code);
-
     int add(Drug drug);
 
-    List<Diagnosis> list(@Param("queryKey") String queryKey, @Param("jxCode") String jxCode, @Param("pcCode") String pcCode, @Param("gyfsCode") String gyfsCode, @Param("yysjCode") String yysjCode);
+    List<Drug> list(@Param("catalogId") Integer catalogId,@Param("queryKey") String queryKey, @Param("jxCode") String jxCode, @Param("pcCode") String pcCode, @Param("gyfsCode") String gyfsCode, @Param("yysjCode") String yysjCode);
 
     int edi(Drug drug);
 
     int del(@Param("drugId") Integer drugId);
 
+    List<Drug> selectDrugs(Drug drug);
 }

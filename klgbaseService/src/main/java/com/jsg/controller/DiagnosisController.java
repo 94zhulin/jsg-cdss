@@ -45,13 +45,14 @@ public class DiagnosisController {
 
     @ApiOperation(value = "检索列表", notes = "可检索的模块列表接口")
     @ApiImplicitParams({
+            @ApiImplicitParam(name = "catalogId", value = "分类Id", dataType = "int"),
             @ApiImplicitParam(name = "queryKey", value = "编码/名称", dataType = "string"),
             @ApiImplicitParam(name = "type", value = "类别：来自字典定义", dataType = "int"),
-            @ApiImplicitParam(name = "zzd_flag_code", value = "主诊断标志：来自字典定义", dataType = "int"),
+            @ApiImplicitParam(name = "zzd_flag_code", value = "主诊断标志：来自字典定义", dataType = "string"),
     })
     @PostMapping(value = "/list", produces = APPLICATION_JSON_UTF8_VALUE)
-    public ResultBase list(String queryKey, Integer type, Integer zzd_flag_code, Pageable pageable) {
-        return diagnosisService.list(queryKey, type, zzd_flag_code, pageable);
+    public ResultBase list(Integer catalogId, String queryKey, Integer type, String zzd_flag_code, Pageable pageable) {
+        return diagnosisService.list(catalogId, queryKey, type, zzd_flag_code, pageable);
     }
 
     @ApiOperation(value = "编辑诊断信息")

@@ -38,14 +38,15 @@ public class ExamineController {
 
     @ApiOperation(value = "检索列表")
     @ApiImplicitParams({
+            @ApiImplicitParam(name = "catalogId", value = "分类Id", dataType = "int"),
             @ApiImplicitParam(name = "queryKey", value = "编码/名称", dataType = "string"),
             @ApiImplicitParam(name = "xmlxCode", value = "项目类型：来自字典表定义", dataType = "string"),
             @ApiImplicitParam(name = "jyTypeCode", value = "检验类别：来自字典定义", dataType = "string"),
             @ApiImplicitParam(name = "yblxCode", value = "样本类型：来自字典表定义", dataType = "string"),
     })
     @PostMapping(value = "/list", produces = APPLICATION_JSON_UTF8_VALUE)
-    public ResultBase list(String queryKey, String xmlxCode, String jyTypeCode, String yblxCode, Pageable pageable) {
-        return examineService.list(queryKey, xmlxCode, jyTypeCode, yblxCode, pageable);
+    public ResultBase list(Integer catalogId ,String queryKey, String xmlxCode, String jyTypeCode, String yblxCode, Pageable pageable) {
+        return examineService.list(catalogId , queryKey, xmlxCode, jyTypeCode, yblxCode, pageable);
     }
 
     @ApiOperation(value = "编辑检验")

@@ -11,7 +11,7 @@ import com.jsg.entity.Pageable;
 public interface ExamineService {
     ResultBase add(Examine examine);
 
-    ResultBase list(String queryKey, String xmlxCode, String jyTypeCode, String yblxCode, Pageable pageable);
+    ResultBase list(Integer catalogId, String queryKey, String xmlxCode, String jyTypeCode, String yblxCode, Pageable pageable);
 
     ResultBase edi(Examine examine);
 

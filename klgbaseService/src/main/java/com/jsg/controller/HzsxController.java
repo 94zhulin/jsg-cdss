@@ -38,12 +38,13 @@ public class HzsxController {
 
     @ApiOperation(value = "检索列表")
     @ApiImplicitParams({
+            @ApiImplicitParam(name = "catalogId", value = "分类Id", dataType = "int"),
             @ApiImplicitParam(name = "queryKey", value = "编码/名称", dataType = "string"),
             @ApiImplicitParam(name = "valueType", value = "数值类型", dataType = "int"),
     })
     @PostMapping(value = "/list", produces = APPLICATION_JSON_UTF8_VALUE)
-    public ResultBase list(String queryKey, Integer valueType, Pageable pageable) {
-        return hzsxService.list(queryKey, valueType, pageable);
+    public ResultBase list(Integer catalogId, String queryKey, Integer valueType, Pageable pageable) {
+        return hzsxService.list(catalogId, queryKey, valueType, pageable);
     }
 
     @ApiOperation(value = "编辑患者")

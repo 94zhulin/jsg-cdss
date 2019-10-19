@@ -40,6 +40,7 @@ public class DrugController {
 
     @ApiOperation(value = "检索列表")
     @ApiImplicitParams({
+            @ApiImplicitParam(name = "catalogId", value = "分类Id", dataType = "int"),
             @ApiImplicitParam(name = "queryKey", value = "编码/名称", dataType = "string"),
             @ApiImplicitParam(name = "jxCode", value = "剂型：来自字典定义", dataType = "string"),
             @ApiImplicitParam(name = "pcCode", value = "频次：来自字典定义", dataType = "string"),
@@ -47,8 +48,8 @@ public class DrugController {
             @ApiImplicitParam(name = "yysjCode", value = "用药时间：来自字典定义", dataType = "string"),
     })
     @PostMapping(value = "/list", produces = APPLICATION_JSON_UTF8_VALUE)
-    public ResultBase list(String queryKey, String jxCode, String pcCode, String gyfsCode, String yysjCode, Pageable pageable) {
-        return drugService.list(queryKey, jxCode, pcCode, gyfsCode, yysjCode, pageable);
+    public ResultBase list(Integer catalogId, String queryKey, String jxCode, String pcCode, String gyfsCode, String yysjCode, Pageable pageable) {
+        return drugService.list(catalogId,queryKey, jxCode, pcCode, gyfsCode, yysjCode, pageable);
     }
 
     @ApiOperation(value = "编辑药品")

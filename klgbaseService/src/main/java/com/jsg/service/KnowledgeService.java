@@ -13,9 +13,15 @@ public interface KnowledgeService {
 
     ResultBase ediClass(Catalog catalog);
 
-    ResultBase classList(Pageable pageable);
+    ResultBase classList(String parentId, Pageable pageable);
 
     ResultBase itemNumAdd(Integer catalogId);
 
     ResultBase itemNumSub(Integer catalogId);
+
+    ResultBase childNumAdd(Integer catalogId);
+
+    ResultBase childNumSub(Integer catalogId);
+
+    ResultBase del(Integer catalogId);
 }

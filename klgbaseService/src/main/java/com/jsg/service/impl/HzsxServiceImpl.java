@@ -5,9 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.jsg.base.result.ResultBase;
 import com.jsg.base.result.ResultUtil;
 import com.jsg.dao.mysql.HzsxMapper;
-import com.jsg.entity.Diagnosis;
 import com.jsg.entity.Hzsx;
-import com.jsg.entity.Inspect;
 import com.jsg.entity.Pageable;
 import com.jsg.service.HzsxService;
 import com.jsg.service.KnowledgeService;
@@ -51,7 +49,7 @@ public class HzsxServiceImpl implements HzsxService {
     @Override
     public ResultBase edi(Hzsx hzsx) {
         List<Hzsx> hzsxs = hzsxMapper.selectByCode(hzsx.getCode());
-        ResultBase resultBase = ResultUtil.success(null, hzsxs);
+        ResultBase resultBase = ResultUtil.success(null, hzsx);
         if (hzsxs.size() > 1) {
             resultBase.setStatus(failure);
             resultBase.setMsg("编码或项目名重复！");
@@ -62,10 +60,10 @@ public class HzsxServiceImpl implements HzsxService {
     }
 
     @Override
-    public ResultBase list(String queryKey, Integer valueType, Pageable pageable) {
+    public ResultBase list(Integer catalogId, String queryKey, Integer valueType, Pageable pageable) {
         PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
-        List<Diagnosis> list = hzsxMapper.list(queryKey, valueType);
-        PageInfo<Diagnosis> pageInfo = new PageInfo<>(list);
+        List<Hzsx> list = hzsxMapper.list(catalogId, queryKey, valueType);
+        PageInfo<Hzsx> pageInfo = new PageInfo<>(list);
         return ResultUtil.success(null, pageInfo);
     }
 
