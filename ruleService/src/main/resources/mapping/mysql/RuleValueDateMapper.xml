@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jsg.dao.mysql.RuleValueDateMapper">
+  <resultMap id="BaseResultMap" type="com.jsg.entity.RuleValueDate">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="rule_id" jdbcType="INTEGER" property="ruleId" />
+    <result column="rule_item_id" jdbcType="INTEGER" property="ruleItemId" />
+    <result column="operator" jdbcType="VARCHAR" property="operator" />
+    <result column="value" jdbcType="TIMESTAMP" property="value" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, rule_id, rule_item_id, `operator`, `value`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from rule_value_date
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from rule_value_date
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.jsg.entity.RuleValueDate">
+    insert into rule_value_date (id, rule_id, rule_item_id, 
+      `operator`, `value`)
+    values (#{id,jdbcType=INTEGER}, #{ruleId,jdbcType=INTEGER}, #{ruleItemId,jdbcType=INTEGER}, 
+      #{operator,jdbcType=VARCHAR}, #{value,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jsg.entity.RuleValueDate">
+    insert into rule_value_date
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="ruleId != null">
+        rule_id,
+      </if>
+      <if test="ruleItemId != null">
+        rule_item_id,
+      </if>
+      <if test="operator != null">
+        `operator`,
+      </if>
+      <if test="value != null">
+        `value`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="ruleId != null">
+        #{ruleId,jdbcType=INTEGER},
+      </if>
+      <if test="ruleItemId != null">
+        #{ruleItemId,jdbcType=INTEGER},
+      </if>
+      <if test="operator != null">
+        #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="value != null">
+        #{value,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jsg.entity.RuleValueDate">
+    update rule_value_date
+    <set>
+      <if test="ruleId != null">
+        rule_id = #{ruleId,jdbcType=INTEGER},
+      </if>
+      <if test="ruleItemId != null">
+        rule_item_id = #{ruleItemId,jdbcType=INTEGER},
+      </if>
+      <if test="operator != null">
+        `operator` = #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="value != null">
+        `value` = #{value,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jsg.entity.RuleValueDate">
+    update rule_value_date
+    set rule_id = #{ruleId,jdbcType=INTEGER},
+      rule_item_id = #{ruleItemId,jdbcType=INTEGER},
+      `operator` = #{operator,jdbcType=VARCHAR},
+      `value` = #{value,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

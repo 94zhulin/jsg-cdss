@@ -1,0 +1,6 @@
+server:
+  port: 60105
+apiStatus:
+  failure: 999
+  exc: 500
+  success: 200
