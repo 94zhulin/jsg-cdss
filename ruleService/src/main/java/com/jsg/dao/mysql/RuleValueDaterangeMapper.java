@@ -1,19 +1,13 @@
 package com.jsg.dao.mysql;
 
 import com.jsg.entity.RuleValueDaterange;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RuleValueDaterangeMapper {
-    int deleteByPrimaryKey(Integer id);
 
-    int insert(RuleValueDaterange record);
+    void add(RuleValueDaterange daterange);
 
-    int insertSelective(RuleValueDaterange record);
-
-    RuleValueDaterange selectByPrimaryKey(Integer id);
-
-    int updateByPrimaryKeySelective(RuleValueDaterange record);
-
-    int updateByPrimaryKey(RuleValueDaterange record);
+    void delByRuleId(@Param("id") Integer id);
 }

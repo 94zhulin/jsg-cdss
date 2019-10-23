@@ -3,6 +3,7 @@ package com.jsg.entity;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author jeanson 进生
@@ -73,5 +74,7 @@ public class RuleCatalog {
      * 修改人
      */
     private Integer updateUserid;
+
+    private List<RuleCatalog> children;
 
 }

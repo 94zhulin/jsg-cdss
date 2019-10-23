@@ -1,20 +1,24 @@
 package com.jsg.dao.mysql;
 
 import com.jsg.entity.RuleCatalog;
-import com.jsg.entity.RuleCatalogKey;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface RuleCatalogMapper {
-    int deleteByPrimaryKey(RuleCatalogKey key);
 
-    int insert(RuleCatalog record);
 
-    int insertSelective(RuleCatalog record);
+    List<RuleCatalog> selectByCode(RuleCatalog catalog);
 
-    RuleCatalog selectByPrimaryKey(RuleCatalogKey key);
+    int add(RuleCatalog catalog);
 
-    int updateByPrimaryKeySelective(RuleCatalog record);
+    RuleCatalog selectOneById(@Param("id") Integer id);
 
-    int updateByPrimaryKey(RuleCatalog record);
+    int edi(RuleCatalog catalog);
+
+    List<RuleCatalog> list(@Param("parentId") String parentId);
+
+    int del(@Param("catalogId") Integer catalogId);
 }

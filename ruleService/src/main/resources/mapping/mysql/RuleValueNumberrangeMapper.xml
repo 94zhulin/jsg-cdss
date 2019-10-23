@@ -1,29 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jsg.dao.mysql.RuleValueNumberrangeMapper">
-  <resultMap id="BaseResultMap" type="com.jsg.entity.RuleValueNumberrange">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="rule_id" jdbcType="INTEGER" property="ruleId" />
-    <result column="rule_item_id" jdbcType="INTEGER" property="ruleItemId" />
-    <result column="start_op" jdbcType="VARCHAR" property="startOp" />
-    <result column="start_value" jdbcType="DOUBLE" property="startValue" />
-    <result column="end_op" jdbcType="VARCHAR" property="endOp" />
-    <result column="end_value" jdbcType="DOUBLE" property="endValue" />
-  </resultMap>
-  <sql id="Base_Column_List">
+    <resultMap id="BaseResultMap" type="com.jsg.entity.RuleValueNumberrange">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="rule_id" jdbcType="INTEGER" property="ruleId"/>
+        <result column="rule_item_id" jdbcType="INTEGER" property="ruleItemId"/>
+        <result column="start_op" jdbcType="VARCHAR" property="startOp"/>
+        <result column="start_value" jdbcType="DOUBLE" property="startValue"/>
+        <result column="end_op" jdbcType="VARCHAR" property="endOp"/>
+        <result column="end_value" jdbcType="DOUBLE" property="endValue"/>
+    </resultMap>
+    <sql id="Base_Column_List">
     id, rule_id, rule_item_id, start_op, start_value, end_op, end_value
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from rule_value_numberrange
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from rule_value_numberrange
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from rule_value_numberrange
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.jsg.entity.RuleValueNumberrange">
+
+    <delete id="delByRuleId" parameterType="java.lang.Integer">
+    delete from rule_value_numberrange
+    where rule_id = #{id,jdbcType=INTEGER}
+  </delete>
+
+    <insert id="add" parameterType="com.jsg.entity.RuleValueNumberrange">
     insert into rule_value_numberrange (id, rule_id, rule_item_id, 
       start_op, start_value, end_op, 
       end_value)
@@ -31,80 +37,80 @@
       #{startOp,jdbcType=VARCHAR}, #{startValue,jdbcType=DOUBLE}, #{endOp,jdbcType=VARCHAR}, 
       #{endValue,jdbcType=DOUBLE})
   </insert>
-  <insert id="insertSelective" parameterType="com.jsg.entity.RuleValueNumberrange">
-    insert into rule_value_numberrange
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="ruleId != null">
-        rule_id,
-      </if>
-      <if test="ruleItemId != null">
-        rule_item_id,
-      </if>
-      <if test="startOp != null">
-        start_op,
-      </if>
-      <if test="startValue != null">
-        start_value,
-      </if>
-      <if test="endOp != null">
-        end_op,
-      </if>
-      <if test="endValue != null">
-        end_value,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="ruleId != null">
-        #{ruleId,jdbcType=INTEGER},
-      </if>
-      <if test="ruleItemId != null">
-        #{ruleItemId,jdbcType=INTEGER},
-      </if>
-      <if test="startOp != null">
-        #{startOp,jdbcType=VARCHAR},
-      </if>
-      <if test="startValue != null">
-        #{startValue,jdbcType=DOUBLE},
-      </if>
-      <if test="endOp != null">
-        #{endOp,jdbcType=VARCHAR},
-      </if>
-      <if test="endValue != null">
-        #{endValue,jdbcType=DOUBLE},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.jsg.entity.RuleValueNumberrange">
-    update rule_value_numberrange
-    <set>
-      <if test="ruleId != null">
-        rule_id = #{ruleId,jdbcType=INTEGER},
-      </if>
-      <if test="ruleItemId != null">
-        rule_item_id = #{ruleItemId,jdbcType=INTEGER},
-      </if>
-      <if test="startOp != null">
-        start_op = #{startOp,jdbcType=VARCHAR},
-      </if>
-      <if test="startValue != null">
-        start_value = #{startValue,jdbcType=DOUBLE},
-      </if>
-      <if test="endOp != null">
-        end_op = #{endOp,jdbcType=VARCHAR},
-      </if>
-      <if test="endValue != null">
-        end_value = #{endValue,jdbcType=DOUBLE},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.jsg.entity.RuleValueNumberrange">
+    <insert id="insertSelective" parameterType="com.jsg.entity.RuleValueNumberrange">
+        insert into rule_value_numberrange
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="ruleId != null">
+                rule_id,
+            </if>
+            <if test="ruleItemId != null">
+                rule_item_id,
+            </if>
+            <if test="startOp != null">
+                start_op,
+            </if>
+            <if test="startValue != null">
+                start_value,
+            </if>
+            <if test="endOp != null">
+                end_op,
+            </if>
+            <if test="endValue != null">
+                end_value,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="ruleId != null">
+                #{ruleId,jdbcType=INTEGER},
+            </if>
+            <if test="ruleItemId != null">
+                #{ruleItemId,jdbcType=INTEGER},
+            </if>
+            <if test="startOp != null">
+                #{startOp,jdbcType=VARCHAR},
+            </if>
+            <if test="startValue != null">
+                #{startValue,jdbcType=DOUBLE},
+            </if>
+            <if test="endOp != null">
+                #{endOp,jdbcType=VARCHAR},
+            </if>
+            <if test="endValue != null">
+                #{endValue,jdbcType=DOUBLE},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.jsg.entity.RuleValueNumberrange">
+        update rule_value_numberrange
+        <set>
+            <if test="ruleId != null">
+                rule_id = #{ruleId,jdbcType=INTEGER},
+            </if>
+            <if test="ruleItemId != null">
+                rule_item_id = #{ruleItemId,jdbcType=INTEGER},
+            </if>
+            <if test="startOp != null">
+                start_op = #{startOp,jdbcType=VARCHAR},
+            </if>
+            <if test="startValue != null">
+                start_value = #{startValue,jdbcType=DOUBLE},
+            </if>
+            <if test="endOp != null">
+                end_op = #{endOp,jdbcType=VARCHAR},
+            </if>
+            <if test="endValue != null">
+                end_value = #{endValue,jdbcType=DOUBLE},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.jsg.entity.RuleValueNumberrange">
     update rule_value_numberrange
     set rule_id = #{ruleId,jdbcType=INTEGER},
       rule_item_id = #{ruleItemId,jdbcType=INTEGER},

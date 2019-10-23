@@ -2,14 +2,13 @@ package com.jsg.entity;
 
 import lombok.Data;
 
-import java.io.Serializable;
-
 /**
- * @author jeanson 进生
- * @date 2019/10/21 10:44
+ * rule_items
+ *
+ * @author
  */
 @Data
-public class RuleItems implements Serializable {
+public class RuleItems {
     /**
      * 自增长ID
      */
@@ -38,6 +37,27 @@ public class RuleItems implements Serializable {
     /**
      * 知识库ID
      */
-    private Integer klgId;
+    private Integer klgItemId;
+
+    /**
+     * 知识库属性字段名
+     */
+    private String klgItemPropname;
+
+    /**
+     * 知识库属性值类型：1-布尔，2-数字，3-数字范围，4-日期，5-日期范围，6-文本，7-列表
+     */
+    private Integer klgItemValuetype;
+
+    /**
+     * 操作符：与，或
+     */
+    private String operator;
+
+    /**
+     * 操作符顺序索引
+     */
+    private Integer opIndex;
+
 
 }

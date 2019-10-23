@@ -1,20 +1,25 @@
 package com.jsg.dao.mysql;
 
 import com.jsg.entity.RuleBase;
-import com.jsg.entity.RuleBaseKey;
+import com.jsg.entity.RuleCatalog;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface RuleBaseMapper {
-    int deleteByPrimaryKey(RuleBaseKey key);
 
-    int insert(RuleBase record);
 
-    int insertSelective(RuleBase record);
+    List<RuleCatalog> listRule(@Param("catalogId") Integer catalogId, @Param("queryKey") String queryKey, @Param("deployStatus") Integer deployStatus);
 
-    RuleBase selectByPrimaryKey(RuleBaseKey key);
+    int add(RuleBase ruleBase);
 
-    int updateByPrimaryKeySelective(RuleBase record);
+    void edi(RuleBase ruleBase);
 
-    int updateByPrimaryKey(RuleBase record);
+    int del(@Param("ruleId") Integer ruleId);
+
+    String selechistoryVersion(@Param("ids") String ids);
+
+    int isDel(@Param("id") Integer id);
 }

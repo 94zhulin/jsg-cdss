@@ -1,19 +1,13 @@
 package com.jsg.dao.mysql;
 
 import com.jsg.entity.RuleValueList;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RuleValueListMapper {
-    int deleteByPrimaryKey(Integer id);
 
-    int insert(RuleValueList record);
+    void add(RuleValueList listStr);
 
-    int insertSelective(RuleValueList record);
-
-    RuleValueList selectByPrimaryKey(Integer id);
-
-    int updateByPrimaryKeySelective(RuleValueList record);
-
-    int updateByPrimaryKey(RuleValueList record);
+    void delByRuleId(@Param("id") Integer id);
 }
