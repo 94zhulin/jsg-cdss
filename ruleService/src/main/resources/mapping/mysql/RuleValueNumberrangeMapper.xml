@@ -13,16 +13,7 @@
     <sql id="Base_Column_List">
     id, rule_id, rule_item_id, start_op, start_value, end_op, end_value
   </sql>
-    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from rule_value_numberrange
-        where id = #{id,jdbcType=INTEGER}
-    </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from rule_value_numberrange
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
+
 
     <delete id="delByRuleId" parameterType="java.lang.Integer">
     delete from rule_value_numberrange
@@ -86,38 +77,5 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.jsg.entity.RuleValueNumberrange">
-        update rule_value_numberrange
-        <set>
-            <if test="ruleId != null">
-                rule_id = #{ruleId,jdbcType=INTEGER},
-            </if>
-            <if test="ruleItemId != null">
-                rule_item_id = #{ruleItemId,jdbcType=INTEGER},
-            </if>
-            <if test="startOp != null">
-                start_op = #{startOp,jdbcType=VARCHAR},
-            </if>
-            <if test="startValue != null">
-                start_value = #{startValue,jdbcType=DOUBLE},
-            </if>
-            <if test="endOp != null">
-                end_op = #{endOp,jdbcType=VARCHAR},
-            </if>
-            <if test="endValue != null">
-                end_value = #{endValue,jdbcType=DOUBLE},
-            </if>
-        </set>
-        where id = #{id,jdbcType=INTEGER}
-    </update>
-    <update id="updateByPrimaryKey" parameterType="com.jsg.entity.RuleValueNumberrange">
-    update rule_value_numberrange
-    set rule_id = #{ruleId,jdbcType=INTEGER},
-      rule_item_id = #{ruleItemId,jdbcType=INTEGER},
-      start_op = #{startOp,jdbcType=VARCHAR},
-      start_value = #{startValue,jdbcType=DOUBLE},
-      end_op = #{endOp,jdbcType=VARCHAR},
-      end_value = #{endValue,jdbcType=DOUBLE}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+
 </mapper>

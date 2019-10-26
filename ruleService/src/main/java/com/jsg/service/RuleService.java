@@ -34,4 +34,7 @@ public interface RuleService {
 
     ResultBase listRule(Integer catalogId, String queryKey, Integer deployStatus, Pageable pageable);
 
+    ResultBase ruleHistory(String ids, Pageable pageable);
+
+    ResultBase ruleReduction(Integer ids, Integer pageable);
 }

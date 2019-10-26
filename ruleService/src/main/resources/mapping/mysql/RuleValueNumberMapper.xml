@@ -11,16 +11,8 @@
     <sql id="Base_Column_List">
     id, rule_id, rule_item_id, `operator`, `value`
   </sql>
-    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from rule_value_number
-        where id = #{id,jdbcType=INTEGER}
-    </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from rule_value_number
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
+
+
     <delete id="delByRuleId" parameterType="java.lang.Integer">
     delete from rule_value_number
     where rule_id = #{id,jdbcType=INTEGER}
@@ -68,30 +60,5 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.jsg.entity.RuleValueNumber">
-        update rule_value_number
-        <set>
-            <if test="ruleId != null">
-                rule_id = #{ruleId,jdbcType=INTEGER},
-            </if>
-            <if test="ruleItemId != null">
-                rule_item_id = #{ruleItemId,jdbcType=INTEGER},
-            </if>
-            <if test="operator != null">
-                `operator` = #{operator,jdbcType=VARCHAR},
-            </if>
-            <if test="value != null">
-                `value` = #{value,jdbcType=INTEGER},
-            </if>
-        </set>
-        where id = #{id,jdbcType=INTEGER}
-    </update>
-    <update id="updateByPrimaryKey" parameterType="com.jsg.entity.RuleValueNumber">
-    update rule_value_number
-    set rule_id = #{ruleId,jdbcType=INTEGER},
-      rule_item_id = #{ruleItemId,jdbcType=INTEGER},
-      `operator` = #{operator,jdbcType=VARCHAR},
-      `value` = #{value,jdbcType=INTEGER}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+
 </mapper>

@@ -50,9 +50,9 @@ public class RuleItems {
     private Integer klgItemValuetype;
 
     /**
-     * 操作符：与，或
+     * 操作符：与，或 1 是 与  0是或
      */
-    private String operator;
+    private Integer operator;
 
     /**
      * 操作符顺序索引

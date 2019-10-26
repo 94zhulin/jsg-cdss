@@ -169,6 +169,7 @@ public class RuleServiceImpl implements RuleService {
 
     @Override
     public ResultBase addRule(RuleBase ruleBase) {
+        ruleBase.setVersion(1);
         int add = ruleBaseMapper.add(ruleBase);
         //TODO 规则分类表 中的  rule_num 规则数量 加1
         ruleNumAdd(ruleBase.getCatalogId());
@@ -211,6 +212,8 @@ public class RuleServiceImpl implements RuleService {
                 //TODO 如果等于空,说明是版本2 , 这时候我们在版本2中保存之前版本的信息
                 ruleBase.setRelatedRuleIds(ruleBase.getId() + "-");
             }
+            Integer newVersion = ruleBase.getVersion() + 1;
+            ruleBase.setVersion(newVersion);
             //TODO  新增规则
             addRule(ruleBase);
             //TODO  当前规则对象 假删除
@@ -234,14 +237,14 @@ public class RuleServiceImpl implements RuleService {
             itemTrue.setRuleId(ruleBase.getId()); //TODO  规则id
             itemTrue.setRuleItemType(2); //'规则项类型：1-满足条件项目；2-条件真关联项目；3-条件假关联项目'
             itemTrue.setKlgCatalogId(ruleBase.getConditionsTrueTypeId());//知识库类别ID
-            itemTrue.setKlgItemId(ruleBase.getTrueItemId());
+            itemTrue.setKlgItemId(ruleBase.getTrueItem().getId());
             ruleItemsMapper.add(itemTrue);
             //条件假的项目id
             RuleItems itemFalse = new RuleItems();
             itemFalse.setRuleId(ruleBase.getId()); //TODO  规则id
             itemFalse.setRuleItemType(3); //'规则项类型：1-满足条件项目；2-条件真关联项目；3-条件假关联项目'
             itemFalse.setKlgCatalogId(ruleBase.getConditionsFalseTypeId());//知识库类别ID
-            itemFalse.setKlgItemId(ruleBase.getFalseItemId());
+            itemFalse.setKlgItemId(ruleBase.getFalseItem().getId());
             ruleItemsMapper.add(itemFalse);
 
             //TODO 人资集合
@@ -261,7 +264,7 @@ public class RuleServiceImpl implements RuleService {
     @Override
     public ResultBase delRule(Integer ruleId, Integer catalogId) {
         //TODO 删除ruleBase 表 ,就行
-        int del = ruleBaseMapper.del(ruleId);
+        int del = ruleBaseMapper.isDel(ruleId);
         if (del > 0) {
             //TODO 规则分类表 中的  rule_num 规则数量 减1
             ruleNumSub(catalogId);
@@ -278,6 +281,26 @@ public class RuleServiceImpl implements RuleService {
 
     }
 
+    @Override
+    public ResultBase ruleHistory(String ids, Pageable pageable) {
+        //查询 用户历史
+        PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
+        //TODO like 匹配开头即可 例如: 2-6-7-8-9  我们只匹配 2开头的就行
+        String[] split = ids.split("-");
+        List<RuleBase> list = ruleBaseMapper.ruleHistory(split[0]);
+        PageInfo<RuleBase> pageInfo = new PageInfo<>(list);
+        return ResultUtil.success(null, pageInfo);
+    }
+
+    @Override
+    public ResultBase ruleReduction(Integer currentId, Integer reId) {
+        //当前正在执行的规则id ,以及要还原的规则id
+        ruleBaseMapper.ruleReduction(currentId);
+        ruleBaseMapper.ruleReduction(reId);
+        //TODO 用户选择部署后, droools 重新加载规则
+        return ResultUtil.success(null, null);
+    }
+
     private void setData(List<Patients> hzPatients, RuleBase ruleBase) {
         for (Patients hzPatient : hzPatients) {
             RuleItems item = new RuleItems();
@@ -288,6 +311,7 @@ public class RuleServiceImpl implements RuleService {
             item.setKlgItemId(hzPatient.getTypeId());
             item.setKlgItemPropname(hzPatient.getName());
             item.setKlgItemValuetype(hzPatient.getKlgItemValueType());
+            //TODO 最外层的连接符
             item.setOperator(hzPatient.getRootCompare());
             item.setOpIndex(hzPatient.getOpIndex());
             ruleItemsMapper.add(item);

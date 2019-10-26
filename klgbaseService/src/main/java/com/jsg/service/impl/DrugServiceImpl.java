@@ -5,7 +5,6 @@ import com.github.pagehelper.PageInfo;
 import com.jsg.base.result.ResultBase;
 import com.jsg.base.result.ResultUtil;
 import com.jsg.dao.mysql.DrugMapper;
-import com.jsg.entity.Diagnosis;
 import com.jsg.entity.Drug;
 import com.jsg.entity.Pageable;
 import com.jsg.service.DrugService;
@@ -59,7 +58,7 @@ public class DrugServiceImpl implements DrugService {
     @Override
     public ResultBase list(Integer catalogId, String queryKey, String jxCode, String pcCode, String gyfsCode, String yysjCode, Pageable pageable) {
         PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
-        List<Drug> list = drugMapper.list(catalogId,queryKey, jxCode, pcCode, gyfsCode, yysjCode);
+        List<Drug> list = drugMapper.list(catalogId, queryKey, jxCode, pcCode, gyfsCode, yysjCode);
         PageInfo<Drug> pageInfo = new PageInfo<>(list);
         return ResultUtil.success(null, pageInfo);
     }

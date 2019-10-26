@@ -22,4 +22,8 @@ public interface RuleBaseMapper {
     String selechistoryVersion(@Param("ids") String ids);
 
     int isDel(@Param("id") Integer id);
+
+    List<RuleBase> ruleHistory(@Param("ids") String ids);
+
+    void ruleReduction(@Param("id") Integer id);
 }

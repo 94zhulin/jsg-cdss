@@ -17,17 +17,6 @@
     id, rule_id, rule_item_type, condition_type, klg_catalog_id, klg_item_id, klg_item_propName, 
     klg_item_valueType, `operator`, op_index
   </sql>
-    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from rule_items
-        where id = #{id,jdbcType=INTEGER}
-    </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from rule_items
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-
 
     <delete id="delByRuleId" parameterType="int">
      delete from rule_items
@@ -110,50 +99,6 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.jsg.entity.RuleItems">
-        update rule_items
-        <set>
-            <if test="ruleId != null">
-                rule_id = #{ruleId,jdbcType=INTEGER},
-            </if>
-            <if test="ruleItemType != null">
-                rule_item_type = #{ruleItemType,jdbcType=INTEGER},
-            </if>
-            <if test="conditionType != null">
-                condition_type = #{conditionType,jdbcType=INTEGER},
-            </if>
-            <if test="klgCatalogId != null">
-                klg_catalog_id = #{klgCatalogId,jdbcType=INTEGER},
-            </if>
-            <if test="klgItemId != null">
-                klg_item_id = #{klgItemId,jdbcType=INTEGER},
-            </if>
-            <if test="klgItemPropname != null">
-                klg_item_propName = #{klgItemPropname,jdbcType=VARCHAR},
-            </if>
-            <if test="klgItemValuetype != null">
-                klg_item_valueType = #{klgItemValuetype,jdbcType=INTEGER},
-            </if>
-            <if test="operator != null">
-                `operator` = #{operator,jdbcType=INTEGER},
-            </if>
-            <if test="opIndex != null">
-                op_index = #{opIndex,jdbcType=INTEGER},
-            </if>
-        </set>
-        where id = #{id,jdbcType=INTEGER}
-    </update>
-    <update id="updateByPrimaryKey" parameterType="com.jsg.entity.RuleItems">
-    update rule_items
-    set rule_id = #{ruleId,jdbcType=INTEGER},
-      rule_item_type = #{ruleItemType,jdbcType=INTEGER},
-      condition_type = #{conditionType,jdbcType=INTEGER},
-      klg_catalog_id = #{klgCatalogId,jdbcType=INTEGER},
-      klg_item_id = #{klgItemId,jdbcType=INTEGER},
-      klg_item_propName = #{klgItemPropname,jdbcType=VARCHAR},
-      klg_item_valueType = #{klgItemValuetype,jdbcType=INTEGER},
-      `operator` = #{operator,jdbcType=INTEGER},
-      op_index = #{opIndex,jdbcType=INTEGER}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+
+
 </mapper>

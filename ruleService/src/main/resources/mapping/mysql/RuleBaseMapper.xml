@@ -24,13 +24,7 @@
     deploy_status, is_delete, feedback_comment, create_time, update_time, create_userId, 
     update_userId
   </sql>
-    <select id="selectByPrimaryKey" parameterType="com.jsg.entity.RuleBaseKey" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from rule_base
-        where id = #{id,jdbcType=INTEGER}
-        and code = #{code,jdbcType=VARCHAR}
-    </select>
+
     <delete id="del" parameterType="int">
     delete from rule_base
     where id = #{ruleId}
@@ -42,7 +36,7 @@
       is_delete, feedback_comment, create_time, 
       update_time, create_userId, update_userId
       )
-    values (#{id,jdbcType=INTEGER},#{catalogId} #{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
+    values (#{id,jdbcType=INTEGER},#{catalogId}, #{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
       #{priority,jdbcType=INTEGER}, #{dependRuleid,jdbcType=INTEGER}, #{policyType,jdbcType=INTEGER}, 
       #{version,jdbcType=INTEGER}, #{relatedRuleIds,jdbcType=VARCHAR}, #{deployStatus,jdbcType=INTEGER}, 
       #{isDelete,jdbcType=INTEGER}, #{feedbackComment,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
@@ -202,24 +196,8 @@
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.jsg.entity.RuleBase">
-    update rule_base
-    set `name` = #{name,jdbcType=VARCHAR},catalog_id = #{catalogId},
-      priority = #{priority,jdbcType=INTEGER},
-      depend_ruleId = #{dependRuleid,jdbcType=INTEGER},
-      policy_type = #{policyType,jdbcType=INTEGER},
-      version = #{version,jdbcType=INTEGER},
-      related_rule_ids = #{relatedRuleIds,jdbcType=VARCHAR},
-      deploy_status = #{deployStatus,jdbcType=INTEGER},
-      is_delete = #{isDelete,jdbcType=INTEGER},
-      feedback_comment = #{feedbackComment,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP},
-      create_userId = #{createUserid,jdbcType=INTEGER},
-      update_userId = #{updateUserid,jdbcType=INTEGER}
-    where id = #{id,jdbcType=INTEGER}
-      and code = #{code,jdbcType=VARCHAR}
-  </update>
+
+
 
     <select id="selechistoryVersion" parameterType="string" resultType="string">
         SELECT group_concat(t1.id SEPARATOR '-' ) as ids
@@ -258,5 +236,21 @@ GROUP BY t1.`id`
 
     </select>
 
+
+    <select id="ruleHistory" parameterType="string" resultMap="BaseResultMap">
+select *
+from rule_base t1
+where t1.related_rule_ids  like CONCAT(#{ids},'%')
+order by t1.id;
+    </select>
+
+    <update id="ruleReduction" parameterType="string">
+    update rule_base t1 inner join (select if(t1.is_delete = 1, 0, 1) as isDel, t1.id
+                                from rule_base t1
+                                where t1.id = #{id}) c on t1.id = c.id
+set t1.is_delete = c.isDel
+where t1.id = #{id};
+
+    </update>
 
 </mapper>

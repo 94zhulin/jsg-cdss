@@ -97,4 +97,22 @@ public class RuleController {
     public ResultBase listRule(Integer catalogId, String queryKey, Integer deployStatus, Pageable pageable) {
         return ruleService.listRule(catalogId, queryKey, deployStatus, pageable);
     }
+
+    @ApiOperation(value = "规则历史列表")
+    @PostMapping(value = "/rule-history", produces = APPLICATION_JSON_UTF8_VALUE)
+    @ApiImplicitParam(name = "ids", value = "相关联的版本规则ID", dataType = "int")
+    public ResultBase ruleHistory(String ids, Pageable pageable) {
+        return ruleService.ruleHistory(ids, pageable);
+    }
+
+
+    @ApiOperation(value = "规则版本还原")
+    @PostMapping(value = "/rule-reduction", produces = APPLICATION_JSON_UTF8_VALUE)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "currentId", value = "当前规则id", dataType = "int"),
+            @ApiImplicitParam(name = "reId", value = "还原的规则Id", dataType = "int")
+    })
+    public ResultBase ruleReduction(Integer currentId, Integer reId) {
+        return ruleService.ruleReduction(currentId, reId);
+    }
 }
