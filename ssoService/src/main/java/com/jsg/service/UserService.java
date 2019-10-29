@@ -1,8 +1,7 @@
 package com.jsg.service;
 
 import com.jsg.base.result.ResultBase;
-import com.jsg.dto.BankDTO;
-import com.jsg.dto.UserDTO;
+import com.jsg.entity.User;
 
 /**
  * 用户信息查询接口
@@ -11,27 +10,12 @@ import com.jsg.dto.UserDTO;
  * @date 2019/6/3
  */
 public interface UserService {
-    /**
-     * 获取y用户信息列表
-     *
-     * @return
-     * @throws Exception
-     */
-    ResultBase getUsers() throws Exception;
 
-    /**
-     * 获取用户信息
-     *
-     * @return
-     * @throws Exception
-     */
-    ResultBase getUser(UserDTO dto) throws Exception;
+    ResultBase login(String userName, String password);
 
-    /**
-     * 创建
-     *
-     * @return
-     * @throws Exception
-     */
-    ResultBase saveBank(BankDTO dto) throws Exception;
+    ResultBase edlPassword(Integer userId, String password, String odlPassword);
+
+    ResultBase add(User user);
+
+    ResultBase findUser(Integer userId);
 }

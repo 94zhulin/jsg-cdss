@@ -57,7 +57,7 @@ public class BaseinfoController {
 
 
     @ApiOperation(value = "新增资质(医疗技术资质和手术资质下的资质需求传递手术科目id和手术级别id)")
-    @PostMapping(value = "/add", produces = APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = "/add", consumes = APPLICATION_JSON_UTF8_VALUE, produces = APPLICATION_JSON_UTF8_VALUE)
     public ResultBase add(@RequestBody @Validated Qualifications qualifications) {
         return baseinfoService.add(qualifications);
     }

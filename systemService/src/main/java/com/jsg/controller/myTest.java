@@ -44,7 +44,7 @@ public class myTest {
                 typeName = this.getType(line);
                 if (!"NULL".equals(typeName) && !"NULL".equals(propertyName)) {
                     commentStr = this.getComment(line);
-                    System.out.println("private " + typeName + " " + propertyName + ";  //" + commentStr);
+                    System.out.println("private " + typeName + " " + propertyName + ";  " + commentStr);
                 }
             }
         } catch (FileNotFoundException fnfe) {

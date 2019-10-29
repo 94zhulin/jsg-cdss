@@ -6,7 +6,6 @@ import com.jsg.base.result.ResultBase;
 import com.jsg.base.result.ResultUtil;
 import com.jsg.dao.mysql.BaseinfoMapper;
 import com.jsg.dao.mysql.QualificationsMapper;
-import com.jsg.dao.mysql.RulesMapper;
 import com.jsg.entity.Baseinfo;
 import com.jsg.entity.Pageable;
 import com.jsg.entity.Qualifications;
@@ -28,8 +27,6 @@ public class BaseinfoServiceImpl implements BaseinfoService {
     private BaseinfoMapper baseinfoMapper;
     @Autowired
     private QualificationsMapper qualificationsMapper;
-    @Autowired
-    private RulesMapper rulesMapper;
 
     @Value("${apiStatus.failure}")
     private Integer failure;
