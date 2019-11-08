@@ -51,5 +51,7 @@ hystrix:
 ribbon:
   eureka:
     enable: true
-  ReadTimeout: 5000 #ribbon请求处理的超时时间
-  ConnectTimeout: 5000 #ribbon请求连接的超时时间
+  ReadTimeout: 1000 #ribbon请求处理的超时时间
+  ConnectTimeout: 1000 #ribbon请求连接的超时时间
+  MaxAutoRetries: 1
+  MaxAutoRetriesNextServer: 1
