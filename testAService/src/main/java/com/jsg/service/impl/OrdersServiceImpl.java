@@ -46,7 +46,7 @@ public class OrdersServiceImpl implements OrdersService {
 		order.setCreateTime(new Date());
 		orderMapper.insert(order);*/
 
-        return ResultUtil.success(ResultUtil.SUCCESS, "添加订单成功！", null);
+        return ResultUtil.success("添加订单成功！", null);
     }
 
 }

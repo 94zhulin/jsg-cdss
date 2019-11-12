@@ -34,7 +34,7 @@ public class HzxxMdmServiceImpl implements HzxxMdmService {
      * @throws Exception
      */
     public ResultBase getHzxx() throws Exception {
-        return ResultUtil.success(ResultUtil.SUCCESS, "患者信息列表", hzMapper.selectAll());
+        return ResultUtil.success("患者信息列表", hzMapper.selectAll());
     }
 
 }

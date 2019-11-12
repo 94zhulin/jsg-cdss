@@ -41,7 +41,7 @@ public class BankServiceImpl implements BankService {
         logger.info("model:" + model);
 //        int m=10/0; //测试异常回滚
         fyMapper.insert(model);
-        return ResultUtil.success(ResultUtil.SUCCESS, "添加成功！", null);
+        return ResultUtil.success("添加成功！", null);
     }
 
     /**
@@ -51,7 +51,7 @@ public class BankServiceImpl implements BankService {
      * @throws Exception
      */
     public ResultBase getAll() throws Exception {
-        return ResultUtil.success(ResultUtil.SUCCESS, "列表", fyMapper.selectAll());
+        return ResultUtil.success("列表", fyMapper.selectAll());
     }
 
 }

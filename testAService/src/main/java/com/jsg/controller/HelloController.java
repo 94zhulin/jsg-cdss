@@ -21,11 +21,11 @@ public class HelloController {
 
     @GetMapping("/hello")
     public ResultBase helloworld() {
-        ResultBase resultBase = ResultUtil.success(ResultUtil.SUCCESS, "开发环境hello", "");
+        ResultBase resultBase = ResultUtil.success("开发环境hello", "");
         try {
             return resultBase;
         } catch (Exception e) {
-            resultBase = ResultUtil.exception(ResultUtil.EXCEPTION, e.getMessage());
+            resultBase = ResultUtil.exception(e.getMessage());
         }
         return resultBase;
     }

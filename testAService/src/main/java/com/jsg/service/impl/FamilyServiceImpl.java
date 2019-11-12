@@ -44,7 +44,7 @@ public class FamilyServiceImpl implements FamilyService {
         model.setCreateTime(df.parse(dto.getCreateTime()));
         logger.info("model:" + model);
         fyMapper.insert(model);
-        return ResultUtil.success(ResultUtil.SUCCESS, "添加家庭成员成功！", null);
+        return ResultUtil.success("添加家庭成员成功！", null);
     }
 
     /**
@@ -54,7 +54,7 @@ public class FamilyServiceImpl implements FamilyService {
      * @throws Exception
      */
     public ResultBase getAll() throws Exception {
-        return ResultUtil.success(ResultUtil.SUCCESS, "家庭成员列表", fyMapper.selectAll());
+        return ResultUtil.success("家庭成员列表", fyMapper.selectAll());
     }
 
 }
