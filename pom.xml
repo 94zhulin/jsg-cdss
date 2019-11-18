@@ -176,12 +176,6 @@
 
             <!-- Log4j & logback -->
             <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>${slf4j.version}</version>
-                <scope>compile</scope>
-            </dependency>
-            <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-core</artifactId>
                 <version>${logback.version}</version>
@@ -204,23 +198,12 @@
                 <artifactId>jedis</artifactId>
                 <version>${redis.version}</version>
             </dependency>
-            <!-- rocketMQ -->
-            <dependency>
-                <groupId>com.alibaba.rocketmq</groupId>
-                <artifactId>rocketmq-client</artifactId>
-                <version>${rocketmq.version}</version>
-            </dependency>
 
             <!-- Junit -->
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
                 <version>${junit.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>log4j</groupId>
-                <artifactId>log4j</artifactId>
-                <version>1.2.17</version>
             </dependency>
 
             <!--Seata-->
@@ -268,7 +251,7 @@
         <module>qualificationService</module>
         <module>generalService</module>
         <module>klgbaseService</module>
-		<module>ruleService</module>
+        <module>ruleService</module>
         <!--cloud-->
         <module>registry</module>
         <module>proxy</module>

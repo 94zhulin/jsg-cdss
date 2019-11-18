@@ -33,7 +33,7 @@ public class MainController {
         try {
             resultBase = userService.getUsers();
         } catch (Exception e) {
-            resultBase = ResultUtil.exception(ResultUtil.EXCEPTION, e.getMessage());
+            resultBase = ResultUtil.exception( e.getMessage());
         }
         long endTime = System.currentTimeMillis(); // 获取结束时间
         logger.info("程序运行时间： " + (endTime - startTime) + "ms");
@@ -48,7 +48,7 @@ public class MainController {
         try {
             resultBase = userService.getUser(dto);
         } catch (Exception e) {
-            resultBase = ResultUtil.exception(ResultUtil.EXCEPTION, e.getMessage());
+            resultBase = ResultUtil.exception( e.getMessage());
         }
         long endTime = System.currentTimeMillis(); // 获取结束时间
         logger.info("程序运行时间： " + (endTime - startTime) + "ms");
@@ -65,7 +65,7 @@ public class MainController {
             resultBase = userService.saveBank(dto);
         } catch (Exception e) {
             logger.info("Exception:" + e);
-            resultBase = ResultUtil.exception(ResultUtil.EXCEPTION, e.getMessage());
+            resultBase = ResultUtil.exception(e.getMessage());
         }
         long endTime = System.currentTimeMillis(); // 获取结束时间
         logger.info("程序运行时间： " + (endTime - startTime) + "ms");

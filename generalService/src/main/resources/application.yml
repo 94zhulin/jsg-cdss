@@ -4,3 +4,8 @@ apiStatus:
   failure: 999
   exc: 500
   success: 200
+
+###输出日志
+logging:
+  level:
+    com.jsg.dao.mysql: debug

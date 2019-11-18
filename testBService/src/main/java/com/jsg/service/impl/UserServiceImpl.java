@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public ResultBase getUsers() throws Exception {
-        return ResultUtil.success(ResultUtil.SUCCESS, "用户信息列表", userMapper.selectAll());
+        return ResultUtil.success( "用户信息列表", userMapper.selectAll());
     }
 
     /**
@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public ResultBase getUser(UserDTO dto) throws Exception {
-        return ResultUtil.success(ResultUtil.SUCCESS, "用户信息", userMapper.selectById(dto));
+        return ResultUtil.success("用户信息", userMapper.selectById(dto));
     }
 
 

@@ -26,5 +26,7 @@ public interface UserMapper {
 
     User selectUserRoleByUserId(@Param("userId") Integer userId);
 
+    User selectOnebyId(@Param("userId") Integer userId);
+
 
 }

@@ -2,7 +2,7 @@ package com.jsg.utils;
 
 import com.jsg.dao.mysql.PermissionMapper;
 import com.jsg.dao.mysql.RoleMapper;
-import com.jsg.dao.mysql.UserMapper;
+import com.jsg.dao.mysql.UserMapper2;
 import com.jsg.entity.Permission;
 import com.jsg.entity.Role;
 import com.jsg.entity.User;
@@ -22,7 +22,7 @@ import java.util.List;
 public class MyShiroRealm extends AuthorizingRealm {
 
     @Autowired
-    private UserMapper userMapper;
+    private UserMapper2 userMapper2;
 
     @Autowired
     private RoleMapper roleMapper;
@@ -58,7 +58,7 @@ public class MyShiroRealm extends AuthorizingRealm {
             user.setRole(role);
             return new SimpleAuthenticationInfo(user, password, getName());
         }
-        List<User> list = userMapper.selectByName(username);
+        List<User> list = userMapper2.selectByName(username);
         if (list.size() > 0) {
             User user = list.get(0);
             if (user != null && user.getStatus() == 1) {

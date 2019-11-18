@@ -3,15 +3,15 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.1.5.RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <groupId>com.jsg</groupId>
+        <artifactId>cdss</artifactId>
+        <version>1.0-SNAPSHOT</version>
     </parent>
     <groupId>com.jsg</groupId>
     <artifactId>proxy</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>proxy</name>
+    <packaging>jar</packaging>
     <description>Demo project for Spring Boot</description>
 
     <properties>
@@ -36,7 +36,7 @@
     <dependencies>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+            <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -49,25 +49,51 @@
         </dependency>
     </dependencies>
 
+
     <build>
         <finalName>proxy</finalName>
         <plugins>
+
+
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${springboot.version}</version>
                 <executions>
                     <execution>
+                        <id>repackage</id>
                         <goals>
+                            <goal>build-info</goal>
                             <goal>repackage</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>
-                                C:\Users\Administrator\Desktop\package\cds
-                            </outputDirectory>
+                            <classifier>exec</classifier>
+                            <additionalProperties>
+                                <build.number>0.0.1</build.number>
+                            </additionalProperties>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
+
+
+            <!--
+                        <plugin>
+                            <groupId>org.springframework.boot</groupId>
+                            <artifactId>spring-boot-maven-plugin</artifactId>
+                            <executions>
+                                <execution>
+                                    <goals>
+                                        <goal>repackage</goal>
+                                    </goals>
+                                    <configuration>
+                                        <outputDirectory>
+                                            C:\Users\Administrator\Desktop\package\cds
+                                        </outputDirectory>
+                                    </configuration>
+                                </execution>
+                            </executions>
+                        </plugin>-->
         </plugins>
     </build>
 

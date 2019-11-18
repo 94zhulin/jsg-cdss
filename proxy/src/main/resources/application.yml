@@ -1,5 +1,5 @@
 server:
-  port: 8888
+  port: 60391
 
 spring:
   application:
@@ -24,6 +24,21 @@ zuul:
     system:
       path: /system-api/**
       serviceId: system
+    generla:
+      path: /generla-api/**
+      serviceId: generla
+    klgbase:
+      path: /klgbase-api/**
+      serviceId: klgbase
+    qualification:
+      path: /qualification-api/**
+      serviceId: qualification
+    rule:
+      path: /rule-api/**
+      serviceId: rule
+    sso:
+      path: /sso-api/**
+      serviceId: sso
       #rpc:
       #path: /rpc-api/**
       #serviceId: rpc

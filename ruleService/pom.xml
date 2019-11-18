@@ -138,15 +138,19 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${springboot.version}</version>
                 <executions>
                     <execution>
+                        <id>repackage</id>
                         <goals>
+                            <goal>build-info</goal>
                             <goal>repackage</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>
-                                C:\Users\Administrator\Desktop\package\cds
-                            </outputDirectory>
+                            <classifier>exec</classifier>
+                            <additionalProperties>
+                                <build.number>0.0.1</build.number>
+                            </additionalProperties>
                         </configuration>
                     </execution>
                 </executions>
