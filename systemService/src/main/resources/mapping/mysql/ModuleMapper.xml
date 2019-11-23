@@ -93,7 +93,7 @@
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="create_userId" jdbcType="INTEGER" property="createUserId"/>
         <result column="update_userId" jdbcType="INTEGER" property="updateUserId"/>
-        <collection property="permissions" ofType="com.jsg.entity.Permission" select="findPermsByModuleId" column="id"/>
+        <collection property="permissionGeneras" ofType="com.jsg.entity.Permission" select="findPermsByModuleId" column="id"/>
         <collection property="children" ofType="com.jsg.entity.Module" select="list" column="id"/>
     </resultMap>
     <select id="list" parameterType="int" resultMap="selectModule">

@@ -80,7 +80,7 @@ public class ModuleController {
 
     @ApiOperation(value = "分配权限", notes = "系统管理-模块管理-给模块分配权限")
     @PostMapping(value = "/distribution-permissions/{moduleId}", produces = APPLICATION_JSON_UTF8_VALUE)
-    public ResultBase distributionPermissions(@PathVariable("moduleId") Integer moduleId, @RequestParam(value = "permissions") List<Integer> permissions) {
+    public ResultBase distributionPermissions(@PathVariable("moduleId") Integer moduleId, @RequestParam(value = "permissionGeneras") List<Integer> permissions) {
         return moduleService.distributionPermissions(moduleId, permissions);
     }
 

@@ -74,7 +74,7 @@ public class RoleController {
 
     @ApiOperation(value = "分配权限", notes = "系统管理-角色管理-给角色分配权限")
     @PostMapping(value = "/distribution-permissions/{roleId}", produces = APPLICATION_JSON_UTF8_VALUE)
-    public ResultBase distributionPermissions(@PathVariable("roleId") Integer roleId, @RequestParam(value = "permissions") List<Integer> permissions) {
+    public ResultBase distributionPermissions(@PathVariable("roleId") Integer roleId, @RequestParam(value = "permissionGeneras") List<Integer> permissions) {
         return roleService.distributionPermissions(roleId, permissions);
     }
 

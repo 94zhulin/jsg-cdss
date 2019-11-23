@@ -24,7 +24,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
  */
 @RestController
 @RequestMapping("/access-permissions")
-@Api(value = "/access-permissions", tags = "访问权限")
+@Api(value = "/access-permissionGeneras", tags = "访问权限")
 @Slf4j
 public class AccessPermissionsController {
 

@@ -9,8 +9,8 @@ spring:
 
 zuul:
   host:
-    connect-timeout-millis: 8000
-    socket-timeout-millis: 10000
+    connect-timeout-millis: 18000
+    socket-timeout-millis: 60000
   ignoredServices: '*'
   ignoreSecurityHeaders: false
   sensitiveHeaders:
@@ -24,9 +24,9 @@ zuul:
     system:
       path: /system-api/**
       serviceId: system
-    generla:
-      path: /generla-api/**
-      serviceId: generla
+    general:
+      path: /general-api/**
+      serviceId: general
     klgbase:
       path: /klgbase-api/**
       serviceId: klgbase
@@ -36,9 +36,9 @@ zuul:
     rule:
       path: /rule-api/**
       serviceId: rule
-    sso:
-      path: /sso-api/**
-      serviceId: sso
+    login:
+      path: /login-api/**
+      serviceId: login
       #rpc:
       #path: /rpc-api/**
       #serviceId: rpc
@@ -68,8 +68,8 @@ hystrix:
 ribbon:
   eureka:
     enable: true
-  ReadTimeout: 3000 #ribbon请求处理的超时时间3s
-  ConnectTimeout: 2000 #ribbon请求连接的超时时间2s
+  ReadTimeout: 10000 #ribbon请求处理的超时时间3s
+  ConnectTimeout: 10000 #ribbon请求连接的超时时间2s
   MaxAutoRetries: 1 #单个节点（服务器）最大重试次数，不包括首次调用
   MaxAutoRetriesNextServer: 1 #最多重试多少台个节点（服务器）,不包括首次调用
   OkToRetryOnAllOperations: false  #设置为false，只会对get请求进行重试,设置为true，便会对所有的请求进行重试

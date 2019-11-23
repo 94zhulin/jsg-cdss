@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
-/**
+/**generla
  * @author jeanson 进生
  * @date 2019/10/21 10:12
  */

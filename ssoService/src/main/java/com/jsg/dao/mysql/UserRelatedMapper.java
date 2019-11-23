@@ -6,26 +6,19 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * @author jeanson 进生
+ * @date 2019/11/19 16:48
+ */
 @Repository
-public interface UserMapper2 {
-    int deleteByPrimaryKey(Integer id);
+public interface UserRelatedMapper {
 
-    int insert(User record);
-
-    int insertSelective(User record);
-
-    User selectByPrimaryKey(Integer id);
-
-    int updateByPrimaryKeySelective(User record);
-
-    int updateByPrimaryKey(User record);
 
     List<User> selectByName(@Param("username") String username);
 
     User selectOnebyId(@Param("userId") Integer userId);
 
     List<User> selectByNameAndPhone(User user);
-
 
     int add(User user);
 }

@@ -2,7 +2,7 @@ package com.jsg.service.Impl;
 
 import com.jsg.base.result.ResultBase;
 import com.jsg.base.result.ResultUtil;
-import com.jsg.dao.mysql.UserMapper2;
+import com.jsg.dao.mysql.UserRelatedMapper;
 import com.jsg.entity.Token;
 import com.jsg.entity.User;
 import com.jsg.service.UserService;
@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Autowired
-    private UserMapper2 userMapper2;
+    private UserRelatedMapper userRelatedMapper;
 
     @Value("${apiStatus.failure}")
     private Integer failure;
@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResultBase edlPassword(Integer userId, String password, String odlPassword) {
         //Subject subject = SecurityUtils.getSubject();
-        User user = userMapper2.selectOnebyId(userId);
+        User user = userRelatedMapper.selectOnebyId(userId);
         ResultBase resultBase = ResultUtil.success(null, null);
         Md5Hash md5Hash = new Md5Hash(odlPassword, null, 2);
         Md5Hash newMd5Hash = new Md5Hash(password, null, 2);
@@ -69,7 +69,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResultBase add(User user) {
 
-        List<User> list = userMapper2.selectByNameAndPhone(user);
+        List<User> list = userRelatedMapper.selectByNameAndPhone(user);
         ResultBase resultBase = ResultUtil.success(null, null);
         if (list != null && list.size() > 0) {
             resultBase.setStatus(failure);
@@ -78,14 +78,14 @@ public class UserServiceImpl implements UserService {
             Md5Hash md5Hash = new Md5Hash(user.getPassword(), null, 2);
             user.setPassword(md5Hash.toString());
             user.setCreateTime(new Date());
-            userMapper2.add(user);
+            userRelatedMapper.add(user);
         }
         return resultBase;
     }
 
     @Override
     public ResultBase findUser(Integer userId) {
-        User user = userMapper2.selectOnebyId(userId);
+        User user = userRelatedMapper.selectOnebyId(userId);
         return ResultUtil.success(null, user);
     }
 

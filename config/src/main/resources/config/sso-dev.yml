@@ -34,7 +34,7 @@ feign:
     enabled: true #开启Hystrix以支持服务熔断
 
 mybatis:
-  mapper-locations: mapping/*.xml
+  mapper-locations: mapping/**.xml
 
 # 分布式事物
 ## tx-manager 配置
