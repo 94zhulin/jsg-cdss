@@ -76,24 +76,6 @@
                 </executions>
             </plugin>
 
-
-            <!--
-                        <plugin>
-                            <groupId>org.springframework.boot</groupId>
-                            <artifactId>spring-boot-maven-plugin</artifactId>
-                            <executions>
-                                <execution>
-                                    <goals>
-                                        <goal>repackage</goal>
-                                    </goals>
-                                    <configuration>
-                                        <outputDirectory>
-                                            C:\Users\Administrator\Desktop\package\cds
-                                        </outputDirectory>
-                                    </configuration>
-                                </execution>
-                            </executions>
-                        </plugin>-->
         </plugins>
     </build>
 
