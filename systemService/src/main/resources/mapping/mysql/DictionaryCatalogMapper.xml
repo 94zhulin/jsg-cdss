@@ -103,14 +103,29 @@
     </select>
 
 
-    <select id="listDictionaryType" resultMap="SysDictionaryCatalogMap">
-        SELECT * from sys_dictionary_catalog WHERE 1=1
-        <if test="dictionaryCatalogId != null">
-            and parent_id = #{dictionaryCatalogId}
-        </if>
-        <if test="queryKey != null">
-            AND concat(name,code) like ('%' #{queryKey} '%')
-        </if>
+    <!--01.自关联查询-->
+    <resultMap id="SysDictionaryCatalogMap_1" type="com.jsg.entity.DictionaryCatalog">
+        <result property="id" column="id"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="name" column="name"/>
+        <result property="label" column="label"/>
+        <result property="code" column="code"/>
+        <result property="level" column="level"/>
+        <result property="orderIndex" column="order_index"/>
+        <result property="childNum" column="child_num"/>
+        <result property="dictNum" column="dict_num"/>
+        <result property="status" column="status"/>
+        <result property="createTime" column="create_time" javaType="java.util.Date"/>
+        <result property="updateTime" column="update_time" javaType="java.util.Date"/>
+        <result property="createUserId" column="create_userId"/>
+        <result property="updateUserId" column="update_userId"/>
+        <collection property="children" ofType="com.jsg.entity.DictionaryCatalog" select="listDictionaryType"
+                    column="id"/>
+    </resultMap>
+
+    <select id="listDictionaryType" resultMap="SysDictionaryCatalogMap_1">
+        SELECT catalog.* ,catalog.`name` as label from sys_dictionary_catalog catalog WHERE 1=1
+        and parent_id = #{dictionaryCatalogId}
     </select>
 
     <delete id="DelDictionaryType" parameterType="int">

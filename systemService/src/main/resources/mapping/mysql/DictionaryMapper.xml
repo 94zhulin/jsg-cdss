@@ -4,6 +4,7 @@
     <resultMap id="SysDictionaryMap" type="com.jsg.entity.Dictionary">
         <result property="id" column="id"/>
         <result property="catalogId" column="catalog_id"/>
+        <result property="catalogName" column="catalogName"/>
         <result property="name" column="name"/>
         <result property="code" column="code"/>
         <result property="status" column="status"/>
@@ -86,15 +87,21 @@
 
 
     <select id="listDictionary" resultMap="SysDictionaryMap">
-        SELECT * from sys_dictionary WHERE 1=1
+        SELECT
+        dic.*, catalog.`name` as catalogName
+        FROM
+        sys_dictionary dic
+        LEFT JOIN sys_dictionary_catalog catalog ON dic.catalog_id = catalog.id
+        WHERE
+        1 = 1
         <if test="dictionaryCatalogId != null">
-            and catalog_id = #{dictionaryCatalogId}
+            and dic.catalog_id = #{dictionaryCatalogId}
         </if>
         <if test="status != null">
-            and status = #{status}
+            and dic.status = #{status}
         </if>
         <if test="queryKey != null">
-            AND concat(name,code) like ('%' #{queryKey} '%')
+            AND concat(dic.name,dic.code) like ('%' #{queryKey} '%')
         </if>
     </select>
 

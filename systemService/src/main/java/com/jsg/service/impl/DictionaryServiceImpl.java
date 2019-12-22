@@ -106,7 +106,7 @@ public class DictionaryServiceImpl implements DictionaryService {
     public ResultBase DelDictionaryType(Integer dictionaryTypeId) {
         ResultBase resultBase = ResultUtil.success(null, dictionaryTypeId);
         //TODO 是否二级目录, 有就不能删除
-        List<DictionaryCatalog> list = dictionaryCatalogMapper.listDictionaryType(dictionaryTypeId, null);
+        List<DictionaryCatalog> list = dictionaryCatalogMapper.listDictionaryType(dictionaryTypeId);
         if (list.size() > 0) {
             resultBase.setStatus(failure);
             resultBase.setMsg("存在二级目录无法删除!");
@@ -142,9 +142,12 @@ public class DictionaryServiceImpl implements DictionaryService {
 
 
     @Override
-    public ResultBase listDictionaryType(Integer dictionaryCatalogId, String queryKey, Pageable pageable) {
+    public ResultBase listDictionaryType(Integer dictionaryCatalogId,Pageable pageable) {
         PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
-        List<DictionaryCatalog> list = dictionaryCatalogMapper.listDictionaryType(dictionaryCatalogId, queryKey);
+        if (dictionaryCatalogId == null) {
+            dictionaryCatalogId = 1;
+        }
+        List<DictionaryCatalog> list = dictionaryCatalogMapper.listDictionaryType(dictionaryCatalogId);
         PageInfo<DictionaryCatalog> pageInfo = new PageInfo<>(list);
         return ResultUtil.success(null, pageInfo);
     }

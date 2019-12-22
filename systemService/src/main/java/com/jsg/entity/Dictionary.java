@@ -17,6 +17,8 @@ public class Dictionary {
     @NotNull(message = "type is notnull")
     @ApiModelProperty(position = 1, value = "字典类别ID", required = true)
     private Integer catalogId;
+    @ApiModelProperty(position = 5, value = "字典类别名称(接口返回)", readOnly = true)
+    private String catalogName;
     @NotNull(message = "type is notnull")
     @ApiModelProperty(position = 2, value = "字典名称", required = true)
     private String name;
@@ -34,4 +36,5 @@ public class Dictionary {
     private Integer createUserId;
     @ApiModelProperty(position = 8, value = "修改人", required = true)
     private Integer updateUserId;
+
 }

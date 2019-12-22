@@ -18,7 +18,7 @@ public interface DictionaryCatalogMapper {
 
     DictionaryCatalog findOneByDictionaryCatalogId(@Param("dictionaryCatalogId") Integer dictionaryCatalogId);
 
-    List<DictionaryCatalog> listDictionaryType(@Param("dictionaryCatalogId") Integer dictionaryCatalogId, @Param("queryKey") String queryKey);
+    List<DictionaryCatalog> listDictionaryType(@Param("dictionaryCatalogId") Integer dictionaryCatalogId);
 
     int DelDictionaryType(@Param("dictionaryTypeId") Integer dictionaryTypeId);
 

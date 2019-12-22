@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author jeanson 进生
@@ -20,6 +21,8 @@ public class DictionaryCatalog {
     @NotNull(message = "type is notnull")
     @ApiModelProperty(position = 2, value = "字典类别名称", required = true)
     private String name;
+    @ApiModelProperty(position = 2, value = "字典别类名称(多级菜单后台返回)", readOnly = true)
+    private String label;
     @NotNull(message = "type is notnull")
     @ApiModelProperty(position = 3, value = "字典类别编码", required = true)
     private String code;
@@ -46,4 +49,5 @@ public class DictionaryCatalog {
     @NotNull(message = "type is notnull")
     @ApiModelProperty(position = 10, value = "修改人", required = true)
     private Integer updateUserId;
+    private List<DictionaryCatalog> children;
 }

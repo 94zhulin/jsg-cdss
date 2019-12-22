@@ -17,7 +17,7 @@ public interface DictionaryService {
 
     ResultBase DelDictionaryType(Integer dictionaryTypeId);
 
-    ResultBase listDictionaryType(Integer dictionaryCatalogId, String queryKey, Pageable pageable);
+    ResultBase listDictionaryType(Integer dictionaryCatalogId, Pageable pageable);
 
     ResultBase listDictionary(Integer dictionaryCatalogId, Integer status, String queryKey, Pageable pageable);
 

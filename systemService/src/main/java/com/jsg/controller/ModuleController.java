@@ -84,4 +84,6 @@ public class ModuleController {
         return moduleService.distributionPermissions(moduleId, permissions);
     }
 
+
+
 }

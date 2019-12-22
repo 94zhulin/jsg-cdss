@@ -187,16 +187,17 @@ public class RuleServiceImpl implements RuleService {
         itemFalse.setKlgCatalogId(ruleBase.getConditionsFalseTypeId());//知识库类别ID
         itemFalse.setKlgItemId(ruleBase.getFalseItemId());
         ruleItemsMapper.add(itemFalse);
-
+        //'规则项类型：1-满足条件项目；2-条件真关联项目；3-条件假关联项目'
+        //'满足条件类型:1-人资，2-患者，99-其他',
         //TODO 人资集合
         List<Patients> staffPatients = ruleBase.getStaffPatients();
-        setData(staffPatients, ruleBase);
+        setData(staffPatients, ruleBase,1,1);
         //TODO 患者集合
         List<Patients> hzPatients = ruleBase.getHzPatients();
-        setData(hzPatients, ruleBase);
+        setData(hzPatients, ruleBase,1,2);
         //TODO 其他
         List<Patients> otherPatients = ruleBase.getOtherPatients();
-        setData(otherPatients, ruleBase);
+        setData(otherPatients, ruleBase,1,99);
         return ResultUtil.success(null, ruleBase);
     }
 
@@ -246,16 +247,18 @@ public class RuleServiceImpl implements RuleService {
             itemFalse.setKlgCatalogId(ruleBase.getConditionsFalseTypeId());//知识库类别ID
             itemFalse.setKlgItemId(ruleBase.getFalseItem().getId());
             ruleItemsMapper.add(itemFalse);
+            //'规则项类型：1-满足条件项目；2-条件真关联项目；3-条件假关联项目'
+            //'满足条件类型:1-人资，2-患者，99-其他',
 
             //TODO 人资集合
             List<Patients> staffPatients = ruleBase.getStaffPatients();
-            setData(staffPatients, ruleBase);
+            setData(staffPatients, ruleBase, 1, 1);
             //TODO 患者集合
             List<Patients> hzPatients = ruleBase.getHzPatients();
-            setData(hzPatients, ruleBase);
+            setData(hzPatients, ruleBase, 1, 2);
             //TODO 其他
             List<Patients> otherPatients = ruleBase.getOtherPatients();
-            setData(otherPatients, ruleBase);
+            setData(otherPatients, ruleBase, 1, 99);
         }
         return ResultUtil.success(null, ruleBase);
 
@@ -301,12 +304,12 @@ public class RuleServiceImpl implements RuleService {
         return ResultUtil.success(null, null);
     }
 
-    private void setData(List<Patients> hzPatients, RuleBase ruleBase) {
+    private void setData(List<Patients> hzPatients, RuleBase ruleBase, Integer ruleItemType, Integer conditionType) {
         for (Patients hzPatient : hzPatients) {
             RuleItems item = new RuleItems();
             item.setRuleId(ruleBase.getId()); //TODO  规则id
-            item.setRuleItemType(1); //'规则项类型：1-满足条件项目；2-条件真关联项目；3-条件假关联项目'
-            item.setConditionType(2);//'满足条件类型:1-人资，2-患者，99-其他',
+            item.setRuleItemType(ruleItemType); //'规则项类型：1-满足条件项目；2-条件真关联项目；3-条件假关联项目'
+            item.setConditionType(conditionType);//'满足条件类型:1-人资，2-患者，99-其他',
             item.setKlgCatalogId(hzPatient.getTypeId());//知识库类别ID
             item.setKlgItemId(hzPatient.getTypeId());
             item.setKlgItemPropname(hzPatient.getName());

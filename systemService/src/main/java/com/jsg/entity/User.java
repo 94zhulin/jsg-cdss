@@ -13,13 +13,13 @@ import java.util.Date;
 public class User {
     @ApiModelProperty(value = "用户ID")
     private Integer id;
-    @ApiModelProperty(position = 1, value = "角色ID", required = true)
+    @ApiModelProperty(position = 1, value = "角色ID", readOnly = true)
     private Integer roleId;
     @ApiModelProperty(position = 2, value = "用户名", required = true)
     private String userName;
     @ApiModelProperty(position = 3, value = "密码", required = true)
     private String password;
-    @ApiModelProperty(position = 4, value = "医生编码", required = true)
+    @ApiModelProperty(position = 4, value = "医生编码", readOnly = true)
     private String ysCode;
     @ApiModelProperty(position = 5, value = "科室编码", required = true)
     private String ksCode;

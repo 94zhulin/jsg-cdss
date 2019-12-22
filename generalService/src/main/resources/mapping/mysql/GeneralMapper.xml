@@ -4,7 +4,16 @@
 
 
     <select id="department" parameterType="string" resultType="com.jsg.entity.Department">
-        select * from sys_department t1 where 1=1
+        SELECT
+        t1.hospital_id AS hospitalId,
+        t1.ks_code AS ksCode,
+        t1.ks_name AS ksName,
+        t1.ks_type AS ksType,
+        t1.stat_time AS statTime
+        FROM
+        sys_department t1
+        WHERE
+        1 = 1
         <if test="queryKey != null">
             AND concat(ks_code,ks_name) like ('%' #{queryKey} '%')
         </if>

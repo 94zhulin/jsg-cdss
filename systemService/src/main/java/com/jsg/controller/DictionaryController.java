@@ -41,12 +41,11 @@ public class DictionaryController {
 
     @ApiOperation(value = "查询字典类别", notes = "查询字典类别")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "queryKey", value = "编码/名称", dataType = "string"),
             @ApiImplicitParam(name = "dictionaryCatalogId", value = "字典类别id", dataType = "int")
     })
     @PostMapping(value = "/list/dictionary-type", produces = APPLICATION_JSON_UTF8_VALUE)
-    public ResultBase listDictionaryType(Integer dictionaryCatalogId, String queryKey, Pageable pageable) {
-        return dictionaryService.listDictionaryType(dictionaryCatalogId, queryKey, pageable);
+    public ResultBase listDictionaryType(Integer dictionaryCatalogId, Pageable pageable) {
+        return dictionaryService.listDictionaryType(dictionaryCatalogId,  pageable);
     }
 
 
