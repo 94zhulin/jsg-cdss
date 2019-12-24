@@ -25,6 +25,15 @@ public class Patients {
     private String endValue; //结束值
     private Date endValueDate;//结束时间
     private Date startValueDate;//开始时间
+    private Boolean result = false;
+    private String pinyin;
+    //知识库属性值类型：1-布尔，2-数字，3-数字范围，4-日期，5-日期范围，6-文本，7-列表',
+    private Boolean startValueBoo;//开始值
+    private int startValueInt;//开始值
+    private List<String> startValueList;//开始值
+    private Boolean endValueBoo;//结束值
+    private int endValueInt;//结束值
+    private List<String> endValueList;//结束值
 
 
 }

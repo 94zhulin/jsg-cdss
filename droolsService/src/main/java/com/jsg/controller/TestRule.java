@@ -2,18 +2,22 @@ package com.jsg.controller;
 
 import com.github.stuxuhai.jpinyin.PinyinException;
 import com.jsg.entity.Patients;
+import com.jsg.utils.GenerateRulesUtils;
 import org.drools.core.impl.InternalKnowledgeBase;
 import org.drools.core.impl.KnowledgeBaseFactory;
 import org.junit.Test;
 import org.kie.api.io.ResourceType;
 import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.rule.FactHandle;
 import org.kie.internal.builder.KnowledgeBuilder;
 import org.kie.internal.builder.KnowledgeBuilderError;
 import org.kie.internal.builder.KnowledgeBuilderErrors;
 import org.kie.internal.builder.KnowledgeBuilderFactory;
 import org.kie.internal.io.ResourceFactory;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author jeanson 进生
@@ -51,12 +55,20 @@ public class TestRule {
             Boolean result = test.getResult();
             // 执行规则
             kSession = kBase.newKieSession();
-            kSession.insert(test);
+            HashMap<String, Boolean> ruleexecutionResult = new HashMap<>();
+            kSession.setGlobal("ruleexecutionResult", ruleexecutionResult);
+            FactHandle insert = kSession.insert(test);
             int i = kSession.fireAllRules();
-            if (result){
-                    System.out.println(result);
-            }
             System.out.println("结果:" + i);
+            Set<String> keys = ruleexecutionResult.keySet();
+
+            //TODO  条件数量字段
+            int count = 12;
+            for (String key : keys) {
+                Boolean value = ruleexecutionResult.get(key);
+                System.out.println("key：" + key + "---" + "value:" + value);
+            }
+
         } catch (Exception e) {
             System.out.println("规则执行异常" + e);
         } finally {

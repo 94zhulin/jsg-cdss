@@ -1,9 +1,12 @@
 package com.jsg.service;
 
+import com.github.stuxuhai.jpinyin.PinyinException;
 import com.jsg.base.result.ResultBase;
 import com.jsg.entity.Pageable;
 import com.jsg.entity.RuleBase;
 import com.jsg.entity.RuleCatalog;
+
+import java.io.UnsupportedEncodingException;
 
 /**
  * @author jeanson 进生
@@ -26,9 +29,9 @@ public interface RuleService {
 
     ResultBase del(Integer catalogId);
 
-    ResultBase addRule(RuleBase ruleBase);
+    ResultBase addRule(RuleBase ruleBase) throws PinyinException, UnsupportedEncodingException;
 
-    ResultBase edlRule(RuleBase ruleBase);
+    ResultBase edlRule(RuleBase ruleBase) throws UnsupportedEncodingException, PinyinException;
 
     ResultBase delRule(Integer id, Integer ruleId);
 
@@ -37,4 +40,7 @@ public interface RuleService {
     ResultBase ruleHistory(String ids, Pageable pageable);
 
     ResultBase ruleReduction(Integer ids, Integer pageable);
+
+    ResultBase operation(RuleBase ruleBase);
+
 }

@@ -2,16 +2,28 @@ package com.jsg.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.github.stuxuhai.jpinyin.PinyinException;
+import com.github.stuxuhai.jpinyin.PinyinFormat;
+import com.github.stuxuhai.jpinyin.PinyinHelper;
 import com.jsg.base.result.ResultBase;
 import com.jsg.base.result.ResultUtil;
 import com.jsg.dao.mysql.*;
 import com.jsg.entity.*;
 import com.jsg.service.RuleService;
+import com.jsg.utils.GenerateRulesUtils;
+import org.drools.core.impl.InternalKnowledgeBase;
+import org.drools.core.impl.KnowledgeBaseFactory;
+import org.kie.api.io.ResourceType;
+import org.kie.api.runtime.KieSession;
+import org.kie.internal.builder.KnowledgeBuilder;
+import org.kie.internal.builder.KnowledgeBuilderFactory;
+import org.kie.internal.io.ResourceFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.io.UnsupportedEncodingException;
+import java.util.*;
 
 /**
  * @author jeanson 进生
@@ -25,21 +37,23 @@ public class RuleServiceImpl implements RuleService {
     @Autowired
     private RuleBaseMapper ruleBaseMapper;
     @Autowired
-    RuleItemsMapper ruleItemsMapper;
+    private RuleItemsMapper ruleItemsMapper;
     @Autowired
-    RuleValueBooleanMapper ruleValueBooleanMapper;
+    private RuleValueBooleanMapper ruleValueBooleanMapper;
     @Autowired
-    RuleValueDateMapper ruleValueDateMapper;
+    private RuleValueDateMapper ruleValueDateMapper;
     @Autowired
-    RuleValueDaterangeMapper ruleValueDaterangeMapper;
+    private RuleValueDaterangeMapper ruleValueDaterangeMapper;
     @Autowired
-    RuleValueListMapper ruleValueListMapper;
+    private RuleValueListMapper ruleValueListMapper;
     @Autowired
-    RuleValueNumberMapper ruleValueNumberMapper;
+    private RuleValueNumberMapper ruleValueNumberMapper;
     @Autowired
-    RuleValueNumberrangeMapper ruleValueNumberrangeMapper;
+    private RuleValueNumberrangeMapper ruleValueNumberrangeMapper;
     @Autowired
-    RuleValueStringMapper ruleValueStringMapper;
+    private RuleValueStringMapper ruleValueStringMapper;
+    @Autowired
+    private RuleDroolsMapper ruleDroolsMapper;
 
 
     @Value("${apiStatus.failure}")
@@ -168,7 +182,7 @@ public class RuleServiceImpl implements RuleService {
     }
 
     @Override
-    public ResultBase addRule(RuleBase ruleBase) {
+    public ResultBase addRule(RuleBase ruleBase) throws PinyinException, UnsupportedEncodingException {
         ruleBase.setVersion(1);
         int add = ruleBaseMapper.add(ruleBase);
         //TODO 规则分类表 中的  rule_num 规则数量 加1
@@ -191,20 +205,31 @@ public class RuleServiceImpl implements RuleService {
         //'满足条件类型:1-人资，2-患者，99-其他',
         //TODO 人资集合
         List<Patients> staffPatients = ruleBase.getStaffPatients();
-        setData(staffPatients, ruleBase,1,1);
+        setData(staffPatients, ruleBase, 1, 1);
         //TODO 患者集合
         List<Patients> hzPatients = ruleBase.getHzPatients();
-        setData(hzPatients, ruleBase,1,2);
+        setData(hzPatients, ruleBase, 1, 2);
         //TODO 其他
         List<Patients> otherPatients = ruleBase.getOtherPatients();
-        setData(otherPatients, ruleBase,1,99);
+        setData(otherPatients, ruleBase, 1, 99);
+        List<Patients> datas = new ArrayList<>();
+        datas.addAll(staffPatients);
+        datas.addAll(hzPatients);
+        datas.addAll(otherPatients);
+        rulesStorage(datas, ruleBase);
+
         return ResultUtil.success(null, ruleBase);
     }
 
     @Override
-    public ResultBase edlRule(RuleBase ruleBase) {
+    public ResultBase edlRule(RuleBase ruleBase) throws UnsupportedEncodingException, PinyinException {
         //TODO 1新版本  0 不变
         Integer isVersion = ruleBase.getIsVersion();
+        //TODO 停用当前规则对象,生成的规则
+        RuleDrools record = new RuleDrools();
+        record.setRuleBaseid(ruleBase.getId());
+        record.setStatus(0);
+        int s = ruleDroolsMapper.updateByRuleBaseId(record);
         if (isVersion == 1) {
             //TODO 根据code 查询历史版本号
             String ids = ruleBaseMapper.selechistoryVersion(ruleBase.getRelatedRuleIds());
@@ -216,7 +241,7 @@ public class RuleServiceImpl implements RuleService {
             Integer newVersion = ruleBase.getVersion() + 1;
             ruleBase.setVersion(newVersion);
             //TODO  新增规则
-            addRule(ruleBase);
+            ResultBase resultBase = addRule(ruleBase);
             //TODO  当前规则对象 假删除
             int i = ruleBaseMapper.isDel(ruleBase.getId());
         } else {
@@ -231,7 +256,6 @@ public class RuleServiceImpl implements RuleService {
             ruleValueNumberMapper.delByRuleId(ruleBase.getId());
             ruleValueNumberrangeMapper.delByRuleId(ruleBase.getId());
             ruleValueStringMapper.delByRuleId(ruleBase.getId());
-
             //TODO 重新执行 写 操作
             //条件真的项目id
             RuleItems itemTrue = new RuleItems();
@@ -249,7 +273,6 @@ public class RuleServiceImpl implements RuleService {
             ruleItemsMapper.add(itemFalse);
             //'规则项类型：1-满足条件项目；2-条件真关联项目；3-条件假关联项目'
             //'满足条件类型:1-人资，2-患者，99-其他',
-
             //TODO 人资集合
             List<Patients> staffPatients = ruleBase.getStaffPatients();
             setData(staffPatients, ruleBase, 1, 1);
@@ -259,6 +282,12 @@ public class RuleServiceImpl implements RuleService {
             //TODO 其他
             List<Patients> otherPatients = ruleBase.getOtherPatients();
             setData(otherPatients, ruleBase, 1, 99);
+            List<Patients> datas = new ArrayList<>();
+            datas.addAll(staffPatients);
+            datas.addAll(hzPatients);
+            datas.addAll(otherPatients);
+            rulesStorage(datas, ruleBase);
+
         }
         return ResultUtil.success(null, ruleBase);
 
@@ -302,6 +331,77 @@ public class RuleServiceImpl implements RuleService {
         ruleBaseMapper.ruleReduction(reId);
         //TODO 用户选择部署后, droools 重新加载规则
         return ResultUtil.success(null, null);
+    }
+
+    @Override
+    public ResultBase operation(RuleBase ruleBase) {
+        KieSession kSession = null;
+        try {
+            // 从数据库根据code查规则
+            List<RuleDrools> ruleDroolss = ruleDroolsMapper.selectRuleStrByCode(ruleBase.getCode());
+            KnowledgeBuilder kb = KnowledgeBuilderFactory.newKnowledgeBuilder();
+            boolean flag = true;
+            //TODO 拦截等级高的先执行
+            for (RuleDrools ruleDrools : ruleDroolss) {
+                String str = ruleDrools.getStr();
+                kb.add(ResourceFactory.newByteArrayResource(str.getBytes("utf-8")), ResourceType.DRL);
+                InternalKnowledgeBase kBase = KnowledgeBaseFactory.newKnowledgeBase();
+                kBase.addPackages(kb.getKnowledgePackages());
+                // 执行规则
+                kSession = kBase.newKieSession();
+                HashMap<String, Boolean> ruleexecutionResult = new HashMap<>();
+                kSession.setGlobal("ruleexecutionResult", ruleexecutionResult);
+                List<Patients> datas = new ArrayList<>();
+                datas.addAll(ruleBase.getHzPatients());
+                datas.addAll(ruleBase.getOtherPatients());
+                datas.addAll(ruleBase.getStaffPatients());
+                for (Patients patients : datas) {
+                    //TODO  判断数据类型 知识库属性值类型：1-布尔，2-数字，3-数字范围，4-日期，5-日期范围，6-文本，7-列表',
+                    Integer klgItemValueType = patients.getKlgItemValueType();
+                    String endValue = patients.getEndValue();
+                    String ruleName = PinyinHelper.convertToPinyinString(patients.getItemName(), "_", PinyinFormat.WITHOUT_TONE);
+                    patients.setPinyin(ruleName);
+                    switch (klgItemValueType) {
+                        case 1:
+                            patients.setEndValueBoo(Boolean.valueOf(endValue).booleanValue());
+                            break;
+                        case 2:
+                            patients.setEndValueInt(Integer.valueOf(endValue));
+                            break;
+                        case 3:
+                            patients.setEndValueInt(Integer.valueOf(endValue));
+                            break;
+                        case 4:
+                            break;
+                        case 5:
+                            break;
+                        case 6:
+                            patients.setEndValue(endValue);
+                            break;
+                        case 7:
+                            break;
+                    }
+                    //TODO  类型转换
+                    kSession.insert(patients);
+                }
+                int i = kSession.fireAllRules();
+                System.out.println("执行规则数量:" + i);
+                Set<String> keys = ruleexecutionResult.keySet();
+                for (String key : keys) {
+                    Boolean value = ruleexecutionResult.get(key);
+                    System.out.println("key：" + key + "---" + "value:" + value);
+                }
+
+
+            }
+
+        } catch (Exception e) {
+            System.out.println("规则执行异常" + e);
+        } finally {
+            if (null != kSession)
+                kSession.dispose();
+        }
+        return null;
     }
 
     private void setData(List<Patients> hzPatients, RuleBase ruleBase, Integer ruleItemType, Integer conditionType) {
@@ -385,6 +485,25 @@ public class RuleServiceImpl implements RuleService {
 
         }
 
+    }
+
+    private void rulesStorage(List<Patients> datas, RuleBase ruleBase) throws UnsupportedEncodingException, PinyinException {
+        //TODO 规则生成成功,进行入库
+        String strRule = GenerateRulesUtils.generateRules(datas);
+        RuleDrools ruleDrools = new RuleDrools();
+        ruleDrools.setRuleBaseid(ruleBase.getId());
+        ruleDrools.setName(ruleBase.getName());
+        ruleDrools.setCode(ruleBase.getCode());
+        ruleDrools.setPolicyType(ruleBase.getPolicyType());
+        //TODO 状态：0-停用；1-启用
+        ruleDrools.setStatus(1);
+        ruleDrools.setStr(strRule);
+        ruleDrools.setVersion(ruleBase.getVersion());
+        ruleDrools.setCreateTime(new Date());
+        ruleDrools.setUpdateTime(new Date());
+        ruleDrools.setUpdateUserid(ruleBase.getUpdateUserid());
+        ruleDrools.setCreateUserid(ruleBase.getCreateUserid());
+        ruleDroolsMapper.insert(ruleDrools);
     }
 
 

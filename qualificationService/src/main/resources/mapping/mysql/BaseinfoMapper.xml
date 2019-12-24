@@ -34,20 +34,21 @@
         WHERE
         1 = 1
         <if test="sex != null">
-            sex = #{sex}
+            and sex = #{sex}
         </if>
         <if test="ksCode != null">
-            ks_code = #{ksCode}
+            and ks_code = #{ksCode}
         </if>
-        <if test="profTitle != null">
-            prof_title = #{profTitle}
+        <if test="position != null">
+            and prof_title = #{position}
         </if>
-        <if test="profTitle != null">
-            prof_title = #{profTitle}
+
+        <if test="queryKey != null">
+            AND concat(full_name,yxzy_name) like ('%'#{queryKey}'%')
         </if>
-        <if test="zzName != null">
-            ${zzName} = 1
-        </if>
+        <!--        <if test="zzName != null">
+                    and ${zzName} = 1
+                </if>-->
     </select>
 
 </mapper>

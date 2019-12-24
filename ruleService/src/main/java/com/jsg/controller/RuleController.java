@@ -1,5 +1,6 @@
 package com.jsg.controller;
 
+import com.github.stuxuhai.jpinyin.PinyinException;
 import com.jsg.base.result.ResultBase;
 import com.jsg.entity.Pageable;
 import com.jsg.entity.RuleBase;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.io.UnsupportedEncodingException;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
@@ -65,14 +68,38 @@ public class RuleController {
     @ApiOperation(value = "添加规则")
     @PostMapping(value = "/add-rule", consumes = APPLICATION_JSON_UTF8_VALUE)
     public ResultBase addRule(@RequestBody @Validated RuleBase ruleBase) {
-        return ruleService.addRule(ruleBase);
+        ResultBase resultBase = new ResultBase();
+        try {
+            resultBase = ruleService.addRule(ruleBase);
+        } catch (PinyinException e) {
+            e.printStackTrace();
+            resultBase.setStatus(500);
+            resultBase.setMsg(e.getMessage());
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            resultBase.setStatus(500);
+            resultBase.setMsg(e.getMessage());
+        }
+        return resultBase;
     }
 
 
     @ApiOperation(value = "编辑规则")
     @PostMapping(value = "/edl-rule", consumes = APPLICATION_JSON_UTF8_VALUE)
     public ResultBase edlRule(@RequestBody @Validated RuleBase ruleBase) {
-        return ruleService.edlRule(ruleBase);
+        ResultBase resultBase = new ResultBase();
+        try {
+            resultBase = ruleService.addRule(ruleBase);
+        } catch (PinyinException e) {
+            e.printStackTrace();
+            resultBase.setStatus(500);
+            resultBase.setMsg(e.getMessage());
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            resultBase.setStatus(500);
+            resultBase.setMsg(e.getMessage());
+        }
+        return resultBase;
     }
 
     @ApiOperation(value = "删除规则")
@@ -115,4 +142,12 @@ public class RuleController {
     public ResultBase ruleReduction(Integer currentId, Integer reId) {
         return ruleService.ruleReduction(currentId, reId);
     }
+
+    @ApiOperation(value = "规则匹配")
+    @PostMapping(value = "/operation", consumes = APPLICATION_JSON_UTF8_VALUE)
+    public ResultBase operation(@RequestBody @Validated RuleBase ruleBase) {
+        log.info(" parameter:{} ", "规则运算", "/operation", ruleBase.toString());
+        return ruleService.operation(ruleBase);
+    }
+
 }
