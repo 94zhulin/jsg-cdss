@@ -20,7 +20,7 @@ public enum ResultStatusEnum {
     SUCCESS(200, "请求成功！"),
 
     /**
-     * 密码错误
+     * 暂无权限
      */
     ABNORMAL_PERMISSIONS(999, "暂无权限,请联系管理人员");
 

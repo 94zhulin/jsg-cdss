@@ -17,6 +17,7 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MyShiroRealm extends AuthorizingRealm {
@@ -30,23 +31,27 @@ public class MyShiroRealm extends AuthorizingRealm {
     @Autowired
     private PermissionMapper permissionMapper;
 
+
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
         UserGenera user = (UserGenera) principalCollection.getPrimaryPrincipal();
         RoleGenera roleGenera = user.getRole();
+        List<String> codes = new ArrayList<>();
         if (roleGenera.getPermissionGeneras() != null) {
             List<PermissionGenera> list = roleGenera.getPermissionGeneras();
             for (PermissionGenera permissionGenera : list) {
                 authorizationInfo.addStringPermission(permissionGenera.getCode());
+                codes.add(permissionGenera.getCode());
             }
         }
+
         return authorizationInfo;
     }
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
-        String username = authenticationToken.getPrincipal().toString();
+        String username = authenticationToken.getPrincipal().toString().trim();
         if ("Android_iOS".equals(username)) {
             UserGenera user = new UserGenera();
             String password = new Md5Hash("phone", null, 2).toString();
@@ -70,7 +75,8 @@ public class MyShiroRealm extends AuthorizingRealm {
                     roleGenera.setPermissionGeneras(permissionGeneraList);
                     user.setRole(roleGenera);
                 }
-                return new SimpleAuthenticationInfo(user, user.getPassword(), getName());
+                SimpleAuthenticationInfo simpleAuthenticationInfo = new SimpleAuthenticationInfo(user, user.getPassword(), getName());
+                return simpleAuthenticationInfo;
             }
         }
         return null;

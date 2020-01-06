@@ -3,9 +3,11 @@ package com.jsg.service.impl;
 import com.jsg.base.result.ResultBase;
 import com.jsg.base.result.ResultUtil;
 import com.jsg.dao.mysql.UserGeneralMapper;
+import com.jsg.entity.PermissionGenera;
 import com.jsg.entity.Token;
 import com.jsg.entity.UserGenera;
 import com.jsg.service.GeneralService;
+import com.jsg.utils.redis.RedisService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.crypto.hash.Md5Hash;
@@ -14,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -27,7 +30,8 @@ public class GeneralServiceImpl implements GeneralService {
     @Autowired
     private UserGeneralMapper userGeneralMapper;
 
-
+    @Autowired
+    RedisService redisService;
     @Value("${apiStatus.failure}")
     private Integer failure;
 
@@ -41,12 +45,19 @@ public class GeneralServiceImpl implements GeneralService {
     @Override
     public ResultBase login(String userName, String password) {
         Subject subject = SecurityUtils.getSubject();
-        UsernamePasswordToken token = new UsernamePasswordToken(userName, password);
+        String nameTrim = userName.trim();
+        UsernamePasswordToken token = new UsernamePasswordToken(nameTrim, password);
         subject.login(token);
         String session = (String) subject.getSession().getId();
         UserGenera user = (UserGenera) subject.getPrincipal();
         user.setPassword(null);
         Token userToken = new Token(session, System.currentTimeMillis(), user);
+        List<PermissionGenera> permissionGeneras = user.getRole().getPermissionGeneras();
+        List<String> codes = new ArrayList<>();
+        for (PermissionGenera gg : permissionGeneras) {
+            codes.add(gg.getCode());
+        }
+        redisService.lSet(session, codes, Long.valueOf("1800"));
         return ResultUtil.success(null, userToken);
     }
 

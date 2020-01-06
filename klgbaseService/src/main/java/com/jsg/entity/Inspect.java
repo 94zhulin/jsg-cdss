@@ -17,20 +17,53 @@ public class Inspect {
     private Integer catalogId;
     @ApiModelProperty(position = 3, value = "项目名称", required = true)
     private String xmName;
+
+    @ApiModelProperty(position = 3, value = "项目名称", readOnly = true)
+    private String xmName_to = "项目名称";
+
     @ApiModelProperty(position = 4, value = "项目编码", required = true)
     private String xmCode;
+
+
+    @ApiModelProperty(position = 4, value = "项目编码", readOnly = true)
+    private String xmCode_to = "项目编码";
+
     @ApiModelProperty(position = 5, value = "部位名称", required = true)
     private String bwName;
+    @ApiModelProperty(position = 5, value = "部位名称", readOnly = true)
+    private String bwName_to = "部位名称";
+
+
     @ApiModelProperty(position = 6, value = "部位编码", required = true)
     private String bwCode;
+
+    @ApiModelProperty(position = 6, value = "部位编码", readOnly = true)
+    private String bwCode_to = "部位编码";
+
+
     @ApiModelProperty(position = 7, value = " 检查类型：来自字典定义", required = true)
     private String jcTypeCode;
+
+    @ApiModelProperty(position = 7, value = " 检查类型：来自字典定义", readOnly = true)
+    private String jcTypeCode_to = "检查类型";
+
+
     @ApiModelProperty(position = 8, value = "阳性标识：来自字典定义（多个值用逗号分隔）", required = true)
     private String yxFlagCode;
+
+    @ApiModelProperty(position = 8, value = "阳性标识：来自字典定义（多个值用逗号分隔）", readOnly = true)
+    private String yxFlagCode_to = "阳性标识";
+
     @ApiModelProperty(position = 9, value = "适应症", required = true)
     private String syz;
+    @ApiModelProperty(position = 9, value = "适应症", readOnly = true)
+    private String syz_to = "适应症";
+
     @ApiModelProperty(position = 10, value = "禁忌症", required = true)
     private String jjz;
+    @ApiModelProperty(position = 10, value = "禁忌症", readOnly = true)
+    private String jjz_to = "禁忌症";
+
     @ApiModelProperty(position = 11, value = "状态：1-启用；0-停用", required = true)
     private Integer status;
     @ApiModelProperty(position = 12, value = "创建时间", readOnly = true)

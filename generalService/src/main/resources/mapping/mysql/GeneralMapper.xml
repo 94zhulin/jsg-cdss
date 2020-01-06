@@ -24,7 +24,8 @@
         SELECT
         t1.*,
         t1.catalog_id AS catalogId,
-        t2.`code` AS catalogCode
+        t2.`code` AS catalogCode,
+        t2.`name` as catalogName
         FROM
         sys_dictionary t1
         LEFT JOIN sys_dictionary_catalog t2 ON t1.catalog_id = t2.id

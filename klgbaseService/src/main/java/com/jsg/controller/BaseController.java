@@ -5,6 +5,7 @@ package com.jsg.controller;
  * @date 2020/1/5 20:01
  */
 
+import com.jsg.aop.AuthToken;
 import com.jsg.base.result.ResultBase;
 import com.jsg.entity.Pageable;
 import com.jsg.service.KlgbaseService;
@@ -37,9 +38,10 @@ public class BaseController {
             @ApiImplicitParam(name = "catalogCode", value = "分类Code", dataType = "String"),
             @ApiImplicitParam(name = "queryKey", value = "编码/名称", dataType = "String"),
     })
+    @AuthToken("ZSKLB_VIEW")
     @PostMapping(value = "/list", produces = APPLICATION_JSON_UTF8_VALUE)
     public ResultBase list(String catalogCode, String queryKey, Pageable pageable) {
-        return klgbaseService.list(catalogCode, queryKey ,pageable);
+        return klgbaseService.list(catalogCode, queryKey, pageable);
     }
 
 }
