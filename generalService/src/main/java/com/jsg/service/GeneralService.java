@@ -11,4 +11,7 @@ public interface GeneralService {
     ResultBase department(String queryKey, Pageable pageable);
 
     ResultBase dictionary(String queryKey, String catalogId, Pageable pageable);
+
+    ResultBase dictionaryCatalog(String queryKey, Pageable pageable);
+    
 }

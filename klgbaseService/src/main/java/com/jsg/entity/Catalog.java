@@ -18,6 +18,8 @@ public class Catalog {
     private Integer parentId;
     @ApiModelProperty(position = 2, value = "    类别名称", required = true)
     private String name;
+    @ApiModelProperty(position = 2, value = "    类别名称label", readOnly = true)
+    private String label;
     @ApiModelProperty(position = 3, value = "    类别编码", required = true)
     private String code;
     @ApiModelProperty(position = 4, value = "    层级", required = true)

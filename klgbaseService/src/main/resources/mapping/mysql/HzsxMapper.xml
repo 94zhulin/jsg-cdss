@@ -5,6 +5,7 @@
         <result property="id" column="id"/>
         <result property="catalogId" column="catalog_id"/>
         <result property="name" column="name"/>
+        <result property="value" column="value"/>
         <result property="code" column="code"/>
         <result property="valueType" column="value_type"/>
         <result property="status" column="status"/>
@@ -89,13 +90,30 @@ values (
 
 
     <select id="list" resultMap="KlgbaseHzsxMap">
-        select * from klgbase_hzsx t1 where t1.catalog_id=#{catalogId}
-        <if test="queryKey != null ">
-            AND concat(name,code) like ('%' #{queryKey} '%')
-        </if>
 
+        SELECT
+        t1.*, t2.`value`
+        FROM
+        klgbase_hzsx t1
+        LEFT JOIN (
+        SELECT
+        group_concat(tt1.`value`) 'value',
+        prop_id
+        FROM
+        klgbase_hzsx_list tt1
+        WHERE
+        1=1
+        GROUP BY
+        tt1.prop_id
+        ) t2 ON t1.id = t2.prop_id
+        WHERE
+        t1.catalog_id=#{catalogId}
         <if test="valueType != null ">
             AND t1.value_type= #{valueType}
+        </if>
+
+        <if test="queryKey != null ">
+            AND concat(t1.name,t1.code) like ('%' #{queryKey} '%')
         </if>
     </select>
 

@@ -83,6 +83,7 @@
         <id column="id" jdbcType="INTEGER" property="id"/>
         <id column="code" jdbcType="VARCHAR" property="code"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="label" jdbcType="VARCHAR" property="label"/>
         <result column="parent_module_id" jdbcType="INTEGER" property="parentModuleId"/>
         <result column="order_index" jdbcType="INTEGER" property="orderIndex"/>
         <result column="permission_num" jdbcType="INTEGER" property="permissionNum"/>
@@ -97,7 +98,7 @@
         <collection property="children" ofType="com.jsg.entity.Module" select="list" column="id"/>
     </resultMap>
     <select id="list" parameterType="int" resultMap="selectModule">
-        select * from sys_module where parent_module_id=#{moduleId} order by order_index asc
+        select *,name as label  from sys_module where parent_module_id=#{moduleId} order by order_index asc
     </select>
 
     <resultMap id="selectPermissions" type="com.jsg.entity.Permission">

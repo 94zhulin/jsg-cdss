@@ -22,4 +22,7 @@ public interface BaseinfoService {
     ResultBase del(Integer qualificationId);
 
     ResultBase listByassociationListQualification(String queryKey, Integer staffId, Integer qualificationId, Pageable pageable);
+
+    ResultBase detailsByQualification(Integer staffId);
+
 }

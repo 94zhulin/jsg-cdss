@@ -22,4 +22,6 @@ public interface QualificationsMapper {
     int add(Qualifications qualifications);
 
     List<Qualifications> listByassociationListQualification(@Param("queryKey") String queryKey, @Param("staffId") Integer staffId, @Param("qualificationId") Integer qualificationId);
+
+    List<Qualifications> detailsByQualification(@Param("staffId")  Integer staffId);
 }

@@ -19,6 +19,8 @@ public class Hzsx {
     private String name;
     @ApiModelProperty(position = 4, value = "属性编码", required = true)
     private String code;
+    @ApiModelProperty(position = 4, value = "当数值类型为:4 ,该字段为必填", readOnly = true)
+    private String value;
     @ApiModelProperty(position = 5, value = "数值类型：1-文本；2-数字；3-布尔；4-列表；5-日期；", required = true)
     private Integer valueType;
     @ApiModelProperty(position = 6, value = "状态：1-启用；0-停用", required = true)

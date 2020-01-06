@@ -7,5 +7,27 @@
         <result property="value" column="value"/>
     </resultMap>
 
+    <insert id="add" useGeneratedKeys="true" keyProperty="id">
+        insert into klgbase_hzsx_list
+        (
+        id,
+        prop_id,
+        value
+        )
+        values
+        <foreach collection="emps" item="emp" separator=",">
+            (#{emp.id},#{emp.propId},#{emp.value})
+        </foreach>
+
+    </insert>
+
+
+    <delete id="del" parameterType="string">
+DELETE FROM klgbase_hzsx_list   WHERE propId= #{propId}
+    </delete>
+
+    <select id="list" parameterType="string" resultMap="KlgbaseHzsxListMap">
+        select * from  klgbase_hzsx_list  tt1 where tt1.propId= #{propId}
+    </select>
 
 </mapper>

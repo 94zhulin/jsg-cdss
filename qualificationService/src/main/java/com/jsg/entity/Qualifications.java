@@ -19,10 +19,16 @@ public class Qualifications {
     private Integer staffId;
     @NotNull(message = "type is notnull")
     @ApiModelProperty(position = 2, value = "资质类别ID：来自字典表定义", required = true)
-    private Integer catalogId;
+    private String catalogCode;
+
+    @ApiModelProperty(position = 2, value = "资质类别ID：来自字典表定义", readOnly = true)
+    private String catalogName;
+
     @NotNull(message = "type is notnull")
     @ApiModelProperty(position = 3, value = "资质类别ID：来自字典表定义", required = true)
-    private Integer zzmcId;
+    private String zzmcCode;
+    @ApiModelProperty(position = 3, value = "资质类别ID：来自字典表定义", readOnly = true)
+    private String zzmc;
     @NotNull(message = "type is notnull")
     @ApiModelProperty(position = 4, value = "准入日期", required = true)
     private Date admDate;
@@ -30,9 +36,9 @@ public class Qualifications {
     @ApiModelProperty(position = 5, value = "准入依据", required = true)
     private String admComment;
     @ApiModelProperty(position = 6, value = "手术科目：来自字典表定义", readOnly = true)
-    private Integer sskmId;
+    private String sskmCode;
     @ApiModelProperty(position = 7, value = "手术级别：来自字典表定义", readOnly = true)
-    private Integer ssjbId;
+    private String ssjbCode;
     @NotNull(message = "type is notnull")
     @ApiModelProperty(position = 8, value = "/0' COMMENT '是否通过科审：1-通过；0-未通过", required = true)
     private Integer isKsApproved;
@@ -52,4 +58,38 @@ public class Qualifications {
     @NotNull(message = "type is notnull")
     @ApiModelProperty(position = 14, value = "修改人", required = true)
     private Integer updateUserId;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null) {
+            return false;
+        }
+
+        if (getClass() != o.getClass()) {
+            return false;
+        }
+        Qualifications user = (Qualifications) o;
+        if (catalogCode != user.catalogCode) {
+            return false;
+        }
+        if (catalogName == null) {
+            if (user.catalogName != null) {
+                return false;
+            }
+        } else {
+            if (!catalogName.equals(user.catalogName)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return 1;
+    }
+
 }

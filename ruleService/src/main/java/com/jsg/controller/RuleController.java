@@ -150,4 +150,6 @@ public class RuleController {
         return ruleService.operation(ruleBase);
     }
 
+
+
 }

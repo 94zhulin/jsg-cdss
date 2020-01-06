@@ -73,6 +73,8 @@ public class RuleServiceImpl implements RuleService {
             resultBase.setStatus(failure);
             resultBase.setMsg("编码重复！");
         } else {
+            catalog.setCreateTime(new Date());
+            catalog.setUpdateTime(new Date());
             int opFlag = catalogMapper.add(catalog);
             if (catalog.getId() != null) {
                 childNumAdd(catalog.getParentId());
@@ -262,14 +264,14 @@ public class RuleServiceImpl implements RuleService {
             itemTrue.setRuleId(ruleBase.getId()); //TODO  规则id
             itemTrue.setRuleItemType(2); //'规则项类型：1-满足条件项目；2-条件真关联项目；3-条件假关联项目'
             itemTrue.setKlgCatalogId(ruleBase.getConditionsTrueTypeId());//知识库类别ID
-            itemTrue.setKlgItemId(ruleBase.getTrueItem().getId());
+            itemTrue.setKlgItemId(ruleBase.getTrueItemId());
             ruleItemsMapper.add(itemTrue);
             //条件假的项目id
             RuleItems itemFalse = new RuleItems();
             itemFalse.setRuleId(ruleBase.getId()); //TODO  规则id
             itemFalse.setRuleItemType(3); //'规则项类型：1-满足条件项目；2-条件真关联项目；3-条件假关联项目'
             itemFalse.setKlgCatalogId(ruleBase.getConditionsFalseTypeId());//知识库类别ID
-            itemFalse.setKlgItemId(ruleBase.getFalseItem().getId());
+            itemFalse.setKlgItemId(ruleBase.getFalseItemId());
             ruleItemsMapper.add(itemFalse);
             //'规则项类型：1-满足条件项目；2-条件真关联项目；3-条件假关联项目'
             //'满足条件类型:1-人资，2-患者，99-其他',
@@ -338,7 +340,8 @@ public class RuleServiceImpl implements RuleService {
         KieSession kSession = null;
         try {
             // 从数据库根据code查规则
-            List<RuleDrools> ruleDroolss = ruleDroolsMapper.selectRuleStrByCode(ruleBase.getCode());
+            //  List<RuleDrools> ruleDroolss = ruleDroolsMapper.selectRuleStrByCode(ruleBase.getCode());
+            List<RuleDrools> ruleDroolss = null;
             KnowledgeBuilder kb = KnowledgeBuilderFactory.newKnowledgeBuilder();
             boolean flag = true;
             //TODO 拦截等级高的先执行

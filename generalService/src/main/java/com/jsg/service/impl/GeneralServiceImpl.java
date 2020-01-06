@@ -7,6 +7,7 @@ import com.jsg.base.result.ResultUtil;
 import com.jsg.dao.mysql.GeneralMapper;
 import com.jsg.entity.Department;
 import com.jsg.entity.Dictionary;
+import com.jsg.entity.DictionaryCatalog;
 import com.jsg.entity.Pageable;
 import com.jsg.service.GeneralService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,10 +45,19 @@ public class GeneralServiceImpl implements GeneralService {
     }
 
     @Override
-    public ResultBase dictionary(String queryKey, String catalogId, Pageable pageable) {
+    public ResultBase dictionary(String queryKey, String catalogCode, Pageable pageable) {
         PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
-        List<Dictionary> list = gneralMapper.dictionary(queryKey, catalogId);
+        List<Dictionary> list = gneralMapper.dictionary(queryKey, catalogCode);
         PageInfo<Dictionary> pageInfo = new PageInfo<>(list);
         return ResultUtil.success(null, pageInfo);
     }
+
+    @Override
+    public ResultBase dictionaryCatalog(String queryKey, Pageable pageable) {
+        PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
+        List<DictionaryCatalog> list = gneralMapper.dictionaryCatalog(queryKey);
+        PageInfo<DictionaryCatalog> pageInfo = new PageInfo<>(list);
+        return ResultUtil.success(null, pageInfo);
+    }
+
 }

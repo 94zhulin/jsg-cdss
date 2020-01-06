@@ -52,10 +52,10 @@ public class RuleBase {
     private Integer typeId;
     @ApiModelProperty(position = 14, value = "条件为真的类别id", readOnly = true)
     private Integer conditionsTrueTypeId;
-    @ApiModelProperty(position = 15, value = "条件为真的项目id,用户前端回显,不写入数据库", required = true)
+/*    @ApiModelProperty(position = 15, value = "条件为真的项目id,用户前端回显,不写入数据库", required = true)
     private AssociatedItem trueItem;
     @ApiModelProperty(position = 15, value = "条件为假的项目Id用户前端回显,不写入数据库", required = true)
-    private AssociatedItem falseItem;
+    private AssociatedItem falseItem;*/
     @ApiModelProperty(position = 15, value = "条件为真的项目Id,不作为前端回显, 写入数据库中", readOnly = true)
     private Integer trueItemId;
     @ApiModelProperty(position = 16, value = "条件为假的类别Id", required = true)

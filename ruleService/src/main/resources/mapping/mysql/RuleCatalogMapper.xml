@@ -6,6 +6,7 @@
         <id column="code" jdbcType="VARCHAR" property="code"/>
         <result column="parent_id" jdbcType="INTEGER" property="parentId"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="label" property="label"/>
         <result column="level" jdbcType="INTEGER" property="level"/>
         <result column="order_index" jdbcType="INTEGER" property="orderIndex"/>
         <result column="child_num" jdbcType="INTEGER" property="childNum"/>
@@ -33,6 +34,7 @@
         <id column="code" jdbcType="VARCHAR" property="code"/>
         <result column="parent_id" jdbcType="INTEGER" property="parentId"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="label" property="label"/>
         <result column="level" jdbcType="INTEGER" property="level"/>
         <result column="order_index" jdbcType="INTEGER" property="orderIndex"/>
         <result column="child_num" jdbcType="INTEGER" property="childNum"/>
@@ -45,7 +47,7 @@
         <collection property="children" ofType="com.jsg.entity.RuleCatalog" select="list" column="id"/>
     </resultMap>
     <select id="list" parameterType="string" resultMap="selectCatalog">
-     SELECT * from klgbase_catalog WHERE parent_id =#{parentId}
+     SELECT * , name as label from rule_catalog WHERE parent_id =#{parentId}
     </select>
 
 

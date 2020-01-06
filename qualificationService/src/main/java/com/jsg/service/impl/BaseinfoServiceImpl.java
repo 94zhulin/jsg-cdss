@@ -14,7 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import javax.validation.constraints.NotNull;
+import java.util.*;
 
 /**
  * @author jeanson 进生
@@ -55,7 +56,7 @@ public class BaseinfoServiceImpl implements BaseinfoService {
     @Override
     public ResultBase add(Qualifications qualifications) {
         int a = qualificationsMapper.add(qualifications);
-        return ResultUtil.success(null, a);
+        return ResultUtil.success(null, qualifications);
     }
 
 
@@ -89,5 +90,29 @@ public class BaseinfoServiceImpl implements BaseinfoService {
         List<Qualifications> list = qualificationsMapper.listByassociationListQualification(queryKey, staffId, qualificationId);
         PageInfo<Qualifications> pageInfo = new PageInfo<>(list);
         return ResultUtil.success(null, pageInfo);
+    }
+
+    @Override
+    public ResultBase detailsByQualification(Integer staffId) {
+        List<Qualifications> lists = qualificationsMapper.detailsByQualification(staffId);
+        HashSet<Qualifications> qualifications = new HashSet<>(lists);
+        //遍历
+        HashMap<String, ArrayList<Qualifications>> hash = new HashMap<>();
+        Iterator iterator = qualifications.iterator();
+        while (iterator.hasNext()) {
+            Qualifications next = (Qualifications) iterator.next();
+            ArrayList<Qualifications> ss = new ArrayList<>();
+            for (Qualifications s : lists) {
+                @NotNull(message = "type is notnull") String catalogCode = s.getCatalogCode();
+                @NotNull(message = "type is notnull") String catalogCode1 = next.getCatalogCode();
+                if (catalogCode.equals(catalogCode1)) {
+                    ss.add(s);
+                }
+
+            }
+            hash.put(next.getCatalogCode(), ss);
+            System.out.println();
+        }
+        return ResultUtil.success(null, hash);
     }
 }

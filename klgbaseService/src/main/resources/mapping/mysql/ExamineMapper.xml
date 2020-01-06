@@ -6,7 +6,6 @@
         <result property="catalogId" column="catalog_id"/>
         <result property="xmName" column="xm_name"/>
         <result property="xmCode" column="xm_code"/>
-        <result property="xmlxCode" column="xmlx_code"/>
         <result property="jyffCode" column="jyff_code"/>
         <result property="yblxCode" column="yblx_code"/>
         <result property="jyTypeCode" column="jy_type_code"/>
@@ -36,7 +35,6 @@
 		catalog_id,
 		xm_name ,
 		xm_code,
-		xmlx_code,
 		jyff_code,
 		yblx_code,
 		jy_type_code,
@@ -57,7 +55,6 @@
 		#{catalogId},
 		#{xmName},
 		#{xmCode},
-		#{xmlxCode},
 		#{jyffCode},
 		#{yblxCode},
 		#{jyTypeCode},
@@ -88,9 +85,6 @@
             </if>
             <if test="xmCode != null">
                 xm_code = #{xmCode},
-            </if>
-            <if test="xmlxCode != null">
-                xmlx_code = #{xmlxCode},
             </if>
             <if test="jyffCode != null">
                 jyff_code = #{jyffCode},
@@ -147,10 +141,6 @@
         select * from klgbase_examine t1 where t1.catalog_id = #{catalogId}
         <if test="queryKey != null ">
             AND concat(xm_name,xm_code) like ('%' #{queryKey} '%')
-        </if>
-
-        <if test="xmlxCode != null ">
-            AND t1.xmlx_code =#{xmlxCode}
         </if>
 
         <if test="jyTypeCode != null ">

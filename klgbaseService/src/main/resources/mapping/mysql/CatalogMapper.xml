@@ -116,6 +116,7 @@
         <result property="id" column="id"/>
         <result property="parentId" column="parent_id"/>
         <result property="name" column="name"/>
+        <result property="label" column="label"/>
         <result property="code" column="code"/>
         <result property="level" column="level"/>
         <result property="orderIndex" column="order_index"/>
@@ -129,7 +130,7 @@
         <collection property="children" ofType="com.jsg.entity.Catalog" select="list" column="id"/>
     </resultMap>
     <select id="list" parameterType="string" resultMap="selectCatalog">
-     SELECT * from klgbase_catalog WHERE parent_id =#{parentId}
+     SELECT t1.*,t1.name as label   from klgbase_catalog  t1 WHERE t1.parent_id =#{parentId}
     </select>
 
 

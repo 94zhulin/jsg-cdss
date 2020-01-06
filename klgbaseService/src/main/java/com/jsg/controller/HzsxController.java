@@ -38,7 +38,7 @@ public class HzsxController {
 
     @ApiOperation(value = "检索列表")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "catalogId", value = "分类Id", dataType = "int"),
+            @ApiImplicitParam(name = "catalogId", value = "分类Id", dataType = "int", required = true),
             @ApiImplicitParam(name = "queryKey", value = "编码/名称", dataType = "string"),
             @ApiImplicitParam(name = "valueType", value = "数值类型", dataType = "int"),
     })

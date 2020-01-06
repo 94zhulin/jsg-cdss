@@ -3,6 +3,7 @@ package com.jsg.controller;
 import com.jsg.base.result.ResultBase;
 import com.jsg.entity.Pageable;
 import com.jsg.entity.Qualifications;
+import com.jsg.entity.Zzs;
 import com.jsg.service.BaseinfoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -11,10 +12,9 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
@@ -82,9 +82,8 @@ public class BaseinfoController {
 
 
     @ApiOperation(value = "删除资质")
-    @ApiImplicitParam(name = "qualificationId", value = "资质id", dataType = "int")
-    @PostMapping(value = "/del", produces = APPLICATION_JSON_UTF8_VALUE)
-    public ResultBase del(Integer qualificationId) {
+    @PostMapping(value = "/del/{qualificationId}", produces = APPLICATION_JSON_UTF8_VALUE)
+    public ResultBase del(@PathVariable("qualificationId") Integer qualificationId) {
         return baseinfoService.del(qualificationId);
     }
 
@@ -98,6 +97,53 @@ public class BaseinfoController {
     @PostMapping(value = "list/qualification-rules", produces = APPLICATION_JSON_UTF8_VALUE)
     public ResultBase listByassociationListQualification(String queryKey, Integer staffId, Integer qualificationId, Pageable pageable) {
         return baseinfoService.listByassociationListQualification(queryKey, staffId, qualificationId, pageable);
+    }
+
+
+    @ApiOperation(value = "人员资质详情")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "staffId", value = "人员id", dataType = "int")
+    })
+    @PostMapping(value = "list/qualification-details", produces = APPLICATION_JSON_UTF8_VALUE)
+    public ResultBase detailsByQualification(Integer staffId) {
+        return baseinfoService.detailsByQualification(staffId);
+    }
+
+
+    @ApiOperation(value = "资质下拉框")
+    @PostMapping(value = "/zzs", produces = APPLICATION_JSON_UTF8_VALUE)
+    public ResultBase zzs() {
+        ResultBase resultBase = new ResultBase();
+        resultBase.setStatus(200);
+        ArrayList<Zzs> list = new ArrayList<>();
+        Zzs zzs1 = new Zzs();
+        zzs1.setCode("RZ-ZZ-YBZZ");
+        zzs1.setName("一般资质");
+
+
+        Zzs zzs2 = new Zzs();
+        zzs2.setCode("RZ-ZZ-TSZZ");
+        zzs2.setName("特殊资质");
+
+
+        Zzs zzs3 = new Zzs();
+        zzs3.setCode("RZ-ZZ-QTZZ");
+        zzs3.setName("其他资质");
+
+        Zzs zzs4 = new Zzs();
+        zzs4.setCode("RZ-ZZ-YLJSZZ");
+        zzs4.setName("医疗技术资质");
+
+        Zzs zzs5 = new Zzs();
+        zzs5.setCode("RZ-ZZ-SSZZ");
+        zzs5.setName("手术资质");
+        list.add(zzs1);
+        list.add(zzs2);
+        list.add(zzs3);
+        list.add(zzs4);
+        list.add(zzs5);
+        resultBase.setData(list);
+        return resultBase;
     }
 
 }

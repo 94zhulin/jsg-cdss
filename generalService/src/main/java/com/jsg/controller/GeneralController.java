@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
-/**generla
+/**
+ * generla
+ *
  * @author jeanson 进生
  * @date 2019/10/21 10:12
  */
@@ -38,19 +40,29 @@ public class GeneralController {
     @ApiOperation(value = "全部科室")
     @ApiImplicitParam(name = "queryKey", value = "编码/名称", dataType = "string")
     @PostMapping(value = "/department", produces = APPLICATION_JSON_UTF8_VALUE)
-    public ResultBase department(String queryKey,Pageable pageable) {
-        return generalService.department(queryKey,pageable);
+    public ResultBase department(String queryKey, Pageable pageable) {
+        return generalService.department(queryKey, pageable);
     }
 
 
     @ApiOperation(value = "查询指定词典信息")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "queryKey", value = "编码/名称", dataType = "string"),
-            @ApiImplicitParam(name = "catalogId", value = "字典类型", dataType = "string")
+            @ApiImplicitParam(name = "catalogCode", value = "字典类型Code", dataType = "string")
     })
     @PostMapping(value = "/dictionary", produces = APPLICATION_JSON_UTF8_VALUE)
-    public ResultBase dictionary( String queryKey,String catalogId, Pageable pageable) {
-        return generalService.dictionary(queryKey, catalogId, pageable);
+    public ResultBase dictionary(String queryKey, String catalogCode, Pageable pageable) {
+        return generalService.dictionary(queryKey, catalogCode, pageable);
+    }
+
+
+    @ApiOperation(value = "查询字典分类")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "queryKey", value = "编码/名称", dataType = "string"),
+    })
+    @PostMapping(value = "/dictionary-catalog", produces = APPLICATION_JSON_UTF8_VALUE)
+    public ResultBase dictionaryCatalog(String queryKey, Pageable pageable) {
+        return generalService.dictionaryCatalog(queryKey, pageable);
     }
 
 

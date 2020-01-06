@@ -19,8 +19,8 @@ public class Examine {
     private String xmName;
     @ApiModelProperty(position = 4, value = "    项目编码", required = true)
     private String xmCode;
-    @ApiModelProperty(position = 5, value = "项目类型:来自字典表定义", required = true)
-    private String xmlxCode;
+/*    @ApiModelProperty(position = 5, value = "项目类型:来自字典表定义", required = true)
+    private String xmlxCode;*/
     @ApiModelProperty(position = 6, value = "    检验方法：来自字典表定义", required = true)
     private String jyffCode;
     @ApiModelProperty(position = 7, value = "    样本类型：来自字典表定义", required = true)

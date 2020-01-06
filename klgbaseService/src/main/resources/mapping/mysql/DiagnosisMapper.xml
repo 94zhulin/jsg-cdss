@@ -7,7 +7,11 @@
         <result property="name" column="name"/>
         <result property="icd10Code" column="icd10_code"/>
         <result property="type" column="type"/>
-        <result property="zzdFlagCode" column="zzd_flag_code"/>
+        <result property="zzdFlag" column="zzd_flag"/>
+        <result property="crbFlag" column="crb_flag"/>
+        <result property="cffmFlag" column="cffm_flag"/>
+        <result property="dbzFlag" column="dbz_flag"/>
+        <result property="status" column="status"/>
         <result property="createTime" column="create_time" javaType="java.util.Date"/>
         <result property="updateTime" column="update_time" javaType="java.util.Date"/>
         <result property="createUserId" column="create_userId"/>
@@ -22,12 +26,12 @@
 
     <insert id="add" parameterType="com.jsg.entity.Diagnosis" useGeneratedKeys="true" keyProperty="id">
         insert into klgbase_diagnosis (id, catalog_id, name,
-        icd10_code, type, zzd_flag_code,
+        icd10_code, type, zzd_flag,crb_flag,cffm_flag,dbz_flag,
         status,
         create_time, update_time,
         create_userId, update_userId
         )
-        values (#{id},#{catalogId},#{name},#{icd10Code},#{type},#{zzdFlagCode},#{status},#{createTime},
+        values (#{id},#{catalogId},#{name},#{icd10Code},#{type},#{zzdFlag},#{crbFlag},#{cffmFlag},#{dbzFlag},#{status},#{createTime},
 		#{updateTime},#{createUserId},#{updateUserId}
         )
     </insert>
@@ -48,8 +52,18 @@
             <if test="type != null">
                 type = #{type},
             </if>
-            <if test="zzdFlagCode != null">
-                zzd_flag_code = #{zzdFlagCode},
+            <if test="zzdFlag != null">
+                zzd_flag = #{zzdFlag},
+            </if>
+            <if test="crbFlag != null">
+                crb_flag = #{crbFlag},
+            </if>
+            <if test="cffmFlag != null">
+                cffm_flag = #{cffmFlag},
+            </if>
+
+            <if test="dbzFlag != null">
+                dbz_flag = #{dbzFlag},
             </if>
             <if test="status != null">
                 status = #{status},

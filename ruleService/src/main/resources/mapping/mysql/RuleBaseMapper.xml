@@ -223,7 +223,7 @@ GROUP BY t1.`id`
         rule_base t1
         WHERE
         t1.is_delete = 0
-        and t1.catalog_id #{catalogId}
+        and t1.catalog_id =  #{catalogId}
         <if test="queryKey != null">
             AND concat(name,code) like ('%' #{queryKey} '%')
 

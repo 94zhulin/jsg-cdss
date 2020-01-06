@@ -40,7 +40,7 @@ public class ExamineController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "catalogId", value = "分类Id", dataType = "int"),
             @ApiImplicitParam(name = "queryKey", value = "编码/名称", dataType = "string"),
-            @ApiImplicitParam(name = "xmlxCode", value = "项目类型：来自字典表定义", dataType = "string"),
+/*            @ApiImplicitParam(name = "xmlxCode", value = "项目类型：来自字典表定义", dataType = "string"),*/
             @ApiImplicitParam(name = "jyTypeCode", value = "检验类别：来自字典定义", dataType = "string"),
             @ApiImplicitParam(name = "yblxCode", value = "样本类型：来自字典表定义", dataType = "string"),
     })

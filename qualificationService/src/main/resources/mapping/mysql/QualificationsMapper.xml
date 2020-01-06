@@ -4,12 +4,12 @@
     <resultMap id="QlfStaffQualificationsMap" type="com.jsg.entity.Qualifications">
         <result property="id" column="id"/>
         <result property="staffId" column="staff_id"/>
-        <result property="catalogId" column="catalog_id"/>
-        <result property="zzmcId" column="zzmc_id"/>
+        <result property="catalogCode" column="catalog_code"/>
+        <result property="zzmcCode" column="zzmc_code"/>
         <result property="admDate" column="adm_date" javaType="java.util.Date"/>
         <result property="admComment" column="adm_comment"/>
-        <result property="sskmId" column="sskm_id"/>
-        <result property="ssjbId" column="ssjb_id"/>
+        <result property="sskmCode" column="sskm_code"/>
+        <result property="ssjbCode" column="ssjb_code"/>
         <result property="isKsApproved" column="is_ks_approved"/>
         <result property="isYyApproved" column="is_yy_approved"/>
         <result property="status" column="status"/>
@@ -35,12 +35,12 @@
             keyProperty="id">
  INSERT INTO qlf_staff_qualifications (
           staff_id,
-catalog_id,
-          zzmc_id,
+catalog_code,
+          zzmc_code,
           adm_date,
           adm_comment,
-          sskm_id,
-          ssjb_id,
+          sskm_code,
+          ssjb_code,
 		  is_ks_approved,
 		  is_yy_approved,
 		  status,
@@ -51,12 +51,12 @@ catalog_id,
         )
         VALUES (
           #{staffId},
-          #{catalogId},
-          #{zzmcId},
+          #{catalogCode},
+          #{zzmcCode},
           #{admDate},
           #{admComment},
-          #{sskmId},
-          #{ssjbId},
+          #{sskmCode},
+          #{ssjbCode},
           #{isKsApproved},
           #{isYyApproved},
           #{status},
@@ -74,11 +74,11 @@ catalog_id,
             <if test="staffId != null">
                 staff_id = #{staffId},
             </if>
-            <if test="catalogId != null">
-                catalog_id = #{catalogId},
+            <if test="catalogCode != null">
+                catalog_code = #{catalogCode},
             </if>
-            <if test="zzmcId != null">
-                zzmc_id = #{zzmcId},
+            <if test="zzmcCode != null">
+                zzmc_code = #{zzmcCode},
             </if>
             <if test="admDate != null">
                 adm_date = #{admDate},
@@ -86,11 +86,11 @@ catalog_id,
             <if test="admComment != null">
                 adm_comment = #{admComment},
             </if>
-            <if test="sskmId != null">
-                sskm_id = #{sskmId},
+            <if test="sskmCode != null">
+                sskm_code = #{sskmCode},
             </if>
-            <if test="ssjbId != null">
-                ssjb_id = #{ssjbId},
+            <if test="ssjbCode != null">
+                ssjb_code = #{ssjbCode},
             </if>
             <if test="isKsApproved != null">
                 is_ks_approved = #{isKsApproved},
@@ -153,6 +153,20 @@ catalog_id,
         <if test="queryKey != null">
             AND concat(t5.`name`, t4.`name`) like ('%' #{queryKey} '%')
         </if>
+    </select>
+
+    <select id="detailsByQualification" parameterType="int" resultMap="QlfStaffQualificationsMap">
+
+SELECT
+	t1.*, t2.`name` AS zzmc,
+	t3.`name` AS catalogName
+FROM
+	qlf_staff_qualifications t1
+LEFT JOIN sys_dictionary t2 ON t1.zzmc_code = t2.`code`
+LEFT JOIN sys_dictionary_catalog t3 ON t1.catalog_code = t3.`code`
+WHERE
+	1 = 1 and t1.staff_id = #{staffId}
+
     </select>
 
 </mapper>

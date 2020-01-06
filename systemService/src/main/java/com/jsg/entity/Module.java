@@ -18,6 +18,8 @@ public class Module {
     @NotNull(message = "type is notnull")
     @ApiModelProperty(position = 1, value = "模块名称", required = true)
     private String name;
+    @ApiModelProperty(position = 1, value = "模块名称lable", readOnly = true)
+    private String lable;
     @NotNull(message = "type is notnull")
     @ApiModelProperty(position = 2, value = "模块编码", required = true)
     private String code;
