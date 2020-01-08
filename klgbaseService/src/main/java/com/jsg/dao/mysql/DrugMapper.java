@@ -1,6 +1,5 @@
 package com.jsg.dao.mysql;
 
-import com.jsg.entity.Diagnosis;
 import com.jsg.entity.Drug;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -15,11 +14,13 @@ import java.util.List;
 public interface DrugMapper {
     int add(Drug drug);
 
-    List<Drug> list(@Param("catalogId") Integer catalogId,@Param("queryKey") String queryKey, @Param("jxCode") String jxCode, @Param("pcCode") String pcCode, @Param("gyfsCode") String gyfsCode, @Param("yysjCode") String yysjCode);
+    List<Drug> list(@Param("catalogId") Integer catalogId, @Param("queryKey") String queryKey, @Param("jxCode") String jxCode, @Param("pcCode") String pcCode, @Param("gyfsCode") String gyfsCode, @Param("yysjCode") String yysjCode);
 
     int edi(Drug drug);
 
     int del(@Param("drugId") Integer drugId);
 
     List<Drug> selectDrugs(Drug drug);
+
+    List<Drug> listByName(@Param("queryKey") String queryKey);
 }

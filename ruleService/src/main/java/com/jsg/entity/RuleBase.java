@@ -32,7 +32,7 @@ public class RuleBase {
     private Integer isVersion;
     @ApiModelProperty(position = 13, value = "自增版本号", required = true)
     private Integer version;
-    @ApiModelProperty(position = 13, value = "相关联的规则ID(多个ID用符号-分隔)，例如：1-2-3", required = true)
+    @ApiModelProperty(position = 13, value = "相关联的规则ID(多个ID用符号-分隔)，例如：1-2-3", readOnly = true)
     private String relatedRuleIds;
     @ApiModelProperty(position = 13, value = "状态：1-已部署；0-未部署", required = true)
     private Integer deployStatus;
@@ -48,7 +48,7 @@ public class RuleBase {
     private Integer createUserid;
     @ApiModelProperty(position = 13, value = "修改人", required = true)
     private Integer updateUserid;
-    @ApiModelProperty(position = 13, value = "类别id", required = true)
+    @ApiModelProperty(position = 13, value = "类别id", readOnly = true)
     private Integer typeId;
     @ApiModelProperty(position = 14, value = "条件为真的类别id", readOnly = true)
     private Integer conditionsTrueTypeId;

@@ -4,9 +4,8 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.jsg.base.result.ResultBase;
 import com.jsg.base.result.ResultUtil;
-import com.jsg.dao.mysql.CatalogMapper;
-import com.jsg.entity.Catalog;
-import com.jsg.entity.Pageable;
+import com.jsg.dao.mysql.*;
+import com.jsg.entity.*;
 import com.jsg.service.KnowledgeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,7 +22,17 @@ public class KnowledgeServiceImpl implements KnowledgeService {
 
     @Autowired
     private CatalogMapper catalogMapper;
+    @Autowired
+    private ExamineMapper examineMapper;
+    @Autowired
+    private InspectMapper inspectMapper;
 
+    @Autowired
+    private DrugMapper drugMapper;
+    @Autowired
+    private DiagnosisMapper diagnosisMapper;
+
+    private HistoryallergyMapper historyallergyMapper;
 
     @Value("${apiStatus.failure}")
     private Integer failure;
@@ -135,6 +144,42 @@ public class KnowledgeServiceImpl implements KnowledgeService {
             }
         }
         return resultBase;
+    }
+
+    @Override
+    public ResultBase hisItems(Integer type, String queryKey, Pageable pageable) {
+        // 1检查 2检验 3药品 4诊断
+        if (queryKey == null) {
+            return ResultUtil.success(null, null);
+        }
+        ResultBase success = ResultUtil.success(null, null);
+        PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
+        switch (type) {
+            case 1:
+                List<Examine> list = examineMapper.listByName(queryKey);
+                PageInfo<Examine> pageInfo = new PageInfo<>(list);
+                success.setData(pageInfo);
+                break;
+            case 2:
+                List<Inspect> inspects = inspectMapper.listByName(queryKey);
+                PageInfo<Inspect> pageInfo1 = new PageInfo<>(inspects);
+                success.setData(pageInfo1);
+                break;
+            case 3:
+                List<Drug> drugs = drugMapper.listByName(queryKey);
+                PageInfo<Drug> pageInfo2 = new PageInfo<>(drugs);
+                success.setData(pageInfo2);
+                break;
+            case 4:
+                List<Diagnosis> diagnosiss = diagnosisMapper.listByName(queryKey);
+                PageInfo<Diagnosis> pageInfo3 = new PageInfo<>(diagnosiss);
+                success.setData(pageInfo3);
+                break;
+
+        }
+
+        return success;
+
     }
 
 

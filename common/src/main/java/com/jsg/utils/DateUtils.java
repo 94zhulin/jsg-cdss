@@ -5,10 +5,10 @@ import org.slf4j.LoggerFactory;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Locale;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
+import java.util.stream.Stream;
 
 public class DateUtils {
     private static final Logger logger = LoggerFactory.getLogger(DateUtils.class);
@@ -573,6 +573,34 @@ public class DateUtils {
         Date curDate = new Date();
         calendar.setTime(curDate);
         return calendar.get(calendar.YEAR);
+    }
+
+
+    public static List<String> getBetweenDate(String start, String end) {
+        List<String> list = new ArrayList<>();
+        LocalDate startDate = null;
+        LocalDate endDate = null;
+        try {
+            startDate = LocalDate.parse(start);
+            endDate = LocalDate.parse(end);
+        } catch (Exception e) {
+            throw new RuntimeException("日期格式不正确。（日期示例：2019-12-26）");
+        }
+
+        if (start.equals(end)) {
+            list.add(start);
+            return list;
+        }
+        long distance = ChronoUnit.DAYS.between(startDate, endDate);
+        if (distance < 1) {
+            return list;
+        }
+        Stream.iterate(startDate, d -> {
+            return d.plusDays(1);
+        }).limit(distance + 1).forEach(f -> {
+            list.add(f.toString());
+        });
+        return list;
     }
 
     public static void main(String[] args) {

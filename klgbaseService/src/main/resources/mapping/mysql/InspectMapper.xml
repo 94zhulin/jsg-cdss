@@ -12,6 +12,8 @@
         <result property="yxFlagCode" column="yx_flag_code"/>
         <result property="syz" column="syz"/>
         <result property="jjz" column="jjz"/>
+        <result column="jcqzb" jdbcType="LONGVARCHAR" property="jcqzb"/>
+        <result column="lcyy" jdbcType="LONGVARCHAR" property="lcyy"/>
         <result property="createTime" column="create_time" javaType="java.util.Date"/>
         <result property="updateTime" column="update_time" javaType="java.util.Date"/>
         <result property="createUserId" column="create_userId"/>
@@ -36,6 +38,8 @@ jc_type_code,
 yx_flag_code,
 syz,
 jjz,
+jcqzb,
+ lcyy,
 status,
 create_time,
 update_time,
@@ -54,6 +58,8 @@ update_userId
  #{yxFlagCode},
  #{syz},
  #{jjz},
+#{jcqzb},
+#{lcyy},
  #{status},
  #{createTime},
  #{updateTime},
@@ -92,6 +98,14 @@ update_userId
             <if test="jjz != null">
                 jjz = #{jjz},
             </if>
+
+            <if test="jcqzb != null">
+                jcqzb = #{jcqzb,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="lcyy != null">
+                lcyy = #{lcyy,jdbcType=LONGVARCHAR},
+            </if>
+
             <if test="status != null">
                 status = #{status},
             </if>
@@ -135,5 +149,11 @@ update_userId
         <if test="yxFlagCode != null ">
             AND t1.yx_flag_code =#{yxFlagCode}
         </if>
+    </select>
+
+
+    <select id="listByName" resultMap="KlgbaseInspectMap">
+        select * from klgbase_inspect t1 where  1=1 and
+    concat(xm_code,xm_name) like ('%' #{queryKey} '%')
     </select>
 </mapper>

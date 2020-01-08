@@ -2,26 +2,37 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.jsg.dao.mysql.ExamineMapper">
     <resultMap id="KlgbaseExamineMap" type="com.jsg.entity.Examine">
-        <result property="id" column="id"/>
-        <result property="catalogId" column="catalog_id"/>
-        <result property="xmName" column="xm_name"/>
-        <result property="xmCode" column="xm_code"/>
-        <result property="jyffCode" column="jyff_code"/>
-        <result property="yblxCode" column="yblx_code"/>
-        <result property="jyTypeCode" column="jy_type_code"/>
-        <result property="cjbw" column="cjbw"/>
-        <result property="jgjldwCode" column="jgjldw_code"/>
-        <result property="jgzcbsCode" column="jgzcbs_code"/>
-        <result property="startCkz" column="start_ckz"/>
-        <result property="endCkz" column="end_ckz"/>
-        <result property="syz" column="syz"/>
-        <result property="jjz" column="jjz"/>
-        <result property="createTime" column="create_time" javaType="java.util.Date"/>
-        <result property="updateTime" column="update_time" javaType="java.util.Date"/>
-        <result property="createUserId" column="create_userId"/>
-        <result property="updateUserId" column="update_userId"/>
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <id column="xm_code" jdbcType="VARCHAR" property="xmCode"/>
+        <result column="catalog_id" jdbcType="INTEGER" property="catalogId"/>
+        <result column="xm_name" jdbcType="VARCHAR" property="xmName"/>
+        <result column="lis_jymx_bm" jdbcType="VARCHAR" property="lisJymxBm"/>
+        <result column="jyff" jdbcType="VARCHAR" property="jyff"/>
+        <result column="yblx" jdbcType="VARCHAR" property="yblx"/>
+        <result column="jy_type_code" jdbcType="VARCHAR" property="jyTypeCode"/>
+        <result column="cjbw" jdbcType="VARCHAR" property="cjbw"/>
+        <result column="jgjldw_code" jdbcType="VARCHAR" property="jgjldwCode"/>
+        <result column="jgzcbs_code" jdbcType="VARCHAR" property="jgzcbsCode"/>
+        <result column="start_ckz_nan" jdbcType="DOUBLE" property="startCkzNan"/>
+        <result column="end_ckz_nan" jdbcType="DOUBLE" property="endCkzNan"/>
+        <result column="start_ckz_nv" jdbcType="DOUBLE" property="startCkzNv"/>
+        <result column="end_ckz_nv" jdbcType="DOUBLE" property="endCkzNv"/>
+        <result column="start_ckz_et" jdbcType="DOUBLE" property="startCkzEt"/>
+        <result column="end_ckz_et" jdbcType="DOUBLE" property="endCkzEt"/>
+        <result column="start_ckz_xse" jdbcType="DOUBLE" property="startCkzXse"/>
+        <result column="end_ckz_xse" jdbcType="DOUBLE" property="endCkzXse"/>
+        <result column="start_ckz_ye" jdbcType="DOUBLE" property="startCkzYe"/>
+        <result column="end_ckz_ye" jdbcType="DOUBLE" property="endCkzYe"/>
+        <result column="syz" jdbcType="LONGVARCHAR" property="syz"/>
+        <result column="jjz" jdbcType="LONGVARCHAR" property="jjz"/>
+        <result column="sjyq" jdbcType="LONGVARCHAR" property="sjyq"/>
+        <result column="lcyy" jdbcType="LONGVARCHAR" property="lcyy"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="create_userId" jdbcType="INTEGER" property="createUserid"/>
+        <result column="update_userId" jdbcType="INTEGER" property="updateUserid"/>
     </resultMap>
-
     <delete id="del" parameterType="java.lang.Integer">
         delete from klgbase_examine
         where id = #{examineId}
@@ -31,102 +42,121 @@
     <insert id="add" parameterType="com.jsg.entity.Examine" useGeneratedKeys="true" keyProperty="id">
         insert into
 		klgbase_examine
-		(id,
-		catalog_id,
-		xm_name ,
-		xm_code,
-		jyff_code,
-		yblx_code,
-		jy_type_code,
-		cjbw,
-		jgjldw_code,
-		jgzcbs_code,
-		start_ckz,
-		end_ckz,
-		syz,
-		jjz ,
-		status,
-		create_time,
-		update_time,
-		create_userId,
-		update_userId
-		) values (
-		#{id},
-		#{catalogId},
-		#{xmName},
-		#{xmCode},
-		#{jyffCode},
-		#{yblxCode},
-		#{jyTypeCode},
-		#{cjbw},
-		#{jgjldwCode},
-		#{jgzcbsCode},
-		#{startCkz},
-		#{endCkz},
-		#{syz},
-		#{jjz},
-		#{status},
-		#{createTime},
-		#{updateTime},
-		#{createUserId},
-		#{updateUserId}
-        )
+		(
+			id, xm_code, catalog_id,
+      xm_name, lis_jymx_bm, jyff,
+      yblx, jy_type_code, cjbw,
+      jgjldw_code, jgzcbs_code, start_ckz_nan,
+      end_ckz_nan, start_ckz_nv, end_ckz_nv,
+      start_ckz_et, end_ckz_et, start_ckz_xse,
+      end_ckz_xse, start_ckz_ye, end_ckz_ye,
+      `status`, create_time, update_time,
+      create_userId, update_userId, syz,
+      jjz, sjyq, lcyy
+		) values
+		(#{id,jdbcType=INTEGER}, #{xmCode,jdbcType=VARCHAR}, #{catalogId,jdbcType=INTEGER},
+      #{xmName,jdbcType=VARCHAR}, #{lisJymxBm,jdbcType=VARCHAR}, #{jyff,jdbcType=VARCHAR},
+      #{yblx,jdbcType=VARCHAR}, #{jyTypeCode,jdbcType=VARCHAR}, #{cjbw,jdbcType=VARCHAR},
+      #{jgjldwCode,jdbcType=VARCHAR}, #{jgzcbsCode,jdbcType=VARCHAR}, #{startCkzNan,jdbcType=DOUBLE},
+      #{endCkzNan,jdbcType=DOUBLE}, #{startCkzNv,jdbcType=DOUBLE}, #{endCkzNv,jdbcType=DOUBLE},
+      #{startCkzEt,jdbcType=DOUBLE}, #{endCkzEt,jdbcType=DOUBLE}, #{startCkzXse,jdbcType=DOUBLE},
+      #{endCkzXse,jdbcType=DOUBLE}, #{startCkzYe,jdbcType=DOUBLE}, #{endCkzYe,jdbcType=DOUBLE},
+      #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
+      #{createUserid,jdbcType=INTEGER}, #{updateUserid,jdbcType=INTEGER}, #{syz,jdbcType=LONGVARCHAR},
+      #{jjz,jdbcType=LONGVARCHAR}, #{sjyq,jdbcType=LONGVARCHAR}, #{lcyy,jdbcType=LONGVARCHAR}
+      )
     </insert>
 
 
     <update id="edi" parameterType="com.jsg.entity.Examine">
         update klgbase_examine
         <set>
+            <if test="xmCode != null">
+                xm_code,
+            </if>
             <if test="catalogId != null">
-                catalog_id = #{catalogId},
+                catalog_id,
             </if>
             <if test="xmName != null">
-                xm_name = #{xmName},
+                xm_name,
             </if>
-            <if test="xmCode != null">
-                xm_code = #{xmCode},
+            <if test="lisJymxBm != null">
+                lis_jymx_bm,
             </if>
-            <if test="jyffCode != null">
-                jyff_code = #{jyffCode},
+            <if test="jyff != null">
+                jyff,
             </if>
-            <if test="yblxCode != null">
-                yblx_code = #{yblxCode},
+            <if test="yblx != null">
+                yblx,
             </if>
             <if test="jyTypeCode != null">
-                jy_type_code = #{jyTypeCode},
+                jy_type_code,
             </if>
             <if test="cjbw != null">
-                cjbw = #{cjbw},
+                cjbw,
             </if>
             <if test="jgjldwCode != null">
-                jgjldw_code = #{jgjldwCode},
+                jgjldw_code,
             </if>
-            <if test="startCkz != null">
-                start_ckz = #{startCkz},
+            <if test="jgzcbsCode != null">
+                jgzcbs_code,
             </if>
-            <if test="endCkz != null">
-                end_ckz = #{endCkz},
+            <if test="startCkzNan != null">
+                start_ckz_nan,
             </if>
-            <if test="syz != null">
-                syz = #{syz},
+            <if test="endCkzNan != null">
+                end_ckz_nan,
             </if>
-            <if test="jjz != null">
-                jjz = #{jjz},
+            <if test="startCkzNv != null">
+                start_ckz_nv,
+            </if>
+            <if test="endCkzNv != null">
+                end_ckz_nv,
+            </if>
+            <if test="startCkzEt != null">
+                start_ckz_et,
+            </if>
+            <if test="endCkzEt != null">
+                end_ckz_et,
+            </if>
+            <if test="startCkzXse != null">
+                start_ckz_xse,
+            </if>
+            <if test="endCkzXse != null">
+                end_ckz_xse,
+            </if>
+            <if test="startCkzYe != null">
+                start_ckz_ye,
+            </if>
+            <if test="endCkzYe != null">
+                end_ckz_ye,
             </if>
             <if test="status != null">
-                status = #{status},
+                `status`,
             </if>
             <if test="createTime != null">
-                create_time = #{createTime},
+                create_time,
             </if>
             <if test="updateTime != null">
-                update_time = #{updateTime},
+                update_time,
             </if>
-            <if test="createUserId != null">
-                create_userId = #{createUserId},
+            <if test="createUserid != null">
+                create_userId,
             </if>
-            <if test="updateUserId != null">
-                update_userId = #{updateUserId},
+            <if test="updateUserid != null">
+                update_userId,
+            </if>
+            <if test="syz != null">
+                syz,
+            </if>
+            <if test="jjz != null">
+                jjz,
+            </if>
+            <if test="sjyq != null">
+                sjyq,
+            </if>
+            <if test="lcyy != null">
+                lcyy,
             </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
@@ -150,6 +180,11 @@
         <if test="yblxCode != null ">
             AND t1.yblx_code =#{yblxCode}
         </if>
+    </select>
+
+    <select id="listByName" resultMap="KlgbaseExamineMap">
+        select * from klgbase_examine t1 where  1=1 and
+    concat(xm_code,xm_name) like ('%' #{queryKey} '%')
     </select>
 
 </mapper>

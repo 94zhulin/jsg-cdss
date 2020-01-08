@@ -11,6 +11,7 @@ import com.jsg.entity.Pageable;
 import com.jsg.service.KnowledgeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,5 +63,18 @@ public class KnowledgeController {
     public ResultBase addClass(Integer catalogId) {
         return knowledgeService.del(catalogId);
     }
+
+
+    @ApiOperation(value = "获取HIS检查项目")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "type", value = "1检查 2检验 3药品 4诊断", dataType = "int"),
+            @ApiImplicitParam(name = "queryKey", value = "编码/名称", dataType = "string"),
+    })
+    @PostMapping(value = "/his-items", produces = APPLICATION_JSON_UTF8_VALUE)
+    public ResultBase hisItems(Integer type, String queryKey, Pageable pageable) {
+        log.info(" parameter:{} ", "获取HIS检查项目", "/his-items");
+        return knowledgeService.hisItems(type, queryKey, pageable);
+    }
+
 
 }

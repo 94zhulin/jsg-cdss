@@ -21,4 +21,6 @@ public interface DiagnosisMapper {
     int add(Diagnosis diagnosis);
 
     List<Diagnosis> list(@Param("catalogId") Integer catalogId, @Param("queryKey") String queryKey, @Param("type") Integer type, @Param("zzdFlagCode") String zzdFlagCode);
+
+    List<Diagnosis> listByName(@Param("queryKey") String queryKey);
 }

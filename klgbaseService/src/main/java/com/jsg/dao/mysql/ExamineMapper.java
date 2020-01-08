@@ -22,4 +22,5 @@ public interface ExamineMapper {
 
     int del(@Param("examineId") Integer examineId);
 
+    List<Examine> listByName(@Param("queryKey") String queryKey);
 }

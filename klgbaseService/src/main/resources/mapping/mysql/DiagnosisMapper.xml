@@ -106,4 +106,10 @@
             and t1.zzd_flag_code = #{zzdFlagCode}
         </if>
     </select>
+
+    <select id="listByName" resultMap="KlgbaseDiagnosisMap">
+        select * from klgbase_drug t1 where  1=1 and
+        AND concat(name,icd10_code) like ('%' #{queryKey} '%')
+    </select>
+
 </mapper>

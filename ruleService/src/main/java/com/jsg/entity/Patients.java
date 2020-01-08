@@ -20,7 +20,7 @@ public class Patients {
     private String itemName;
     @ApiModelProperty(position = 4, value = " 知识库属性值类型：1-布尔，2-数字，3-数字范围，4-日期，5-日期范围，6-文本，7-列表',")
 
-    private Integer klgItemValueType; //
+    private Integer klgItemValueType;
     @ApiModelProperty(position = 5, value = "项目类别 1 人资 2 患者 3药品 4诊断 5检查 6校验 7过敏史")
     private Integer type;
     @ApiModelProperty(position = 6, value = "进行运算的字段名")

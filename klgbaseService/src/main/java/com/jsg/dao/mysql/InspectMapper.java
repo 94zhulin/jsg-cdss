@@ -1,6 +1,5 @@
 package com.jsg.dao.mysql;
 
-import com.jsg.entity.Diagnosis;
 import com.jsg.entity.Inspect;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -19,8 +18,10 @@ public interface InspectMapper {
 
     int edi(Inspect inspect);
 
-    List<Diagnosis> list(@Param("catalogId") Integer catalogId, @Param("queryKey") String queryKey, @Param("bw") String bw, @Param("jcTypeCode") String jcTypeCode, @Param("yxFlagCode") String yxFlagCode);
+    List<Inspect> list(@Param("catalogId") Integer catalogId, @Param("queryKey") String queryKey, @Param("bw") String bw, @Param("jcTypeCode") String jcTypeCode, @Param("yxFlagCode") String yxFlagCode);
 
     int add(Inspect inspect);
+
+    List<Inspect> listByName(@Param("queryKey") String queryKey);
 
 }

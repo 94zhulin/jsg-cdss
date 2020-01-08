@@ -258,4 +258,10 @@
             AND t1.yysj_code = #{yysjCode}
         </if>
     </select>
+
+    <select id="listByName" resultMap="KlgbaseDrugMap">
+                select * from klgbase_drug t1 where  1=1 and
+   concat(name,code_gb,code_yy) like ('%' #{queryKey} '%')
+
+    </select>
 </mapper>

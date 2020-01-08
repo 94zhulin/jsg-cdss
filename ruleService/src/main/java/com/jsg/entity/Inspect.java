@@ -63,20 +63,15 @@ public class Inspect {
     private String jjz;
     @ApiModelProperty(position = 10, value = "禁忌症", readOnly = true)
     private String jjz_to = "禁忌症";
-    @ApiModelProperty(position = 11, value = "检查前准备", required = true)
-    private String jcqzb;
-    private String jcqzb_to = "检查前准备";
-    @ApiModelProperty(position = 12, value = "临床意义", required = true)
-    private String lcyy;
-    private String lcyy_to = "临床意义";
-    @ApiModelProperty(position = 13, value = "状态：1-启用；0-停用", required = true)
+
+    @ApiModelProperty(position = 11, value = "状态：1-启用；0-停用", required = true)
     private Integer status;
-    @ApiModelProperty(position = 14, value = "创建时间", readOnly = true)
+    @ApiModelProperty(position = 12, value = "创建时间", readOnly = true)
     private Date createTime = new Date();
-    @ApiModelProperty(position = 15, value = "修改时间", readOnly = true)
+    @ApiModelProperty(position = 13, value = "修改时间", readOnly = true)
     private Date updateTime = new Date();
-    @ApiModelProperty(position = 16, value = "创建人", required = true)
+    @ApiModelProperty(position = 14, value = "创建人", required = true)
     private Integer createUserId;
-    @ApiModelProperty(position = 17, value = "修改人", required = true)
+    @ApiModelProperty(position = 15, value = "修改人", required = true)
     private Integer updateUserId;
 }

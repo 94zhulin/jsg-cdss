@@ -24,4 +24,7 @@ public interface KnowledgeService {
     ResultBase childNumSub(Integer catalogId);
 
     ResultBase del(Integer catalogId);
+
+    ResultBase hisItems(Integer type, String queryKey, Pageable pageable);
+
 }
