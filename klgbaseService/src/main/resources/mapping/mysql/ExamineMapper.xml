@@ -182,9 +182,20 @@
         </if>
     </select>
 
-    <select id="listByName" resultMap="KlgbaseExamineMap">
-        select * from klgbase_examine t1 where  1=1 and
-    concat(xm_code,xm_name) like ('%' #{queryKey} '%')
+    <select id="listByName" resultType="java.util.Map">
+SELECT
+	t1.*, t3.mxfyxmbm,
+	t3.xmbm,
+	t3.xmdm,
+	t3.zbbm,
+	t3.zbdm,
+	t3.zbmc,
+	t3.zlxmbm
+FROM
+	klgbase_examine t1
+LEFT JOIN klgbase_examine_rlt_lis t2 ON t1.xm_code = t2.xm_code
+LEFT JOIN lis_xmbm t3 on t2.lis_xmbm = t3.zbbm where  1=1
+and   concat(t3.xmmc,t3.xmdm) like ('%' #{queryKey} '%')
     </select>
 
 </mapper>

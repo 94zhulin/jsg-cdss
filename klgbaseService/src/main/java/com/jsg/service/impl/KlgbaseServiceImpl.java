@@ -58,8 +58,8 @@ public class KlgbaseServiceImpl implements KlgbaseService {
                 break;
             case "JC":
                 PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
-                List<Diagnosis> list1 = inspectMapper.list(catalog1.getId(), queryKey, null, null, null);
-                PageInfo<Diagnosis> pageInfo1 = new PageInfo<>(list1);
+                List<Inspect> list1 = inspectMapper.list(catalog1.getId(), queryKey, null, null, null);
+                PageInfo<Inspect> pageInfo1 = new PageInfo<>(list1);
                 success.setData(pageInfo1);
                 break;
             case "GMS":

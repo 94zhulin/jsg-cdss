@@ -17,7 +17,10 @@ public class HisBase {
     private String itemCode;
     @ApiModelProperty(position = 4, value = "患者信息", required = true)
     private HisPatients hisPatients;
+    @ApiModelProperty(position = 5, value = "检查信息", required = true)
+    private Inspect inspect;
 
-
+    @ApiModelProperty(position = 6, value = "诊断", required = true)
+    private Diagnosis diagnosis;
 }
 

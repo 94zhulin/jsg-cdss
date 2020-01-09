@@ -151,6 +151,12 @@ public class RuleController {
     }
 
 
+    @ApiOperation(value = "规则匹配")
+    @PostMapping(value = "/operation-1", consumes = APPLICATION_JSON_UTF8_VALUE)
+    public ResultBase operation1(@RequestBody @Validated RuleBase ruleBase) {
+        log.info(" parameter:{} ", "规则运算", "/operation", ruleBase.toString());
+        return ruleService.operation(ruleBase);
+    }
 
 
 

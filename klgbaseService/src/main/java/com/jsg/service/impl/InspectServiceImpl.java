@@ -62,8 +62,8 @@ public class InspectServiceImpl implements InspectService {
     @Override
     public ResultBase list(Integer catalogId, String queryKey, String bw, String jcTypeCode, String yxFlagCode, Pageable pageable) {
         PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
-        List<Diagnosis> list = inspectMapper.list(catalogId, queryKey, bw, jcTypeCode, yxFlagCode);
-        PageInfo<Diagnosis> pageInfo = new PageInfo<>(list);
+        List<Inspect> list = inspectMapper.list(catalogId, queryKey, bw, jcTypeCode, yxFlagCode);
+        PageInfo<Inspect> pageInfo = new PageInfo<>(list);
         return ResultUtil.success(null, pageInfo);
     }
 

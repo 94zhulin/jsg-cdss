@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: klgbase
+  cloud:
+    config:
+      uri: http://localhost:8769
+      enabled: true
+      profile: dev
+      fail-fast: true
+  file:
+    max-size: 100MB
+    max-history: 60
+  path: /home/leve/logs/${spring.application.name}
+

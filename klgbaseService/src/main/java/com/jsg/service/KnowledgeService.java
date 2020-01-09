@@ -25,6 +25,6 @@ public interface KnowledgeService {
 
     ResultBase del(Integer catalogId);
 
-    ResultBase hisItems(Integer type, String queryKey, Pageable pageable);
+    ResultBase hisItems(String type, String queryKey, Pageable pageable);
 
 }

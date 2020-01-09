@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author jeanson 进生
@@ -22,5 +23,5 @@ public interface ExamineMapper {
 
     int del(@Param("examineId") Integer examineId);
 
-    List<Examine> listByName(@Param("queryKey") String queryKey);
+    List<Map<String, Object>> listByName(@Param("queryKey") String queryKey);
 }

@@ -22,7 +22,7 @@
      delete from rule_items
     where rule_id = #{id}
     </delete>
-    <insert id="add" parameterType="com.jsg.entity.RuleItems">
+    <insert id="add" parameterType="com.jsg.entity.RuleItems"   useGeneratedKeys="true" keyProperty="id">
     insert into rule_items (id, rule_id, rule_item_type, 
       condition_type, klg_catalog_id, klg_item_id, 
       klg_item_propName, klg_item_valueType, `operator`, 

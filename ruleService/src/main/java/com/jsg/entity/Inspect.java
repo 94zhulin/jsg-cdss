@@ -7,7 +7,7 @@ import java.util.Date;
 
 /**
  * @author jeanson 进生
- * @date 2019/10/17 9:54
+ * @date 2019/10/17 9:54  检查
  */
 @Data
 public class Inspect {

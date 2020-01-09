@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author jeanson 进生
@@ -147,37 +148,40 @@ public class KnowledgeServiceImpl implements KnowledgeService {
     }
 
     @Override
-    public ResultBase hisItems(Integer type, String queryKey, Pageable pageable) {
-        // 1检查 2检验 3药品 4诊断
+    public ResultBase hisItems(String type, String queryKey, Pageable pageable) {
+        //"JC检查 JY检验 YP药品 ZD诊断 GMS过敏史
         if (queryKey == null) {
             return ResultUtil.success(null, null);
         }
         ResultBase success = ResultUtil.success(null, null);
         PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
         switch (type) {
-            case 1:
-                List<Examine> list = examineMapper.listByName(queryKey);
-                PageInfo<Examine> pageInfo = new PageInfo<>(list);
+            case "JY":
+                List<Map<String, Object>> maps = examineMapper.listByName(queryKey);
+                PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(maps);
                 success.setData(pageInfo);
                 break;
-            case 2:
+            case "JC":
                 List<Inspect> inspects = inspectMapper.listByName(queryKey);
                 PageInfo<Inspect> pageInfo1 = new PageInfo<>(inspects);
                 success.setData(pageInfo1);
                 break;
-            case 3:
+            case "YP":
                 List<Drug> drugs = drugMapper.listByName(queryKey);
                 PageInfo<Drug> pageInfo2 = new PageInfo<>(drugs);
                 success.setData(pageInfo2);
                 break;
-            case 4:
+            case "ZD":
                 List<Diagnosis> diagnosiss = diagnosisMapper.listByName(queryKey);
                 PageInfo<Diagnosis> pageInfo3 = new PageInfo<>(diagnosiss);
                 success.setData(pageInfo3);
                 break;
-
+            case "GMS":
+                List<Historyallergy> historyallergys = historyallergyMapper.listByName(queryKey);
+                PageInfo<Historyallergy> pageInfo4 = new PageInfo<>(historyallergys);
+                success.setData(pageInfo4);
+                break;
         }
-
         return success;
 
     }

@@ -92,4 +92,10 @@ values (
         </if>
 
     </select>
+
+
+    <select id="listByName" resultMap="KlgbaseHistoryallergyMap">
+        select * from klgbase_historyallergy t1
+        WHERE  1=1 and   concat(name,code) like ('%' #{queryKey} '%')
+    </select>
 </mapper>

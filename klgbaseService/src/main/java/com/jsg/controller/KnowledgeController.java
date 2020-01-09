@@ -64,14 +64,13 @@ public class KnowledgeController {
         return knowledgeService.del(catalogId);
     }
 
-
     @ApiOperation(value = "获取HIS检查项目")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "type", value = "1检查 2检验 3药品 4诊断", dataType = "int"),
+            @ApiImplicitParam(name = "type", value = "JC检查 JY检验 YP药品 ZD诊断 GMS过敏史" , dataType = "string"),
             @ApiImplicitParam(name = "queryKey", value = "编码/名称", dataType = "string"),
     })
     @PostMapping(value = "/his-items", produces = APPLICATION_JSON_UTF8_VALUE)
-    public ResultBase hisItems(Integer type, String queryKey, Pageable pageable) {
+    public ResultBase hisItems(String type, String queryKey, Pageable pageable) {
         log.info(" parameter:{} ", "获取HIS检查项目", "/his-items");
         return knowledgeService.hisItems(type, queryKey, pageable);
     }

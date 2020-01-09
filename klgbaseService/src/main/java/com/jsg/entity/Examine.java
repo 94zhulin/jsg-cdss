@@ -12,6 +12,11 @@ import java.util.Date;
 @Data
 public class Examine {
 
+    @ApiModelProperty(position = 1, value = "    id")
+    private Integer id;
+
+    @ApiModelProperty(position = 2, value = "    分类id")
+    private Integer catalogId;
     @ApiModelProperty(position = 3, value = "    项目名称", required = true)
     private String xmName;
 

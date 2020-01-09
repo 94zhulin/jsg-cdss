@@ -38,7 +38,6 @@ public class BaseController {
             @ApiImplicitParam(name = "catalogCode", value = "分类Code", dataType = "String"),
             @ApiImplicitParam(name = "queryKey", value = "编码/名称", dataType = "String"),
     })
-    @AuthToken("ZSKLB_VIEW")
     @PostMapping(value = "/list", produces = APPLICATION_JSON_UTF8_VALUE)
     public ResultBase list(String catalogCode, String queryKey, Pageable pageable) {
         return klgbaseService.list(catalogCode, queryKey, pageable);

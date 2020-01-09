@@ -10,6 +10,7 @@ import com.jsg.base.result.ResultUtil;
 import com.jsg.dao.mysql.*;
 import com.jsg.entity.*;
 import com.jsg.service.RuleService;
+import com.jsg.utils.DateUtils;
 import com.jsg.utils.GenerateRulesUtils;
 import org.drools.core.impl.InternalKnowledgeBase;
 import org.drools.core.impl.KnowledgeBaseFactory;
@@ -189,36 +190,45 @@ public class RuleServiceImpl implements RuleService {
         int add = ruleBaseMapper.add(ruleBase);
         //TODO 规则分类表 中的  rule_num 规则数量 加1
         ruleNumAdd(ruleBase.getCatalogId());
-        //条件真的项目id
-        RuleItems itemTrue = new RuleItems();
-        itemTrue.setRuleId(ruleBase.getId()); //TODO  规则id
-        itemTrue.setRuleItemType(2); //'规则项类型：1-满足条件项目；2-条件真关联项目；3-条件假关联项目'
-        itemTrue.setKlgCatalogId(ruleBase.getConditionsTrueTypeId());//知识库类别ID
-        itemTrue.setKlgItemId(ruleBase.getTrueItemId());
-        ruleItemsMapper.add(itemTrue);
-        //条件假的项目id
-        RuleItems itemFalse = new RuleItems();
-        itemFalse.setRuleId(ruleBase.getId()); //TODO  规则id
-        itemFalse.setRuleItemType(3); //'规则项类型：1-满足条件项目；2-条件真关联项目；3-条件假关联项目'
-        itemFalse.setKlgCatalogId(ruleBase.getConditionsFalseTypeId());//知识库类别ID
-        itemFalse.setKlgItemId(ruleBase.getFalseItemId());
-        ruleItemsMapper.add(itemFalse);
+
+        Integer trueItemId = ruleBase.getTrueItemId();
+        if (trueItemId != null) {
+            //条件真的项目id
+            RuleItems itemTrue = new RuleItems();
+            itemTrue.setRuleId(ruleBase.getId()); //TODO  规则id
+            itemTrue.setRuleItemType(2); //'规则项类型：1-满足条件项目；2-条件真关联项目；3-条件假关联项目'
+            itemTrue.setKlgCatalogId(ruleBase.getConditionsTrueTypeId());//知识库类别ID
+            itemTrue.setKlgItemId(ruleBase.getTrueItemId());
+            ruleItemsMapper.add(itemTrue);
+        }
+
+        Integer falseItemId = ruleBase.getFalseItemId();
+        if (falseItemId != null) {
+            //条件假的项目id
+            RuleItems itemFalse = new RuleItems();
+            itemFalse.setRuleId(ruleBase.getId()); //TODO  规则id
+            itemFalse.setRuleItemType(3); //'规则项类型：1-满足条件项目；2-条件真关联项目；3-条件假关联项目'
+            itemFalse.setKlgCatalogId(ruleBase.getConditionsFalseTypeId());//知识库类别ID
+            itemFalse.setKlgItemId(ruleBase.getFalseItemId());
+            ruleItemsMapper.add(itemFalse);
+        }
+
         //'规则项类型：1-满足条件项目；2-条件真关联项目；3-条件假关联项目'
         //'满足条件类型:1-人资，2-患者，99-其他',
         //TODO 人资集合
         List<Patients> staffPatients = ruleBase.getStaffPatients();
-        setData(staffPatients, ruleBase, 1, 1);
+        setData(staffPatients, ruleBase, 1);
         //TODO 患者集合
         List<Patients> hzPatients = ruleBase.getHzPatients();
-        setData(hzPatients, ruleBase, 1, 2);
+        setData(hzPatients, ruleBase, 1);
         //TODO 其他
         List<Patients> otherPatients = ruleBase.getOtherPatients();
-        setData(otherPatients, ruleBase, 1, 99);
+        setData(otherPatients, ruleBase, 1);
         List<Patients> datas = new ArrayList<>();
         datas.addAll(staffPatients);
         datas.addAll(hzPatients);
         datas.addAll(otherPatients);
-        rulesStorage(datas, ruleBase);
+        rulesStorage(datas, ruleBase, ruleBase.getFeedbackComment());
 
         return ResultUtil.success(null, ruleBase);
     }
@@ -277,18 +287,19 @@ public class RuleServiceImpl implements RuleService {
             //'满足条件类型:1-人资，2-患者，99-其他',
             //TODO 人资集合
             List<Patients> staffPatients = ruleBase.getStaffPatients();
-            setData(staffPatients, ruleBase, 1, 1);
+            setData(staffPatients, ruleBase, 1
+            );
             //TODO 患者集合
             List<Patients> hzPatients = ruleBase.getHzPatients();
-            setData(hzPatients, ruleBase, 1, 2);
+            setData(hzPatients, ruleBase, 1);
             //TODO 其他
             List<Patients> otherPatients = ruleBase.getOtherPatients();
-            setData(otherPatients, ruleBase, 1, 99);
+            setData(otherPatients, ruleBase, 1);
             List<Patients> datas = new ArrayList<>();
             datas.addAll(staffPatients);
             datas.addAll(hzPatients);
             datas.addAll(otherPatients);
-            rulesStorage(datas, ruleBase);
+            rulesStorage(datas, ruleBase, ruleBase.getFeedbackComment());
 
         }
         return ResultUtil.success(null, ruleBase);
@@ -407,12 +418,12 @@ public class RuleServiceImpl implements RuleService {
         return null;
     }
 
-    private void setData(List<Patients> hzPatients, RuleBase ruleBase, Integer ruleItemType, Integer conditionType) {
+    private void setData(List<Patients> hzPatients, RuleBase ruleBase, Integer ruleItemType) {
         for (Patients hzPatient : hzPatients) {
             RuleItems item = new RuleItems();
             item.setRuleId(ruleBase.getId()); //TODO  规则id
             item.setRuleItemType(ruleItemType); //'规则项类型：1-满足条件项目；2-条件真关联项目；3-条件假关联项目'
-            item.setConditionType(conditionType);//'满足条件类型:1-人资，2-患者，99-其他',
+            item.setConditionType(hzPatient.getType());//'满足条件类型:1-人资，2-患者，99-其他',
             item.setKlgCatalogId(hzPatient.getTypeId());//知识库类别ID
             item.setKlgItemId(hzPatient.getTypeId());
             item.setKlgItemPropname(hzPatient.getName());
@@ -429,7 +440,13 @@ public class RuleServiceImpl implements RuleService {
                     boo.setOperator(hzPatient.getEndOp());
                     boo.setRuleId(ruleBase.getId());
                     boo.setRuleItemId(item.getId());
-                    boo.setValue(Integer.valueOf(hzPatient.getEndValue()));
+                    String endValue = hzPatient.getEndValue();
+                    if ("true".equals(endValue)) {
+                        boo.setValue(1);
+                    } else {
+                        boo.setValue(0);
+                    }
+
                     ruleValueBooleanMapper.add(boo);
                     break;
                 case 2:
@@ -455,7 +472,8 @@ public class RuleServiceImpl implements RuleService {
                     date.setOperator(hzPatient.getEndOp());
                     date.setRuleId(ruleBase.getId());
                     date.setRuleItemId(item.getId());
-                    date.setValue(hzPatient.getEndValueDate());
+                    Date date1 = DateUtils.strToDate(hzPatient.getEndValue());
+                    date.setValue(date1);
                     ruleValueDateMapper.add(date);
                     break;
                 case 5:
@@ -490,9 +508,10 @@ public class RuleServiceImpl implements RuleService {
 
     }
 
-    private void rulesStorage(List<Patients> datas, RuleBase ruleBase) throws UnsupportedEncodingException, PinyinException {
+    private void rulesStorage(List<Patients> datas, RuleBase ruleBase, String feedback) throws UnsupportedEncodingException, PinyinException {
         //TODO 规则生成成功,进行入库
         String strRule = GenerateRulesUtils.generateRules(datas);
+        System.out.println("规则信息:   " + strRule);
         RuleDrools ruleDrools = new RuleDrools();
         ruleDrools.setRuleBaseid(ruleBase.getId());
         ruleDrools.setName(ruleBase.getName());
@@ -501,6 +520,8 @@ public class RuleServiceImpl implements RuleService {
         //TODO 状态：0-停用；1-启用
         ruleDrools.setStatus(1);
         ruleDrools.setStr(strRule);
+        ruleDrools.setCount(datas.size());
+        ruleDrools.setFeedback(feedback);
         ruleDrools.setVersion(ruleBase.getVersion());
         ruleDrools.setCreateTime(new Date());
         ruleDrools.setUpdateTime(new Date());

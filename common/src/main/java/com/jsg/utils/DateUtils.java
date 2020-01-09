@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -602,6 +603,26 @@ public class DateUtils {
         });
         return list;
     }
+
+    /**
+     *  
+     * 字符串转换成日期 
+     *
+     * @param str 
+     * @return date 
+     */
+    public static Date strToDate(String str) {
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = null;
+        try {
+            date = format.parse(str);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
+    }
+
 
     public static void main(String[] args) {
         System.out.println(getCurrentYear());

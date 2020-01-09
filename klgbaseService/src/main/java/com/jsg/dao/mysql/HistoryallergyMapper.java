@@ -21,4 +21,7 @@ public interface HistoryallergyMapper {
     int edi(Historyallergy historyallergy);
 
     int del(@Param("historyallergyId") Integer historyallergyId);
+
+    List<Historyallergy> listByName(@Param("queryKey")String queryKey);
+
 }
