@@ -3,6 +3,9 @@ package com.jsg.service;
 import com.jsg.base.result.ResultBase;
 import com.jsg.entity.Pageable;
 import com.jsg.entity.Qualifications;
+import com.jsg.entity.pojo.Patients;
+
+import java.util.List;
 
 /**
  * @author jeanson 进生
@@ -24,5 +27,7 @@ public interface BaseinfoService {
     ResultBase listByassociationListQualification(String queryKey, Integer staffId, Integer qualificationId, Pageable pageable);
 
     ResultBase detailsByQualification(Integer staffId);
+
+    List<Patients> listByYsCode(String ysCode);
 
 }

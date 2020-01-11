@@ -2,6 +2,7 @@ package com.jsg.service;
 
 import com.github.stuxuhai.jpinyin.PinyinException;
 import com.jsg.base.result.ResultBase;
+import com.jsg.entity.HisBase;
 import com.jsg.entity.Pageable;
 import com.jsg.entity.RuleBase;
 import com.jsg.entity.RuleCatalog;
@@ -42,5 +43,10 @@ public interface RuleService {
     ResultBase ruleReduction(Integer ids, Integer pageable);
 
     ResultBase operation(RuleBase ruleBase);
+
+    ResultBase operation1(HisBase hisBase);
+
+    ResultBase ruleDetails(Integer id);
+
 
 }

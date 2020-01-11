@@ -10,4 +10,6 @@ public interface RuleValueDateMapper {
     int add(RuleValueDate date);
 
     int delByRuleId(@Param("id") Integer id);
+
+    RuleValueDate selectByItemId(@Param("itemId")Integer itemId);
 }

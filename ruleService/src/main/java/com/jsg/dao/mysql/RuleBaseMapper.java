@@ -26,4 +26,6 @@ public interface RuleBaseMapper {
     List<RuleBase> ruleHistory(@Param("ids") String ids);
 
     void ruleReduction(@Param("id") Integer id);
+
+    RuleBase findByRuleBase(@Param("id") Integer id);
 }

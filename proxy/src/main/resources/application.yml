@@ -16,28 +16,28 @@ zuul:
   sensitiveHeaders:
   routes:
     aaa:
-      path: cdss/testa-api/**
+      path: /cdss/testa-api/**
       serviceId: testA
     bbb:
-      path: cdss/testb-api/**
+      path: /cdss/testb-api/**
       serviceId: testB
     system:
-      path: cdss/system-api/**
+      path: /cdss/system-api/**
       serviceId: system
     general:
-      path: cdss/general-api/**
+      path: /cdss/general-api/**
       serviceId: general
     klgbase:
-      path: cdss/klgbase-api/**
+      path: /cdss/klgbase-api/**
       serviceId: klgbase
     qualification:
-      path: cdss/qualification-api/**
+      path: /cdss/qualification-api/**
       serviceId: qualification
     rule:
-      path: cdss/rule-api/**
+      path: /cdss/rule-api/**
       serviceId: rule
     login:
-      path: cdss/login-api/**
+      path: /cdss/login-api/**
       serviceId: login
       #rpc:
       #path: /rpc-api/**

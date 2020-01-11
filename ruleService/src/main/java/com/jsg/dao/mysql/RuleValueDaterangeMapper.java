@@ -10,4 +10,6 @@ public interface RuleValueDaterangeMapper {
     void add(RuleValueDaterange daterange);
 
     void delByRuleId(@Param("id") Integer id);
+
+    RuleValueDaterange selectByItemId(@Param("itemId") Integer itemId);
 }

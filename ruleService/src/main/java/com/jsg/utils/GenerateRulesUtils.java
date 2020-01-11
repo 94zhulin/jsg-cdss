@@ -31,14 +31,14 @@ public class GenerateRulesUtils {
             System.out.println(result.toString());
             Patients patient = patientss.get(s);
             Integer rootCompare = patient.getRootCompare();
-           String ruleName = PinyinHelper.convertToPinyinString(patient.getItemName(), "_", PinyinFormat.WITHOUT_TONE);
-            String name = patient.getName();
-         //   patient.setPinyin(name);
+            String ruleName = PinyinHelper.convertToPinyinString(patient.getKlgItemName(), "_", PinyinFormat.WITHOUT_TONE);
+            String name = patient.getKlgItemName();
+            //   patient.setPinyin(name);
             String startValue = patient.getStartValue();
             String endValue = patient.getEndValue();
             boolean isOr = false;
             //TODO 获取类型 项目类别 1 人资 2 患者 3药品 4诊断 5检查 6校验 7过敏史
-            Integer type = patient.getType();
+            Integer type = patient.getConditionType();
             //TODO 目前支持 上下5个or 的语句
             StringBuilder isOrRuleName = new StringBuilder();
 
@@ -52,9 +52,9 @@ public class GenerateRulesUtils {
 
                         if (index < patientss.size()) {
                             Patients patients_To = patientss.get(index);
-                            Integer type_To = patients_To.getType();
+                            Integer type_To = patients_To.getConditionType();
                             if (type == type_To) {
-                                String s1 = PinyinHelper.convertToPinyinString(patients_To.getItemName(), "_", PinyinFormat.WITHOUT_TONE);
+                                String s1 = PinyinHelper.convertToPinyinString(patients_To.getKlgItemName(), "_", PinyinFormat.WITHOUT_TONE);
                                 isOrRuleName.append("\t\truleexecutionResult.put(\"" + s1 + "\",true);\r\n");
                                 isOr = true;
                             }
@@ -63,11 +63,11 @@ public class GenerateRulesUtils {
 
                         if (index_To > -1) {
                             Patients patients_To = patientss.get(index_To);
-                            Integer type_To = patients_To.getType();
+                            Integer type_To = patients_To.getConditionType();
                             Integer rootCompare_To = patients_To.getRootCompare();
                             if (rootCompare_To != null) {
                                 if (type == type_To && rootCompare_To == 0) {
-                                    String s1 = PinyinHelper.convertToPinyinString(patients_To.getItemName(), "_", PinyinFormat.WITHOUT_TONE);
+                                    String s1 = PinyinHelper.convertToPinyinString(patients_To.getKlgItemName(), "_", PinyinFormat.WITHOUT_TONE);
                                     isOrRuleName.append("\t\truleexecutionResult.put(\"" + s1 + "\",true);\r\n");
                                     isOr = true;
                                 }
@@ -82,11 +82,11 @@ public class GenerateRulesUtils {
                     int index = s - 1 - x;
                     if (index > -1) {
                         Patients patients_To = patientss.get(index);
-                        Integer type_To = patients_To.getType();
+                        Integer type_To = patients_To.getConditionType();
                         Integer rootCompare_To = patients_To.getRootCompare();
                         if (rootCompare_To != null) {
                             if (type == type_To && rootCompare_To == 0) {
-                                String s1 = PinyinHelper.convertToPinyinString(patients_To.getItemName(), "_", PinyinFormat.WITHOUT_TONE);
+                                String s1 = PinyinHelper.convertToPinyinString(patients_To.getKlgItemName(), "_", PinyinFormat.WITHOUT_TONE);
                                 isOrRuleName.append("\t\truleexecutionResult.put(\"" + s1 + "\",true);\r\n");
                                 isOr = true;
                             }
@@ -113,7 +113,7 @@ public class GenerateRulesUtils {
                 //  规则条件部分
                 result.append("\twhen\r\n");
                 result.append("\t\t" +
-                        "patientObj:Patients(name == \"" + name + "\" && endValueInt " + patient.getStartOp() + " " + startValue + " &&  endValueInt" + patient.getEndOp() + " " + endValue + " );" +
+                        "patientObj:Patients(name == \"" + name + "\" && endValueNumerical " + patient.getStartOp() + " " + startValue + " &&  endValueNumerical" + patient.getEndOp() + " " + endValue + " );" +
                         "\r\n");
                 strEnd(result, isOrRuleName, isOr);
 
@@ -122,7 +122,7 @@ public class GenerateRulesUtils {
                 //  规则条件部分
                 result.append("\twhen\r\n");
                 result.append("\t\t" +
-                        "patientObj:Patients(name == \"" + name + "\" && endValueInt " + patient.getStartOp() + " " + startValue + " &&  endValueInt" + patient.getEndOp() + " " + endValue + " );" +
+                        "patientObj:Patients(name == \"" + name + "\" && endValueNumerical " + patient.getStartOp() + " " + startValue + " &&  endValueNumerical" + patient.getEndOp() + " " + endValue + " );" +
                         "\r\n");
                 strEnd(result, isOrRuleName, isOr);
 
@@ -154,7 +154,7 @@ public class GenerateRulesUtils {
                 result.append("\twhen\r\n");
 
                 result.append("\t\t" +
-                        "patientObj:Patients(name == \"" + name + "\"  && endValueInt" + patient.getEndOp() + " " + endValue + " );" +
+                        "patientObj:Patients(name == \"" + name + "\"  && endValueNumerical" + patient.getEndOp() + " " + endValue + " );" +
                         "\r\n");
                 strEnd(result, isOrRuleName, isOr);
             } else if (startValue == null && endValue != null && klgItemValueType == 3) {
@@ -162,7 +162,7 @@ public class GenerateRulesUtils {
                 //   规则条件部分
                 result.append("\twhen\r\n");
                 result.append("\t\t" +
-                        "patientObj:Patients(name == \"" + name + "\"  && endValueInt" + patient.getEndOp() + " " + endValue + " );" +
+                        "patientObj:Patients(name == \"" + name + "\"  && endValueNumerical" + patient.getEndOp() + " " + endValue + " );" +
                         "\r\n");
                 strEnd(result, isOrRuleName, isOr);
             } else if (startValue == null && endValue != null && klgItemValueType == 4) {

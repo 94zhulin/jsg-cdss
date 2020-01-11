@@ -29,7 +29,7 @@
     delete from rule_base
     where id = #{ruleId}
   </delete>
-    <insert id="add" parameterType="com.jsg.entity.RuleBase"   useGeneratedKeys="true" keyProperty="id">
+    <insert id="add" parameterType="com.jsg.entity.RuleBase" useGeneratedKeys="true" keyProperty="id">
     insert into rule_base (id,catalog_id , code, `name`,
       priority, depend_ruleId, policy_type,
       version, related_rule_ids, deploy_status,
@@ -198,7 +198,6 @@
     </update>
 
 
-
     <select id="selechistoryVersion" parameterType="string" resultType="string">
         SELECT group_concat(t1.id SEPARATOR '-' ) as ids
 FROM
@@ -223,7 +222,7 @@ GROUP BY t1.`id`
         rule_base t1
         WHERE
         t1.is_delete = 0
-        and t1.catalog_id =  #{catalogId}
+        and t1.catalog_id = #{catalogId}
         <if test="queryKey != null">
             AND concat(name,code) like ('%' #{queryKey} '%')
 
@@ -252,5 +251,10 @@ set t1.is_delete = c.isDel
 where t1.id = #{id};
 
     </update>
+
+
+    <select id="findByRuleBase" parameterType="Integer" resultMap="BaseResultMap">
+    select  * from rule_base t1 where t1.id = #{id}
+    </select>
 
 </mapper>

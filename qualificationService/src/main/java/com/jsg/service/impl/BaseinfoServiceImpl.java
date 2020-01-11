@@ -9,6 +9,7 @@ import com.jsg.dao.mysql.QualificationsMapper;
 import com.jsg.entity.Baseinfo;
 import com.jsg.entity.Pageable;
 import com.jsg.entity.Qualifications;
+import com.jsg.entity.pojo.Patients;
 import com.jsg.service.BaseinfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -114,5 +115,10 @@ public class BaseinfoServiceImpl implements BaseinfoService {
             System.out.println();
         }
         return ResultUtil.success(null, hash);
+    }
+
+    @Override
+    public List<Patients> listByYsCode(String ysCode) {
+        return qualificationsMapper.listByYsCode(ysCode);
     }
 }

@@ -9,9 +9,11 @@ import com.jsg.base.result.ResultBase;
 import com.jsg.base.result.ResultUtil;
 import com.jsg.dao.mysql.*;
 import com.jsg.entity.*;
+import com.jsg.feigh.QualificationService;
 import com.jsg.service.RuleService;
 import com.jsg.utils.DateUtils;
 import com.jsg.utils.GenerateRulesUtils;
+import com.jsg.utils.ReflectionUtils;
 import org.drools.core.impl.InternalKnowledgeBase;
 import org.drools.core.impl.KnowledgeBaseFactory;
 import org.kie.api.io.ResourceType;
@@ -55,6 +57,10 @@ public class RuleServiceImpl implements RuleService {
     private RuleValueStringMapper ruleValueStringMapper;
     @Autowired
     private RuleDroolsMapper ruleDroolsMapper;
+    @Autowired
+    private QualificationService qualificationService;
+    @Autowired
+    private SysRuleaccessLogMapper sysRuleaccessLogMapper;
 
 
     @Value("${apiStatus.failure}")
@@ -191,25 +197,27 @@ public class RuleServiceImpl implements RuleService {
         //TODO 规则分类表 中的  rule_num 规则数量 加1
         ruleNumAdd(ruleBase.getCatalogId());
 
-        Integer trueItemId = ruleBase.getTrueItemId();
-        if (trueItemId != null) {
+        String trueItemCode = ruleBase.getTrueItemCode();
+        if (trueItemCode != null && trueItemCode.length() > 0) {
             //条件真的项目id
             RuleItems itemTrue = new RuleItems();
             itemTrue.setRuleId(ruleBase.getId()); //TODO  规则id
             itemTrue.setRuleItemType(2); //'规则项类型：1-满足条件项目；2-条件真关联项目；3-条件假关联项目'
             itemTrue.setKlgCatalogId(ruleBase.getConditionsTrueTypeId());//知识库类别ID
-            itemTrue.setKlgItemId(ruleBase.getTrueItemId());
+            itemTrue.setKlgItemCode(ruleBase.getTrueItemCode());
+            itemTrue.setKlgItemName(ruleBase.getTrueItemName());
             ruleItemsMapper.add(itemTrue);
         }
 
-        Integer falseItemId = ruleBase.getFalseItemId();
-        if (falseItemId != null) {
+        String falseItemCode = ruleBase.getFalseItemCode();
+        if (falseItemCode != null && falseItemCode.length() > 0) {
             //条件假的项目id
             RuleItems itemFalse = new RuleItems();
             itemFalse.setRuleId(ruleBase.getId()); //TODO  规则id
             itemFalse.setRuleItemType(3); //'规则项类型：1-满足条件项目；2-条件真关联项目；3-条件假关联项目'
             itemFalse.setKlgCatalogId(ruleBase.getConditionsFalseTypeId());//知识库类别ID
-            itemFalse.setKlgItemId(ruleBase.getFalseItemId());
+            itemFalse.setKlgItemCode(ruleBase.getFalseItemCode());
+            itemFalse.setKlgItemName(ruleBase.getFalseItemName());
             ruleItemsMapper.add(itemFalse);
         }
 
@@ -269,20 +277,29 @@ public class RuleServiceImpl implements RuleService {
             ruleValueNumberrangeMapper.delByRuleId(ruleBase.getId());
             ruleValueStringMapper.delByRuleId(ruleBase.getId());
             //TODO 重新执行 写 操作
-            //条件真的项目id
-            RuleItems itemTrue = new RuleItems();
-            itemTrue.setRuleId(ruleBase.getId()); //TODO  规则id
-            itemTrue.setRuleItemType(2); //'规则项类型：1-满足条件项目；2-条件真关联项目；3-条件假关联项目'
-            itemTrue.setKlgCatalogId(ruleBase.getConditionsTrueTypeId());//知识库类别ID
-            itemTrue.setKlgItemId(ruleBase.getTrueItemId());
-            ruleItemsMapper.add(itemTrue);
-            //条件假的项目id
-            RuleItems itemFalse = new RuleItems();
-            itemFalse.setRuleId(ruleBase.getId()); //TODO  规则id
-            itemFalse.setRuleItemType(3); //'规则项类型：1-满足条件项目；2-条件真关联项目；3-条件假关联项目'
-            itemFalse.setKlgCatalogId(ruleBase.getConditionsFalseTypeId());//知识库类别ID
-            itemFalse.setKlgItemId(ruleBase.getFalseItemId());
-            ruleItemsMapper.add(itemFalse);
+            String trueItemCode = ruleBase.getTrueItemCode();
+            if (trueItemCode != null && trueItemCode.length() > 0) {
+                //条件真的项目id
+                RuleItems itemTrue = new RuleItems();
+                itemTrue.setRuleId(ruleBase.getId()); //TODO  规则id
+                itemTrue.setRuleItemType(2); //'规则项类型：1-满足条件项目；2-条件真关联项目；3-条件假关联项目'
+                itemTrue.setKlgCatalogId(ruleBase.getConditionsTrueTypeId());//知识库类别ID
+                itemTrue.setKlgItemCode(ruleBase.getTrueItemCode());
+                ruleItemsMapper.add(itemTrue);
+            }
+
+            String falseItemCode = ruleBase.getFalseItemCode();
+            if (falseItemCode != null && falseItemCode.length() > 0) {
+                //条件假的项目id
+                RuleItems itemFalse = new RuleItems();
+                itemFalse.setRuleId(ruleBase.getId()); //TODO  规则id
+                itemFalse.setRuleItemType(3); //'规则项类型：1-满足条件项目；2-条件真关联项目；3-条件假关联项目'
+                itemFalse.setKlgCatalogId(ruleBase.getConditionsFalseTypeId());//知识库类别ID
+                itemFalse.setKlgItemCode(ruleBase.getFalseItemCode());
+                ruleItemsMapper.add(itemFalse);
+            }
+
+
             //'规则项类型：1-满足条件项目；2-条件真关联项目；3-条件假关联项目'
             //'满足条件类型:1-人资，2-患者，99-其他',
             //TODO 人资集合
@@ -373,17 +390,17 @@ public class RuleServiceImpl implements RuleService {
                     //TODO  判断数据类型 知识库属性值类型：1-布尔，2-数字，3-数字范围，4-日期，5-日期范围，6-文本，7-列表',
                     Integer klgItemValueType = patients.getKlgItemValueType();
                     String endValue = patients.getEndValue();
-                    String ruleName = PinyinHelper.convertToPinyinString(patients.getItemName(), "_", PinyinFormat.WITHOUT_TONE);
+                    String ruleName = PinyinHelper.convertToPinyinString(patients.getKlgItemName(), "_", PinyinFormat.WITHOUT_TONE);
                     patients.setPinyin(ruleName);
                     switch (klgItemValueType) {
                         case 1:
                             patients.setEndValueBoo(Boolean.valueOf(endValue).booleanValue());
                             break;
                         case 2:
-                            patients.setEndValueInt(Integer.valueOf(endValue));
+                            patients.setEndValueNumerical(Double.valueOf(endValue));
                             break;
                         case 3:
-                            patients.setEndValueInt(Integer.valueOf(endValue));
+                            patients.setEndValueNumerical(Double.valueOf(endValue));
                             break;
                         case 4:
                             break;
@@ -405,8 +422,6 @@ public class RuleServiceImpl implements RuleService {
                     Boolean value = ruleexecutionResult.get(key);
                     System.out.println("key：" + key + "---" + "value:" + value);
                 }
-
-
             }
 
         } catch (Exception e) {
@@ -418,15 +433,230 @@ public class RuleServiceImpl implements RuleService {
         return null;
     }
 
+    @Override
+    public ResultBase operation1(HisBase hisBase) {
+        List<Patients> datas = new ArrayList<>();
+        String itemCode = hisBase.getItemCode();
+        List<RuleDrools> ruleDroolss = ruleDroolsMapper.selectRuleStrByCode(itemCode);
+        //拆分成 rule可识别的规则
+        String ysCode = hisBase.getYsCode();
+        //查询医生是否包含该资质
+        datas.addAll(qualificationService.listByYsCode(ysCode));
+        //患者信息
+        HisPatients hisPatients = hisBase.getHisPatients();
+        datas.addAll(ReflectionUtils.readAttributeValue(hisPatients));
+        //项目类别 1 人资 2 患者 3药品 4诊断 5检查 6校验 7过敏史
+        Integer itemType = hisBase.getItemType();
+        switch (itemType) {
+            case 3:
+                Drug drug = hisBase.getDrug();
+                datas.addAll(ReflectionUtils.readAttributeValue(drug));
+                //TODO 查询该规则中的其他项目
+                break;
+            case 4:
+                Diagnosis diagnosis = hisBase.getDiagnosis();
+                datas.addAll(ReflectionUtils.readAttributeValue(diagnosis));
+                break;
+            case 5:
+                Inspect inspect = hisBase.getInspect();
+                datas.addAll(ReflectionUtils.readAttributeValue(inspect));
+                break;
+            case 6:
+                Examine examine = hisBase.getExamine();
+                datas.addAll(ReflectionUtils.readAttributeValue(examine));
+                break;
+            case 7:
+                Historyallergy historyallergy = hisBase.getHistoryallergy();
+                datas.addAll(ReflectionUtils.readAttributeValue(historyallergy));
+                break;
+        }
+        KnowledgeBuilder kb = KnowledgeBuilderFactory.newKnowledgeBuilder();
+        boolean flag = true;
+        //拦截
+        boolean intercept = false;
+        //警告
+        boolean warning = false;
+        //建议
+        boolean advice = false;
+
+        KieSession kSession = null;
+        //TODO 拦截等级高的先执行
+        for (RuleDrools ruleDrools : ruleDroolss) {
+            if (intercept) {
+                return ResultUtil.success(null, ruleDrools);
+            }
+            if (warning) {
+                return ResultUtil.success(null, ruleDrools);
+            }
+            if (advice) {
+                return ResultUtil.success(null, ruleDrools);
+            }
+            //规则id
+            Integer ruleBaseid = ruleDrools.getRuleBaseid();
+            Integer ruleCount = ruleDrools.getCount();
+            //1-拦截；2-警告；3-建议；
+            Integer policyType = ruleDrools.getPolicyType();
+            //由于,比较复杂. 这个我们将项目类型为 3药品 4诊断 5检查 6校验 7过敏史 的条件单独拿出
+            List<RuleItems> items = ruleDroolsMapper.selectByItemCode(ruleBaseid, itemCode);
+            String str = ruleDrools.getStr();
+            try {
+                kb.add(ResourceFactory.newByteArrayResource(str.getBytes("utf-8")), ResourceType.DRL);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            InternalKnowledgeBase kBase = KnowledgeBaseFactory.newKnowledgeBase();
+            kBase.addPackages(kb.getKnowledgePackages());
+            kSession = kBase.newKieSession();
+            HashMap<String, Boolean> ruleexecutionResult = new HashMap<>();
+            kSession.setGlobal("ruleexecutionResult", ruleexecutionResult);
+            kSession.insert(datas);
+            int i = kSession.fireAllRules();
+            System.out.println("Drools执行规则数量:" + i);
+            int total = i + items.size();
+            System.out.println("通过数据相加,总执行质量:" + total);
+            //1-拦截；2-警告；3-建议；
+            SysRuleaccessLog record = new SysRuleaccessLog();
+            if (total >= ruleCount) {
+                if (policyType == 1) {
+                    //拦截 = true, 符合拦截状态, 不在执行;
+                    intercept = true;
+                    record.setResultName("拦截");
+                } else if (policyType == 2) {
+                    //警告 = false 或true 都执行
+                    warning = true;
+                    record.setResultName("警告");
+                } else if (policyType == 3) {
+                    //  建议 = false 或true 都执行
+                    advice = true;
+                    record.setResultName("建议");
+                }
+            }
+            record.setAccessTime(new Date());
+            record.setAppCode("HIS");
+            record.setAppName("HIS");
+            record.setClientType(1);
+            record.setIp("1270.0.01");
+            record.setRuleCatalogName("检查");
+            record.setRuleName(ruleDrools.getName());
+            sysRuleaccessLogMapper.insert(record);
+        }
+        return ResultUtil.fail("未符合条件要求");
+    }
+
+    @Override
+    public ResultBase ruleDetails(Integer id) {
+        RuleBase ruleBase = ruleBaseMapper.findByRuleBase(id);
+        if (ruleBase == null) {
+            return ResultUtil.fail("暂无该规则");
+        }
+        //查询 项目真
+        List<RuleItems> itemTrues = ruleItemsMapper.selectItems(id, 2, 1);
+        if (itemTrues.size() > 0) {
+            StringBuilder klgItemCodeStr = new StringBuilder();
+            StringBuilder klgItemNameStr = new StringBuilder();
+            RuleItems ruleItems = itemTrues.get(0);
+            ruleBase.setConditionsTrueTypeId(ruleItems.getConditionType());
+            for (RuleItems ruleItem : itemTrues) {
+                String klgItemCode = ruleItem.getKlgItemCode();
+                klgItemCodeStr.append(klgItemCode).append(",");
+                String klgItemName = ruleItem.getKlgItemName();
+                klgItemNameStr.append(klgItemName).append(",");
+            }
+            String codeStr = klgItemCodeStr.toString();
+            String codeStrNew = codeStr.substring(0, codeStr.length() - 1);
+            String nameStr = klgItemNameStr.toString();
+            String nameStrNew = nameStr.substring(0, nameStr.length() - 1);
+            ruleBase.setTrueItemCode(codeStrNew);
+            ruleBase.setTrueItemName(nameStrNew);
+        }
+
+        //查询 项目假
+        List<RuleItems> itemFases = ruleItemsMapper.selectItems(id, 3, 1);
+        if (itemFases.size() > 0) {
+            StringBuilder klgItemCodeStr = new StringBuilder();
+            StringBuilder klgItemNameStr = new StringBuilder();
+            RuleItems ruleItems = itemFases.get(0);
+            ruleBase.setConditionsFalseTypeId(ruleItems.getConditionType());
+            for (RuleItems ruleItem : itemFases) {
+                String klgItemCode = ruleItem.getKlgItemCode();
+                klgItemCodeStr.append(klgItemCode).append(",");
+                String klgItemName = ruleItem.getKlgItemName();
+                klgItemNameStr.append(klgItemName).append(",");
+            }
+            String codeStr = klgItemCodeStr.toString();
+            String codeStrNew = codeStr.substring(0, codeStr.length() - 1);
+            String nameStr = klgItemNameStr.toString();
+            String nameStrNew = nameStr.substring(0, nameStr.length() - 1);
+            ruleBase.setFalseItemCode(codeStrNew);
+            ruleBase.setFalseItemName(nameStrNew);
+        }
+        //查询 人资信息
+        List<RuleItems> rzs = ruleItemsMapper.selectItems(id, 1, 1);
+        List<Patients> staffPatients = new ArrayList<>();
+        for (RuleItems rz : rzs) {
+            Patients newRz = new Patients();
+            newRz.setKlgItemName(rz.getKlgItemName());
+            newRz.setKlgCatalogId(rz.getKlgCatalogId());
+            newRz.setConditionType(rz.getConditionType());
+            newRz.setKlgItemCode(rz.getKlgItemCode());
+            newRz.setKlgItemValueType(rz.getKlgItemValuetype());
+            newRz.setKlgItemPropName(rz.getKlgItemPropname());
+            newRz.setOpIndex(rz.getOpIndex());
+            // 查询属性值,比较符
+            getItems(newRz, rz.getId(), rz.getRuleItemType());
+            staffPatients.add(newRz);
+        }
+        ruleBase.setStaffPatients(staffPatients);
+
+        //查询 患者信息
+        List<RuleItems> hzs = ruleItemsMapper.selectItems(id, 1, 2);
+        List<Patients> hzPatients = new ArrayList<>();
+        for (RuleItems hz : hzs) {
+            Patients newHz = new Patients();
+            newHz.setKlgItemName(hz.getKlgItemName());
+            newHz.setConditionType(hz.getConditionType());
+            newHz.setKlgItemCode(hz.getKlgItemCode());
+            newHz.setKlgCatalogId(hz.getKlgCatalogId());
+            newHz.setKlgItemValueType(hz.getKlgItemValuetype());
+            newHz.setKlgItemName(hz.getKlgItemName());
+            newHz.setRootCompare(hz.getOperator());
+            newHz.setOpIndex(hz.getOpIndex());
+            //根据类型查询对应的数据库表
+            getItems(newHz,hz.getId(),hz.getRuleItemType());
+            hzPatients.add(newHz);
+        }
+        ruleBase.setHzPatients(hzPatients);
+
+        //查询其他
+        List<RuleItems> others = ruleItemsMapper.selectItemsByOther(id, 1);
+        List<Patients> otherPatients = new ArrayList<>();
+        for (RuleItems otherItem : others) {
+            Patients other = new Patients();
+            other.setKlgItemName(otherItem.getKlgItemName());
+            other.setConditionType(otherItem.getConditionType());
+            other.setKlgItemCode(otherItem.getKlgItemCode());
+            other.setKlgCatalogId(otherItem.getKlgCatalogId());
+            other.setKlgItemValueType(otherItem.getKlgItemValuetype());
+            other.setKlgItemName(otherItem.getKlgItemName());
+            other.setRootCompare(otherItem.getOperator());
+            other.setOpIndex(otherItem.getOpIndex());
+            //根据类型查询对应的数据库表
+            getItems(other,otherItem.getId(),otherItem.getRuleItemType());
+            otherPatients.add(other);
+        }
+        ruleBase.setOtherPatients(otherPatients);
+        return ResultUtil.success("", ruleBase);
+    }
+
     private void setData(List<Patients> hzPatients, RuleBase ruleBase, Integer ruleItemType) {
         for (Patients hzPatient : hzPatients) {
             RuleItems item = new RuleItems();
             item.setRuleId(ruleBase.getId()); //TODO  规则id
             item.setRuleItemType(ruleItemType); //'规则项类型：1-满足条件项目；2-条件真关联项目；3-条件假关联项目'
-            item.setConditionType(hzPatient.getType());//'满足条件类型:1-人资，2-患者，99-其他',
-            item.setKlgCatalogId(hzPatient.getTypeId());//知识库类别ID
-            item.setKlgItemId(hzPatient.getTypeId());
-            item.setKlgItemPropname(hzPatient.getName());
+            item.setConditionType(hzPatient.getConditionType());//'满足条件类型:1-人资，2-患者，99-其他',
+            item.setKlgCatalogId(hzPatient.getKlgCatalogId());//知识库类别ID
+            item.setKlgItemCode(hzPatient.getKlgItemCode());
+            item.setKlgItemPropname(hzPatient.getKlgItemPropName());
             item.setKlgItemValuetype(hzPatient.getKlgItemValueType());
             //TODO 最外层的连接符
             item.setOperator(hzPatient.getRootCompare());
@@ -530,5 +760,55 @@ public class RuleServiceImpl implements RuleService {
         ruleDroolsMapper.insert(ruleDrools);
     }
 
+
+    private void getItems(Patients patient, Integer itemId, Integer itemValueType) {
+        //知识库属性值类型：1-布尔，2-数字，3-数字范围，4-日期，5-日期范围，6-文本，7-列表'
+        switch (itemValueType) {
+            case 1:
+                RuleValueBoolean vb = ruleValueBooleanMapper.selectByItemId(itemId);
+                patient.setEndOp(vb.getOperator());
+                patient.setEndValue(vb.getValue() + "");
+                break;
+            case 2:
+                RuleValueNumber valueNumber = ruleValueNumberMapper.selectByItemId(itemId);
+                patient.setEndOp(valueNumber.getOperator());
+                patient.setEndValue(valueNumber.getValue() + "");
+                break;
+            case 3:
+                RuleValueNumberrange valueNumberrange = ruleValueNumberrangeMapper.selectByItemId(itemId);
+                patient.setStartOp(valueNumberrange.getStartOp());
+                patient.setStartValue(valueNumberrange.getStartValue() + "");
+                patient.setEndOp(valueNumberrange.getEndOp());
+                patient.setEndValue(valueNumberrange.getEndValue() + "");
+                break;
+            case 4:
+                RuleValueDate valueDate = ruleValueDateMapper.selectByItemId(itemId);
+                patient.setEndOp(valueDate.getOperator());
+                String dateStr = DateUtils.dateToString(valueDate.getValue());
+                patient.setEndValue(dateStr);
+                break;
+            case 5:
+                    RuleValueDaterange valueDaterange = ruleValueDaterangeMapper.selectByItemId(itemId);
+                patient.setStartOp(valueDaterange.getStartOp());
+                String startDateStr = DateUtils.dateToString(valueDaterange.getStartValue());
+                patient.setStartValue(startDateStr);
+                patient.setEndOp(valueDaterange.getEndOp());
+                String endDateStr = DateUtils.dateToString(valueDaterange.getEndValue());
+                patient.setEndValue(endDateStr);
+                break;
+            case 6:
+                RuleValueString valueString = ruleValueStringMapper.selectByItemId(itemId);
+                patient.setEndOp("=");
+                patient.setEndValue(valueString.getValue() + "");
+                break;
+            case 7:
+                RuleValueList valueList = ruleValueListMapper.selectByItemId(itemId);
+                patient.setEndOp("=");
+                patient.setEndValue(valueList.getValue());
+                break;
+        }
+
+
+    }
 
 }

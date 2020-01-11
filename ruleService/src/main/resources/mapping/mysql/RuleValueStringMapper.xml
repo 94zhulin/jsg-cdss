@@ -54,4 +54,9 @@
         </trim>
     </insert>
 
+
+    <select id="selectByItemId" parameterType="int" resultMap="BaseResultMap">
+        SELECT * from rule_value_string t1 where t1.rule_item_id =#{itemId}
+    </select>
+
 </mapper>

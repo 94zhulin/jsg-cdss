@@ -1,6 +1,7 @@
 package com.jsg.dao.mysql;
 
 import com.jsg.entity.Qualifications;
+import com.jsg.entity.pojo.Patients;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -23,5 +24,8 @@ public interface QualificationsMapper {
 
     List<Qualifications> listByassociationListQualification(@Param("queryKey") String queryKey, @Param("staffId") Integer staffId, @Param("qualificationId") Integer qualificationId);
 
-    List<Qualifications> detailsByQualification(@Param("staffId")  Integer staffId);
+    List<Qualifications> detailsByQualification(@Param("staffId") Integer staffId);
+
+    List<Patients> listByYsCode(@Param("ysCode") String ysCode);
+
 }

@@ -576,6 +576,16 @@ public class DateUtils {
         return calendar.get(calendar.YEAR);
     }
 
+    /**
+     * 获取当前季年份
+     *
+     * @return
+     */
+    public static String dateToString(Date date) {
+        SimpleDateFormat df = new java.text.SimpleDateFormat("yyyy-MM-dd");
+        String format = df.format(date);
+        return format;
+    }
 
     public static List<String> getBetweenDate(String start, String end) {
         List<String> list = new ArrayList<>();

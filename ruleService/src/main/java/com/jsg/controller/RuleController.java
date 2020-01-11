@@ -2,6 +2,7 @@ package com.jsg.controller;
 
 import com.github.stuxuhai.jpinyin.PinyinException;
 import com.jsg.base.result.ResultBase;
+import com.jsg.entity.HisBase;
 import com.jsg.entity.Pageable;
 import com.jsg.entity.RuleBase;
 import com.jsg.entity.RuleCatalog;
@@ -13,10 +14,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
 
@@ -153,11 +151,15 @@ public class RuleController {
 
     @ApiOperation(value = "规则匹配")
     @PostMapping(value = "/operation-1", consumes = APPLICATION_JSON_UTF8_VALUE)
-    public ResultBase operation1(@RequestBody @Validated RuleBase ruleBase) {
-        log.info(" parameter:{} ", "规则运算", "/operation", ruleBase.toString());
-        return ruleService.operation(ruleBase);
+    public ResultBase operation1(@RequestBody @Validated HisBase hisBase) {
+        log.info(" parameter:{} ", "规则运算", "/operation", hisBase.toString());
+        return ruleService.operation1(hisBase);
     }
 
-
+    @ApiOperation(value = "规则详情")
+    @PostMapping(value = "/rule-details/{id}", consumes = APPLICATION_JSON_UTF8_VALUE)
+    public ResultBase ruleDetails(@PathVariable("id") Integer id) {
+        return ruleService.ruleDetails(id);
+    }
 
 }

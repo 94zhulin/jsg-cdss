@@ -10,4 +10,6 @@ public interface RuleValueListMapper {
     void add(RuleValueList listStr);
 
     void delByRuleId(@Param("id") Integer id);
+
+    RuleValueList selectByItemId(@Param("itemId") Integer itemId);
 }

@@ -1,4 +1,4 @@
-package com.jsg.entity;
+package com.jsg.entity.pojo;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -13,18 +13,18 @@ import java.util.List;
 @Data
 public class Patients {
     @ApiModelProperty(position = 1, value = "知识库类别ID")
-    private Integer klgCatalogId;
-    @ApiModelProperty(position = 2, value = "项目Code")
-    private String klgItemCode;
+    private Integer typeId;
+    @ApiModelProperty(position = 2, value = "项目id")
+    private Integer itemId;
     @ApiModelProperty(position = 3, value = "例如 name = 年龄   则该字段的值为 年龄 ,用于然后给前端")
-    private String klgItemName;
+    private String itemName;
     @ApiModelProperty(position = 4, value = " 知识库属性值类型：1-布尔，2-数字，3-数字范围，4-日期，5-日期范围，6-文本，7-列表',")
 
     private Integer klgItemValueType;
     @ApiModelProperty(position = 5, value = "项目类别 1 人资 2 患者 3药品 4诊断 5检查 6校验 7过敏史")
-    private Integer conditionType;
+    private Integer type;
     @ApiModelProperty(position = 6, value = "进行运算的字段名")
-    private String klgItemPropName; //
+    private String name; //
     @ApiModelProperty(position = 7, value = "操作符顺序索引")
     private Integer opIndex; //
     @ApiModelProperty(position = 8, value = "最外层的比较符,  && 是与 ||是或")

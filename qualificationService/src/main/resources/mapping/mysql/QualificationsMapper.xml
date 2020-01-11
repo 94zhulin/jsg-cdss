@@ -169,4 +169,23 @@ WHERE
 
     </select>
 
+    <select id="listByYsCode" parameterType="string" resultType="com.jsg.entity.pojo.Patients">
+
+SELECT
+	tt1.code as name,
+tt1.zzmc_code as endValue
+FROM
+	(
+		SELECT
+			'code',
+			t2.zzmc_code
+		FROM
+			qlf_staff_baseinfo t1 LEFT join
+			qlf_staff_qualifications t2 on t1.id = t2.staff_id
+		WHERE
+			t1.ys_code =#{ysCode}
+	) tt1
+
+    </select>
+
 </mapper>

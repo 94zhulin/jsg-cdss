@@ -38,7 +38,9 @@ public class WorkbenchServiceImpl implements WorkbenchService {
 
     @Override
     public ResultBase logByList(String queryKey, String ruleType, String startTime, String endTime) {
-        List<Map<String, String>> lists = sysRuleaccessLogMapper.logByList(queryKey, ruleType, startTime, endTime);
+        String starDate = startTime + " 00:00:00";
+        String endDate = endTime + " 23:59:59";
+        List<Map<String, String>> lists = sysRuleaccessLogMapper.logByList(queryKey, ruleType, starDate, endDate);
         List<String> names = new ArrayList<>();
         names.add("警告");
         names.add("拦截");
@@ -79,7 +81,9 @@ public class WorkbenchServiceImpl implements WorkbenchService {
     public ResultBase barChart(String startTime, String endTime) {
         Integer groupType = 1;
         List<String> betweenDate = DateUtils.getBetweenDate(startTime, endTime);
-        List<BarChart> lists = sysRuleaccessLogMapper.barChart(startTime, endTime, groupType);
+        String starDate = startTime + " 00:00:00";
+        String endDate = endTime + " 23:59:59";
+        List<BarChart> lists = sysRuleaccessLogMapper.barChart(starDate, endDate, groupType);
         for (String dateStr : betweenDate) {
             Boolean flag = false;
             for (BarChart bar : lists) {
@@ -96,7 +100,10 @@ public class WorkbenchServiceImpl implements WorkbenchService {
             }
 
         }
-        return ResultUtil.success(null, lists);
+        Map<String, Object> hash = new HashMap<>();
+        hash.put("sjList", betweenDate);
+        hash.put("dataList", lists);
+        return ResultUtil.success(null, hash);
 
     }
 

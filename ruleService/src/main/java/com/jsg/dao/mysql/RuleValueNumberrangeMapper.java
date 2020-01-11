@@ -10,4 +10,6 @@ public interface RuleValueNumberrangeMapper {
     void add(RuleValueNumberrange range);
 
     void delByRuleId(@Param("id") Integer id);
+
+    RuleValueNumberrange selectByItemId(@Param("itemId")Integer itemId);
 }

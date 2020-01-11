@@ -2,6 +2,7 @@ package com.jsg.controller;
 
 import com.jsg.base.result.ResultBase;
 import com.jsg.entity.Pageable;
+import com.jsg.entity.pojo.Patients;
 import com.jsg.entity.Qualifications;
 import com.jsg.entity.Zzs;
 import com.jsg.service.BaseinfoService;
@@ -15,6 +16,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
@@ -107,6 +109,12 @@ public class BaseinfoController {
     @PostMapping(value = "list/qualification-details", produces = APPLICATION_JSON_UTF8_VALUE)
     public ResultBase detailsByQualification(Integer staffId) {
         return baseinfoService.detailsByQualification(staffId);
+    }
+
+    @ApiOperation(value = "人员资质列表")
+    @PostMapping(value = "list/{ysCode}", produces = APPLICATION_JSON_UTF8_VALUE)
+    public List<Patients> listByYsCode(String ysCode) {
+        return baseinfoService.listByYsCode(ysCode);
     }
 
 

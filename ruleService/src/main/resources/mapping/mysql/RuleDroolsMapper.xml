@@ -153,4 +153,28 @@
       update_userId = #{updateUserid,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+    <select id="selectByItemCode" resultType="com.jsg.entity.RuleItems">
+SELECT
+	t2.*
+FROM
+	rule_base t1
+LEFT JOIN rule_items t2 ON t1.id = t2.rule_id
+WHERE
+	t1.id = #{ruleBaseid}
+AND t2.condition_type = '5'
+and t2.rule_item_type = '1'
+and t2.klg_item_code != #{itemCode}
+
+    </select>
+
+    <select id="selectRuleStrByCode" parameterType="string" resultType="com.jsg.entity.RuleItems">
+SELECT
+	*
+FROM
+	rule_drools t1
+WHERE
+	t1.`code` = 'B超Code' -- 决策类型：1-拦截；2-警告；3-建议；
+	ORDER BY t1.policy_type
+    </select>
 </mapper>
