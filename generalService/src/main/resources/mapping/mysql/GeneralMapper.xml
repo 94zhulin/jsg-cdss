@@ -15,7 +15,7 @@
         WHERE
         1 = 1
         <if test="queryKey != null">
-            AND concat(ks_code,ks_name) like ('%' #{queryKey} '%')
+            AND concat(ifnull(ks_code,''),ifnull(ks_name,'')) like ('%' #{queryKey} '%')
         </if>
     </select>
 
@@ -30,16 +30,16 @@
         sys_dictionary t1
         LEFT JOIN sys_dictionary_catalog t2 ON t1.catalog_id = t2.id
         WHERE
-        t2. CODE = #{catalogCode}
+        t2. CODE like ('%' #{catalogCode} '%')
         <if test="queryKey != null">
-            AND concat(t1.name,t1code) like ('%' #{queryKey} '%')
+            AND concat(ifnull(t1.name,''),ifnull(t1.code,'')) like ('%' #{queryKey} '%')
         </if>
     </select>
 
     <select id="dictionaryCatalog" parameterType="string" resultType="com.jsg.entity.DictionaryCatalog">
         select * from sys_dictionary_catalog t1 where 1=1
         <if test="queryKey != null">
-            AND t1.concat(name,code) like ('%' #{queryKey} '%')
+            AND t1.concat(ifnull(name,''),ifnull(code,'')) like ('%' #{queryKey} '%')
         </if>
     </select>
 

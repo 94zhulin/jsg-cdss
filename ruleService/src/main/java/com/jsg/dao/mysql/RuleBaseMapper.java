@@ -23,9 +23,14 @@ public interface RuleBaseMapper {
 
     int isDel(@Param("id") Integer id);
 
-    List<RuleBase> ruleHistory(@Param("ids") String ids);
+    List<RuleBase> ruleHistory(@Param("code") String code, @Param("policyType") String policyType);
 
     void ruleReduction(@Param("id") Integer id);
 
     RuleBase findByRuleBase(@Param("id") Integer id);
+
+    int selectByVersion(@Param("code") String code, @Param("policyType") String policyType);
+
+    void updateDeployStatus(@Param("code") String code, @Param("policy_type") Integer policy_type);
+
 }

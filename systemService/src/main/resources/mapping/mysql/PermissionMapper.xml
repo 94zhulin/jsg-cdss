@@ -3,6 +3,7 @@
 <mapper namespace="com.jsg.dao.mysql.PermissionMapper">
     <resultMap id="SysPermissionMap" type="com.jsg.entity.Permission">
         <result property="id" column="id"/>
+        <result property="idStr" column="idStr"/>
         <result property="name" column="name"/>
         <result property="code" column="code"/>
         <result property="createTime" column="create_time" javaType="java.util.Date"/>
@@ -15,22 +16,25 @@
     <select id="selectRolePermissions" parameterType="int" resultMap="SysPermissionMap">
 
 SELECT
-	t2.*
+	t2.* , CONCAT (t3.module_id,'-',t2.id) as idStr
 FROM
 	sys_role_permission t1
 LEFT JOIN sys_permission t2 ON t1.permission_id = t2.id
+LEFT JOIN sys_module_permission t3 on t2.id = t3.permission_id
 WHERE
-	t1.role_id = #{roleId}
+	t1.role_id = #{roleId}  and t2.id is not NULL
     </select>
 
 
     <select id="selectModulePermissions" parameterType="int" resultMap="SysPermissionMap">
 
 SELECT
-	t2.*
+	t2.* ,
+CONCAT (t3.id,'-',t2.id) as idStr
 FROM
 	sys_module_permission t1
 LEFT JOIN sys_permission t2 ON t1.permission_id = t2.id
+left JOIN sys_module t3 on t1.module_id = t3.id
 WHERE
 	t1.module_id = #{moduleId}
     </select>

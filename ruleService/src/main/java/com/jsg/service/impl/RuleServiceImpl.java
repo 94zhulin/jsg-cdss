@@ -9,7 +9,6 @@ import com.jsg.base.result.ResultBase;
 import com.jsg.base.result.ResultUtil;
 import com.jsg.dao.mysql.*;
 import com.jsg.entity.*;
-import com.jsg.feigh.QualificationService;
 import com.jsg.service.RuleService;
 import com.jsg.utils.DateUtils;
 import com.jsg.utils.GenerateRulesUtils;
@@ -57,8 +56,6 @@ public class RuleServiceImpl implements RuleService {
     private RuleValueStringMapper ruleValueStringMapper;
     @Autowired
     private RuleDroolsMapper ruleDroolsMapper;
-    @Autowired
-    private QualificationService qualificationService;
     @Autowired
     private SysRuleaccessLogMapper sysRuleaccessLogMapper;
 
@@ -192,7 +189,14 @@ public class RuleServiceImpl implements RuleService {
 
     @Override
     public ResultBase addRule(RuleBase ruleBase) throws PinyinException, UnsupportedEncodingException {
-        ruleBase.setVersion(1);
+        //TODO 根据code 查询历史版本号
+        int i1 = ruleBaseMapper.selectByVersion(ruleBase.getCode(), ruleBase.getPolicyType() + "");
+        StringBuilder der = new StringBuilder();
+        for (int x = 1; x <= i1; x++) {
+            der.append(x + "").append("-");
+        }
+        ruleBase.setVersion(i1 + 1);
+        ruleBase.setRelatedRuleIds(der.toString());
         int add = ruleBaseMapper.add(ruleBase);
         //TODO 规则分类表 中的  rule_num 规则数量 加1
         ruleNumAdd(ruleBase.getCatalogId());
@@ -204,6 +208,7 @@ public class RuleServiceImpl implements RuleService {
             itemTrue.setRuleId(ruleBase.getId()); //TODO  规则id
             itemTrue.setRuleItemType(2); //'规则项类型：1-满足条件项目；2-条件真关联项目；3-条件假关联项目'
             itemTrue.setKlgCatalogId(ruleBase.getConditionsTrueTypeId());//知识库类别ID
+            itemTrue.setConditionType(ruleBase.getConditionsTrueTypeId());
             itemTrue.setKlgItemCode(ruleBase.getTrueItemCode());
             itemTrue.setKlgItemName(ruleBase.getTrueItemName());
             ruleItemsMapper.add(itemTrue);
@@ -216,6 +221,7 @@ public class RuleServiceImpl implements RuleService {
             itemFalse.setRuleId(ruleBase.getId()); //TODO  规则id
             itemFalse.setRuleItemType(3); //'规则项类型：1-满足条件项目；2-条件真关联项目；3-条件假关联项目'
             itemFalse.setKlgCatalogId(ruleBase.getConditionsFalseTypeId());//知识库类别ID
+            itemFalse.setConditionType(ruleBase.getConditionsFalseTypeId());
             itemFalse.setKlgItemCode(ruleBase.getFalseItemCode());
             itemFalse.setKlgItemName(ruleBase.getFalseItemName());
             ruleItemsMapper.add(itemFalse);
@@ -251,15 +257,6 @@ public class RuleServiceImpl implements RuleService {
         record.setStatus(0);
         int s = ruleDroolsMapper.updateByRuleBaseId(record);
         if (isVersion == 1) {
-            //TODO 根据code 查询历史版本号
-            String ids = ruleBaseMapper.selechistoryVersion(ruleBase.getRelatedRuleIds());
-            ruleBase.setRelatedRuleIds(ids);
-            if (ids != null) {
-                //TODO 如果等于空,说明是版本2 , 这时候我们在版本2中保存之前版本的信息
-                ruleBase.setRelatedRuleIds(ruleBase.getId() + "-");
-            }
-            Integer newVersion = ruleBase.getVersion() + 1;
-            ruleBase.setVersion(newVersion);
             //TODO  新增规则
             ResultBase resultBase = addRule(ruleBase);
             //TODO  当前规则对象 假删除
@@ -268,14 +265,14 @@ public class RuleServiceImpl implements RuleService {
             //TODO ruleBase 执行 update 操作
             ruleBaseMapper.edi(ruleBase);
             //TODO 删除 item 和 rule_value所有的 记录 ,重新生成  . 因为update效率太慢了
-            ruleItemsMapper.delByRuleId(ruleBase.getId());
-            ruleValueBooleanMapper.delByRuleId(ruleBase.getId());
-            ruleValueDateMapper.delByRuleId(ruleBase.getId());
-            ruleValueDaterangeMapper.delByRuleId(ruleBase.getId());
-            ruleValueListMapper.delByRuleId(ruleBase.getId());
-            ruleValueNumberMapper.delByRuleId(ruleBase.getId());
-            ruleValueNumberrangeMapper.delByRuleId(ruleBase.getId());
-            ruleValueStringMapper.delByRuleId(ruleBase.getId());
+            int i = ruleItemsMapper.delByRuleId(ruleBase.getId());
+            int i1 = ruleValueBooleanMapper.delByRuleId(ruleBase.getId());
+            int i2 = ruleValueDateMapper.delByRuleId(ruleBase.getId());
+            int i3 = ruleValueDaterangeMapper.delByRuleId(ruleBase.getId());
+            int i4 = ruleValueListMapper.delByRuleId(ruleBase.getId());
+            int i5 = ruleValueNumberMapper.delByRuleId(ruleBase.getId());
+            int i6 = ruleValueNumberrangeMapper.delByRuleId(ruleBase.getId());
+            int i7 = ruleValueStringMapper.delByRuleId(ruleBase.getId());
             //TODO 重新执行 写 操作
             String trueItemCode = ruleBase.getTrueItemCode();
             if (trueItemCode != null && trueItemCode.length() > 0) {
@@ -284,7 +281,9 @@ public class RuleServiceImpl implements RuleService {
                 itemTrue.setRuleId(ruleBase.getId()); //TODO  规则id
                 itemTrue.setRuleItemType(2); //'规则项类型：1-满足条件项目；2-条件真关联项目；3-条件假关联项目'
                 itemTrue.setKlgCatalogId(ruleBase.getConditionsTrueTypeId());//知识库类别ID
+                itemTrue.setConditionType(ruleBase.getConditionsTrueTypeId());
                 itemTrue.setKlgItemCode(ruleBase.getTrueItemCode());
+                itemTrue.setKlgItemName(ruleBase.getTrueItemName());
                 ruleItemsMapper.add(itemTrue);
             }
 
@@ -295,17 +294,17 @@ public class RuleServiceImpl implements RuleService {
                 itemFalse.setRuleId(ruleBase.getId()); //TODO  规则id
                 itemFalse.setRuleItemType(3); //'规则项类型：1-满足条件项目；2-条件真关联项目；3-条件假关联项目'
                 itemFalse.setKlgCatalogId(ruleBase.getConditionsFalseTypeId());//知识库类别ID
+                itemFalse.setConditionType(ruleBase.getConditionsFalseTypeId());
                 itemFalse.setKlgItemCode(ruleBase.getFalseItemCode());
+                itemFalse.setKlgItemName(ruleBase.getFalseItemName());
                 ruleItemsMapper.add(itemFalse);
             }
-
 
             //'规则项类型：1-满足条件项目；2-条件真关联项目；3-条件假关联项目'
             //'满足条件类型:1-人资，2-患者，99-其他',
             //TODO 人资集合
             List<Patients> staffPatients = ruleBase.getStaffPatients();
-            setData(staffPatients, ruleBase, 1
-            );
+            setData(staffPatients, ruleBase, 1);
             //TODO 患者集合
             List<Patients> hzPatients = ruleBase.getHzPatients();
             setData(hzPatients, ruleBase, 1);
@@ -344,12 +343,10 @@ public class RuleServiceImpl implements RuleService {
     }
 
     @Override
-    public ResultBase ruleHistory(String ids, Pageable pageable) {
+    public ResultBase ruleHistory(String code, String policyType, Pageable pageable) {
         //查询 用户历史
         PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
-        //TODO like 匹配开头即可 例如: 2-6-7-8-9  我们只匹配 2开头的就行
-        String[] split = ids.split("-");
-        List<RuleBase> list = ruleBaseMapper.ruleHistory(split[0]);
+        List<RuleBase> list = ruleBaseMapper.ruleHistory(code, policyType);
         PageInfo<RuleBase> pageInfo = new PageInfo<>(list);
         return ResultUtil.success(null, pageInfo);
     }
@@ -441,7 +438,7 @@ public class RuleServiceImpl implements RuleService {
         //拆分成 rule可识别的规则
         String ysCode = hisBase.getYsCode();
         //查询医生是否包含该资质
-        datas.addAll(qualificationService.listByYsCode(ysCode));
+        datas.addAll(ruleDroolsMapper.listByYsCode(ysCode));
         //患者信息
         HisPatients hisPatients = hisBase.getHisPatients();
         datas.addAll(ReflectionUtils.readAttributeValue(hisPatients));
@@ -550,7 +547,7 @@ public class RuleServiceImpl implements RuleService {
             return ResultUtil.fail("暂无该规则");
         }
         //查询 项目真
-        List<RuleItems> itemTrues = ruleItemsMapper.selectItems(id, 2, 1);
+        List<RuleItems> itemTrues = ruleItemsMapper.selectItems(id, 2, null);
         if (itemTrues.size() > 0) {
             StringBuilder klgItemCodeStr = new StringBuilder();
             StringBuilder klgItemNameStr = new StringBuilder();
@@ -571,7 +568,7 @@ public class RuleServiceImpl implements RuleService {
         }
 
         //查询 项目假
-        List<RuleItems> itemFases = ruleItemsMapper.selectItems(id, 3, 1);
+        List<RuleItems> itemFases = ruleItemsMapper.selectItems(id, 3, null);
         if (itemFases.size() > 0) {
             StringBuilder klgItemCodeStr = new StringBuilder();
             StringBuilder klgItemNameStr = new StringBuilder();
@@ -600,10 +597,11 @@ public class RuleServiceImpl implements RuleService {
             newRz.setConditionType(rz.getConditionType());
             newRz.setKlgItemCode(rz.getKlgItemCode());
             newRz.setKlgItemValueType(rz.getKlgItemValuetype());
-            newRz.setKlgItemPropName(rz.getKlgItemPropname());
+            newRz.setKlgItemPropName(rz.getKlgItemPropName());
+            newRz.setKlgItemPropValue(rz.getKlgItemPropValue());
             newRz.setOpIndex(rz.getOpIndex());
             // 查询属性值,比较符
-            getItems(newRz, rz.getId(), rz.getRuleItemType());
+            getItems(newRz, rz.getId(), rz.getKlgItemValuetype());
             staffPatients.add(newRz);
         }
         ruleBase.setStaffPatients(staffPatients);
@@ -621,8 +619,11 @@ public class RuleServiceImpl implements RuleService {
             newHz.setKlgItemName(hz.getKlgItemName());
             newHz.setRootCompare(hz.getOperator());
             newHz.setOpIndex(hz.getOpIndex());
+            newHz.setKlgItemPropName(hz.getKlgItemPropName());
+            newHz.setKlgItemPropValue(hz.getKlgItemPropValue());
+
             //根据类型查询对应的数据库表
-            getItems(newHz,hz.getId(),hz.getRuleItemType());
+            getItems(newHz, hz.getId(), hz.getKlgItemValuetype());
             hzPatients.add(newHz);
         }
         ruleBase.setHzPatients(hzPatients);
@@ -640,12 +641,36 @@ public class RuleServiceImpl implements RuleService {
             other.setKlgItemName(otherItem.getKlgItemName());
             other.setRootCompare(otherItem.getOperator());
             other.setOpIndex(otherItem.getOpIndex());
+            other.setKlgItemPropName(otherItem.getKlgItemPropName());
+            other.setKlgItemPropValue(otherItem.getKlgItemPropValue());
             //根据类型查询对应的数据库表
-            getItems(other,otherItem.getId(),otherItem.getRuleItemType());
+            getItems(other, otherItem.getId(), otherItem.getKlgItemValuetype());
             otherPatients.add(other);
         }
         ruleBase.setOtherPatients(otherPatients);
         return ResultUtil.success("", ruleBase);
+    }
+
+    @Override
+    public ResultBase ruleDeployment(Integer ruleId, Integer deploy_status, Integer policy_type) {
+        RuleBase byRuleBase = ruleBaseMapper.findByRuleBase(ruleId);
+        String code = byRuleBase.getCode();
+        //停用所有
+        ruleBaseMapper.updateDeployStatus(code, policy_type);
+        ruleDroolsMapper.updateStatus(code, policy_type);
+
+        // 规则启用
+        RuleBase ruleBase = new RuleBase();
+        ruleBase.setId(ruleId);
+        ruleBase.setDeployStatus(deploy_status);
+        ruleBaseMapper.edi(ruleBase);
+        //drools 启用
+        //TODO 状态：0-停用；1-启用
+        RuleDrools record = new RuleDrools();
+        record.setRuleBaseid(ruleId);
+        record.setStatus(deploy_status);
+        int i = ruleDroolsMapper.updateByPrimaryKeySelective(record);
+        return ResultUtil.success("", i);
     }
 
     private void setData(List<Patients> hzPatients, RuleBase ruleBase, Integer ruleItemType) {
@@ -656,7 +681,9 @@ public class RuleServiceImpl implements RuleService {
             item.setConditionType(hzPatient.getConditionType());//'满足条件类型:1-人资，2-患者，99-其他',
             item.setKlgCatalogId(hzPatient.getKlgCatalogId());//知识库类别ID
             item.setKlgItemCode(hzPatient.getKlgItemCode());
-            item.setKlgItemPropname(hzPatient.getKlgItemPropName());
+            item.setKlgItemName(hzPatient.getKlgItemName());
+            item.setKlgItemPropName(hzPatient.getKlgItemPropName());
+            item.setKlgItemPropValue(hzPatient.getKlgItemPropValue());
             item.setKlgItemValuetype(hzPatient.getKlgItemValueType());
             //TODO 最外层的连接符
             item.setOperator(hzPatient.getRootCompare());
@@ -748,7 +775,7 @@ public class RuleServiceImpl implements RuleService {
         ruleDrools.setCode(ruleBase.getCode());
         ruleDrools.setPolicyType(ruleBase.getPolicyType());
         //TODO 状态：0-停用；1-启用
-        ruleDrools.setStatus(1);
+        ruleDrools.setStatus(0);
         ruleDrools.setStr(strRule);
         ruleDrools.setCount(datas.size());
         ruleDrools.setFeedback(feedback);
@@ -788,7 +815,7 @@ public class RuleServiceImpl implements RuleService {
                 patient.setEndValue(dateStr);
                 break;
             case 5:
-                    RuleValueDaterange valueDaterange = ruleValueDaterangeMapper.selectByItemId(itemId);
+                RuleValueDaterange valueDaterange = ruleValueDaterangeMapper.selectByItemId(itemId);
                 patient.setStartOp(valueDaterange.getStartOp());
                 String startDateStr = DateUtils.dateToString(valueDaterange.getStartValue());
                 patient.setStartValue(startDateStr);

@@ -113,7 +113,7 @@ values (
         </if>
 
         <if test="queryKey != null ">
-            AND concat(t1.name,t1.code) like ('%' #{queryKey} '%')
+            AND concat(ifnull(t1.name,''),ifnull(t1.code,'')) like ('%' #{queryKey} '%')
         </if>
     </select>
 

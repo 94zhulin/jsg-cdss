@@ -3,7 +3,7 @@
 <mapper namespace="com.jsg.dao.mysql.SysRuleaccessLogMapper">
     <resultMap id="BaseResultMap" type="com.jsg.entity.SysRuleaccessLog">
         <id column="id" jdbcType="INTEGER" property="id"/>
-        <result column="access_time" jdbcType="TIMESTAMP" property="accessTime"/>
+        <result column="access_time" property="accessTime"/>
         <result column="app_name" jdbcType="VARCHAR" property="appName"/>
         <result column="app_code" jdbcType="VARCHAR" property="appCode"/>
         <result column="IP" jdbcType="VARCHAR" property="ip"/>
@@ -197,7 +197,7 @@ LEFT JOIN (
 		COUNT(id) AS qlf,
 		'a'
 	FROM
-		qlf_staff_qualifications
+		qlf_staff_baseinfo
 ) t3 ON t2.a = t3.a
 WHERE
 	1 = 1
@@ -236,7 +236,7 @@ WHERE
     </select>
 
     <select id="barChart" resultType="com.jsg.entity.BarChart">
-    select DATE_FORMAT(access_time,'%Y-%m-%d') hours,count(id) count from sys_ruleaccess_log where 1=1 and
+    select DATE_FORMAT(access_time,'%Y-%m-%d') hours,count(id) count from 	sys_ruleaccess_log t1 where 1=1
          AND t1.access_time BETWEEN #{startTime}
         AND #{endTime}
       group by hours;

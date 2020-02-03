@@ -196,6 +196,25 @@ public class Drug {
 
     @ApiModelProperty(position = 30, value = " 状态：1-启用；0-停用", required = true)
     private Integer status;
+
+
+    @ApiModelProperty(position = 30, value = " 剂型名称", required = true)
+    private String jxName;
+
+    @ApiModelProperty(position = 30, value = " 频次名称", required = true)
+    private String pcName;
+
+    @ApiModelProperty(position = 30, value = " 给药方式", required = true)
+    private String gyfsName;
+
+
+    @ApiModelProperty(position = 30, value = "剂量单位", required = true)
+    private String jldwName;
+
+    @ApiModelProperty(position = 30, value = " 用药时间", required = true)
+    private String yysjName;
+
+
     @ApiModelProperty(position = 31, value = " 创建时间", readOnly = true)
     private Date createTime = new Date();
     @ApiModelProperty(position = 32, value = " 修改时间", readOnly = true)

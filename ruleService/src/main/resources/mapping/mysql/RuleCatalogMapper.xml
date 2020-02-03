@@ -14,7 +14,7 @@
         <result column="status" jdbcType="INTEGER" property="status"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
-        <result column="create_userId" jdbcType="INTEGER" property="createUserid"/>
+        <result column="create_userId" jdbcType="INTEGER" property="createUserId"/>
         <result column="update_userId" jdbcType="INTEGER" property="updateUserid"/>
     </resultMap>
 
@@ -42,7 +42,7 @@
         <result column="status" jdbcType="INTEGER" property="status"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
-        <result column="create_userId" jdbcType="INTEGER" property="createUserid"/>
+        <result column="create_userId" jdbcType="INTEGER" property="createUserId"/>
         <result column="update_userId" jdbcType="INTEGER" property="updateUserid"/>
         <collection property="children" ofType="com.jsg.entity.RuleCatalog" select="list" column="id"/>
     </resultMap>
@@ -65,7 +65,7 @@
     values (#{id,jdbcType=INTEGER}, #{code,jdbcType=VARCHAR}, #{parentId,jdbcType=INTEGER}, 
       #{name,jdbcType=VARCHAR}, #{level,jdbcType=INTEGER}, #{orderIndex,jdbcType=INTEGER}, 
       #{childNum,jdbcType=INTEGER}, #{ruleNum,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{createUserid,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=INTEGER},
       #{updateUserid,jdbcType=INTEGER})
   </insert>
 
@@ -99,8 +99,8 @@
             <if test="updateTime != null">
                 update_time = #{updateTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="createUserid != null">
-                create_userId = #{createUserid,jdbcType=INTEGER},
+            <if test="createUserId != null">
+                create_userId = #{createUserId,jdbcType=INTEGER},
             </if>
             <if test="updateUserid != null">
                 update_userId = #{updateUserid,jdbcType=INTEGER},

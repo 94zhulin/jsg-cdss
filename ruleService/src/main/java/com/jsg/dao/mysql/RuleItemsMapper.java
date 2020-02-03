@@ -9,12 +9,12 @@ import java.util.List;
 @Repository
 public interface RuleItemsMapper {
 
-    void add(RuleItems itemTrue);
+    int add(RuleItems itemTrue);
 
-    void delByRuleId(@Param("id") Integer id);
+    int delByRuleId(@Param("id") Integer id);
 
-    List<RuleItems> selectItems(@Param("ruleId") Integer ruleId, @Param("itemType") int itemType, @Param("conditionType") int conditionType);
+    List<RuleItems> selectItems(@Param("ruleId") Integer ruleId, @Param("itemType") Integer itemType, @Param("conditionType") Integer conditionType);
 
-    List<RuleItems> selectItemsByOther(@Param("ruleId") Integer ruleId, @Param("itemType") int itemType);
+    List<RuleItems> selectItemsByOther(@Param("ruleId") Integer ruleId, @Param("itemType") Integer itemType);
 
 }

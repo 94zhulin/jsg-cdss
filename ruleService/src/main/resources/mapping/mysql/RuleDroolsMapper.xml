@@ -14,7 +14,7 @@
         <result column="feedback" property="feedback"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
-        <result column="create_userId" jdbcType="INTEGER" property="createUserid"/>
+        <result column="create_userId" jdbcType="INTEGER" property="createUserId"/>
         <result column="update_userId" jdbcType="INTEGER" property="updateUserid"/>
     </resultMap>
     <sql id="Base_Column_List">
@@ -40,7 +40,7 @@
     values (#{id,jdbcType=INTEGER}, #{ruleBaseid,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
       #{code,jdbcType=VARCHAR}, #{policyType,jdbcType=INTEGER}, #{version,jdbcType=INTEGER}, 
       #{status,jdbcType=INTEGER}, #{str,jdbcType=VARCHAR}, #{count},#{feedback}, #{createTime,jdbcType=TIMESTAMP},
-      #{updateTime,jdbcType=TIMESTAMP}, #{createUserid,jdbcType=INTEGER}, #{updateUserid,jdbcType=INTEGER}
+      #{updateTime,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=INTEGER}, #{updateUserid,jdbcType=INTEGER}
       )
   </insert>
 
@@ -80,8 +80,8 @@
             <if test="updateTime != null">
                 update_time = #{updateTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="createUserid != null">
-                create_userId = #{createUserid,jdbcType=INTEGER},
+            <if test="createUserId != null">
+                create_userId = #{createUserId,jdbcType=INTEGER},
             </if>
             <if test="updateUserid != null">
                 update_userId = #{updateUserid,jdbcType=INTEGER},
@@ -94,9 +94,6 @@
     <update id="updateByPrimaryKeySelective" parameterType="com.jsg.entity.RuleDrools">
         update rule_drools
         <set>
-            <if test="ruleBaseid != null">
-                rule_baseId = #{ruleBaseid,jdbcType=INTEGER},
-            </if>
             <if test="name != null">
                 `name` = #{name,jdbcType=VARCHAR},
             </if>
@@ -127,14 +124,14 @@
             <if test="updateTime != null">
                 update_time = #{updateTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="createUserid != null">
-                create_userId = #{createUserid,jdbcType=INTEGER},
+            <if test="createUserId != null">
+                create_userId = #{createUserId,jdbcType=INTEGER},
             </if>
             <if test="updateUserid != null">
                 update_userId = #{updateUserid,jdbcType=INTEGER},
             </if>
         </set>
-        where id = #{id,jdbcType=INTEGER}
+        where rule_baseId =#{ruleBaseid}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.jsg.entity.RuleDrools">
     update rule_drools
@@ -149,7 +146,7 @@
             feedback = #{feedback},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
-      create_userId = #{createUserid,jdbcType=INTEGER},
+      create_userId = #{createUserId,jdbcType=INTEGER},
       update_userId = #{updateUserid,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -176,5 +173,35 @@ FROM
 WHERE
 	t1.`code` = 'B超Code' -- 决策类型：1-拦截；2-警告；3-建议；
 	ORDER BY t1.policy_type
+    </select>
+
+    <update id="updateStatus">
+
+        update rule_drools
+        <set>
+            `status` = 0
+
+        </set>
+        where code = #{code} and policy_type = #{policy_type}
+    </update>
+
+
+    <select id="listByYsCode" parameterType="string" resultType="com.jsg.entity.Patients">
+
+SELECT
+	tt1.code as name,
+tt1.zzmc_code as endValue
+FROM
+	(
+		SELECT
+			'code',
+			t2.zzmc_code
+		FROM
+			qlf_staff_baseinfo t1 LEFT join
+			qlf_staff_qualifications t2 on t1.id = t2.staff_id
+		WHERE
+			t1.ys_code =#{ysCode}
+	) tt1
+
     </select>
 </mapper>

@@ -1,5 +1,7 @@
 package com.jsg.dao.mysql;
 
+import com.jsg.entity.Baseinfo;
+import com.jsg.entity.QualificationRule;
 import com.jsg.entity.Qualifications;
 import com.jsg.entity.pojo.Patients;
 import org.apache.ibatis.annotations.Param;
@@ -22,10 +24,15 @@ public interface QualificationsMapper {
 
     int add(Qualifications qualifications);
 
-    List<Qualifications> listByassociationListQualification(@Param("queryKey") String queryKey, @Param("staffId") Integer staffId, @Param("qualificationId") Integer qualificationId);
+    List<QualificationRule> listByassociationListQualification(@Param("queryKey") String queryKey, @Param("staffId") Integer staffId, @Param("catalogCode") String catalogCode);
 
     List<Qualifications> detailsByQualification(@Param("staffId") Integer staffId);
 
     List<Patients> listByYsCode(@Param("ysCode") String ysCode);
 
+    Qualifications selectByOne(@Param("qualificationId") Integer qualificationId);
+
+    List<Qualifications> selectByStaffIdAndCatalogCode(@Param("staffId") Integer staffId, @Param("catalogCode") String catalogCode);
+
+    List<Baseinfo> list(@Param("queryKey") String queryKey, @Param("sex") Integer sex, @Param("ksCode") String ksCode, @Param("position") Integer position, @Param("zzName") String zzName);
 }

@@ -72,7 +72,7 @@
         from sys_role
         WHERE 1=1
         <if test="queryKey != null">
-            AND concat(name,code) like ('%' #{queryKey} '%')
+            AND concat(ifnull(name,''),ifnull(code,'')) like ('%' #{queryKey} '%')
         </if>
 
         <if test="status != null">

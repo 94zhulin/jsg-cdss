@@ -3,6 +3,7 @@ package com.jsg.service.impl;
 import com.jsg.base.result.ResultBase;
 import com.jsg.base.result.ResultUtil;
 import com.jsg.dao.mysql.UserGeneralMapper;
+import com.jsg.entity.Pageable;
 import com.jsg.entity.PermissionGenera;
 import com.jsg.entity.Token;
 import com.jsg.entity.UserGenera;
@@ -31,7 +32,7 @@ public class GeneralServiceImpl implements GeneralService {
     private UserGeneralMapper userGeneralMapper;
 
     @Autowired
-    RedisService redisService;
+    private RedisService redisService;
     @Value("${apiStatus.failure}")
     private Integer failure;
 
@@ -57,7 +58,7 @@ public class GeneralServiceImpl implements GeneralService {
         for (PermissionGenera gg : permissionGeneras) {
             codes.add(gg.getCode());
         }
-        redisService.lSet(session, codes, Long.valueOf("1800"));
+        redisService.lSet(session, codes, Long.valueOf("-1"));
         return ResultUtil.success(null, userToken);
     }
 

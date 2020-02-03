@@ -13,4 +13,6 @@ import java.util.List;
 @Repository
 public interface BaseinfoMapper {
     List<Baseinfo> list(@Param("queryKey") String queryKey, @Param("sex") Integer sex, @Param("ksCode") String ksCode, @Param("position") Integer position, @Param("zzName") String zzName);
+
+    void updateByPrimaryKeySelective(Baseinfo baseinfo);
 }

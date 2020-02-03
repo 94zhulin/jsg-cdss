@@ -25,6 +25,10 @@ public class Patients {
     private Integer conditionType;
     @ApiModelProperty(position = 6, value = "进行运算的字段名")
     private String klgItemPropName; //
+
+
+    @ApiModelProperty(position = 6, value = "前端回显")
+    private String klgItemPropValue; //
     @ApiModelProperty(position = 7, value = "操作符顺序索引")
     private Integer opIndex; //
     @ApiModelProperty(position = 8, value = "最外层的比较符,  && 是与 ||是或")

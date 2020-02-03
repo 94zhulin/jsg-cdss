@@ -42,10 +42,12 @@ public class RuleBase {
     private String feedbackComment;
     @ApiModelProperty(position = 13, value = "创建时间", readOnly = true)
     private Date createTime = new Date();
+    @ApiModelProperty(position = 13, value = "部署时间", readOnly = true)
+    private Date deployTime ;
     @ApiModelProperty(position = 13, value = "修改时间", readOnly = true)
     private Date updateTime = new Date();
     @ApiModelProperty(position = 13, value = "创建人", required = true)
-    private Integer createUserid;
+    private Integer createUserId;
     @ApiModelProperty(position = 13, value = "修改人", required = true)
     private Integer updateUserid;
     @ApiModelProperty(position = 13, value = "类别id", readOnly = true)

@@ -59,7 +59,8 @@ public class HzsxServiceImpl implements HzsxService {
             resultBase.setStatus(failure);
             resultBase.setMsg("编码或项目名重复！");
         } else {
-            int opFlag = hzsxMapper.edi(hzsx);
+            hzsxMapper.edi(hzsx);
+            int opFlag = hzsx.getId();
             //TODO 数值类型：1-文本；2-数字；3-布尔；4-列表；5-日期
             Integer valueType = hzsx.getValueType();
             if (4 == valueType) {

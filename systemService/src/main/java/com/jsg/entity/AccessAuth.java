@@ -25,6 +25,10 @@ public class AccessAuth {
     private Integer isExpired;
     @ApiModelProperty(position = 6, value = "过期日期", required = true)
     private Date expiredDate;
+
+    @ApiModelProperty(position = 6, value = "过期日期", required = true)
+    private String expiredDateStr;
+
     @ApiModelProperty(position = 7, value = "状态：0-已停用；1-已启用", required = true)
     private Integer status;
     @ApiModelProperty(position = 8, value = "创建时间", readOnly = true)

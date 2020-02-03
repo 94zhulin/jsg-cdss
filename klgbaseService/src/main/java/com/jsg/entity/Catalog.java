@@ -16,6 +16,10 @@ public class Catalog {
     private Integer id;
     @ApiModelProperty(position = 1, value = "    父类别ID", required = true)
     private Integer parentId;
+
+    @ApiModelProperty(position = 1, value = "    父类别Name", required = true)
+    private String parentCode;
+
     @ApiModelProperty(position = 2, value = "    类别名称", required = true)
     private String name;
     @ApiModelProperty(position = 2, value = "    类别名称label", readOnly = true)

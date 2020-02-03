@@ -26,7 +26,7 @@
     <select id="selectUserByRoleId" resultMap="SysUserMap">
         select * from sys_user where role_id = #{roleId}
         <if test="queryKey != null">
-            AND concat(user_name,full_name,mobile_num) like ('%' #{queryKey} '%')
+            AND concat(ifnull(user_name,''),ifnull(full_name,''),ifnull(mobile_num,'')) like ('%' #{queryKey} '%')
         </if>
     </select>
 
@@ -133,10 +133,10 @@
         LEFT JOIN sys_role t2 ON t1.role_id = t2.id
         LEFT JOIN sys_department t3 ON t1.ks_code = t3.ks_code where 1=1
         <if test="queryKey != null">
-            AND concat(user_name,full_name,mobile_num) like ('%' #{queryKey} '%')
+            AND concat(ifnull(user_name,''),ifnull(full_name,''),ifnull(mobile_num,'')) like ('%' #{queryKey} '%')
         </if>
         <if test="status != null">
-            AND status = #{status}
+            AND t1.status = #{status}
         </if>
 
     </select>

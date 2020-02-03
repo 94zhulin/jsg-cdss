@@ -38,7 +38,7 @@ public class RuleDrools {
 
     private Date updateTime;
 
-    private Integer createUserid;
+    private Integer createUserId;
 
     private Integer updateUserid;
 

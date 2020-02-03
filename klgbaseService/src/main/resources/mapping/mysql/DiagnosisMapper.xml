@@ -97,19 +97,19 @@
         klgbase_diagnosis t1
         WHERE t1.catalog_id = #{catalogId}
         <if test="queryKey != null ">
-            AND concat(name,icd10_code) like ('%' #{queryKey} '%')
+            AND concat(ifnull(name,''),ifnull(icd10_code,'')) like ('%' #{queryKey} '%')
         </if>
         <if test="type != null ">
             and t1.type = #{type}
         </if>
         <if test="zzdFlagCode != null ">
-            and t1.zzd_flag_code = #{zzdFlagCode}
+            and t1.zzd_flag = #{zzdFlagCode}
         </if>
     </select>
 
     <select id="listByName" resultMap="KlgbaseDiagnosisMap">
         select * from klgbase_drug t1 where  1=1 and
-        AND concat(name,icd10_code) like ('%' #{queryKey} '%')
+        AND concat(ifnull(name,''),ifnull(icd10_code,'')) like ('%' #{queryKey} '%')
     </select>
 
 </mapper>

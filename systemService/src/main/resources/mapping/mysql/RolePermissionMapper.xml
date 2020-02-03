@@ -22,5 +22,21 @@
     </delete>
 
 
+    <select id="selectByPermission" parameterType="Integer" resultType="Integer">
+
+SELECT
+	t3.id
+FROM
+	sys_role_permission t1
+LEFT JOIN sys_module_permission t2 ON t1.permission_id = t2.permission_id
+LEFT JOIN sys_module t3 ON t2.module_id = t3.id
+WHERE
+	t1.role_id = #{roleId}
+GROUP BY
+	t3.id
+
+
+
+    </select>
 
 </mapper>

@@ -22,12 +22,12 @@
     </insert>
 
 
-    <delete id="del" parameterType="string">
-DELETE FROM klgbase_hzsx_list   WHERE propId= #{propId}
+    <delete id="del" parameterType="Integer">
+DELETE FROM klgbase_hzsx_list   WHERE prop_id= #{propId}
     </delete>
 
     <select id="list" parameterType="string" resultMap="KlgbaseHzsxListMap">
-        select * from  klgbase_hzsx_list  tt1 where tt1.propId= #{propId}
+        select * from  klgbase_hzsx_list  tt1 where tt1.prop_id= #{propId}
     </select>
 
 </mapper>

@@ -6,7 +6,6 @@ import com.jsg.base.result.ResultBase;
 import com.jsg.base.result.ResultUtil;
 import com.jsg.dao.mysql.AccessPermissionsMapper;
 import com.jsg.entity.AccessAuth;
-import com.jsg.entity.Module;
 import com.jsg.entity.Pageable;
 import com.jsg.service.AccessPermissionsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,8 +53,8 @@ public class AccessPermissionsServiceImpl implements AccessPermissionsService {
     @Override
     public ResultBase list(String queryKey, Integer status, Pageable pageable) {
         PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
-        List<Module> list = accessPermissionsMapper.list(queryKey, status);
-        PageInfo<Module> pageInfo = new PageInfo<>(list);
+        List<AccessAuth> list = accessPermissionsMapper.list(queryKey, status);
+        PageInfo<AccessAuth> pageInfo = new PageInfo<>(list);
         return ResultUtil.success(null, pageInfo);
     }
 

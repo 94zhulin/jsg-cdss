@@ -87,4 +87,13 @@ public class UserServiceImpl implements UserService {
         }
         return resultBase;
     }
+
+    @Override
+    public ResultBase authorization(Integer id, Integer roleId) {
+        User user = new User();
+        user.setId(id);
+        user.setRoleId(roleId);
+        userMapper.edi(user);
+        return ResultUtil.success(null, user);
+    }
 }

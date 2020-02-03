@@ -20,7 +20,7 @@ FROM
 	sys_role_permission t1
 LEFT JOIN sys_permission t2 ON t1.permission_id = t2.id
 WHERE
-	t1.role_id = #{roleId}
+	t1.role_id = #{roleId}  and t2.id is not NULL
     </select>
 
 

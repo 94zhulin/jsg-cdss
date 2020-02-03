@@ -15,10 +15,6 @@ import java.util.List;
 public class Module {
     @ApiModelProperty(value = "模块ID")
     private Integer id;
-    @ApiModelProperty(value = "模块ID")
-    private Integer idStr;
-
-
     @NotNull(message = "type is notnull")
     @ApiModelProperty(position = 1, value = "模块名称", required = true)
     private String name;
@@ -55,7 +51,5 @@ public class Module {
     private Integer updateUserId;
     @ApiModelProperty(position = 9, value = "子目录", readOnly = true)
     private List<Module> children;
-    @ApiModelProperty(position = 10, value = "权限列表", readOnly = true)
-    private List<Permission> permissions;
 
 }

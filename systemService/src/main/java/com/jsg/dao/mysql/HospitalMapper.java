@@ -14,7 +14,7 @@ import java.util.List;
 public interface HospitalMapper {
     int add(Hospital hospital);
 
-    List<Hospital> find(@Param("hospitalId") Integer hospitalId);
+    List<Hospital> find();
 
     int edi(Hospital hospital);
 

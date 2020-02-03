@@ -7,6 +7,7 @@ import com.jsg.base.result.ResultUtil;
 import com.jsg.dao.mysql.ModuleMapper;
 import com.jsg.dao.mysql.ModulePermissionMapper;
 import com.jsg.dao.mysql.PermissionMapper;
+import com.jsg.dao.mysql.RolePermissionMapper;
 import com.jsg.entity.Module;
 import com.jsg.entity.ModulePermission;
 import com.jsg.entity.Pageable;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +35,9 @@ public class ModuleServiceImpl implements ModuleService {
 
     @Autowired
     private ModulePermissionMapper modulePermissionMapper;
+
+    @Autowired
+    private RolePermissionMapper rolePermissionMapper;
 
     @Value("${apiStatus.failure}")
     private Integer failure;
@@ -62,14 +67,26 @@ public class ModuleServiceImpl implements ModuleService {
     public ResultBase list(Pageable pageable) {
         PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
         List<Module> list = moduleMapper.list(0);
-        PageInfo<Module> pageInfo = new PageInfo<>(list);
+        Module module = new Module();
+        module.setChildren(list);
+        module.setCode("QB");
+        module.setName("全部");
+        module.setId(0);
+        module.setIdStr(0);
+        module.setLabel("全部");
+        module.setStatus(1);
+        module.setLevel(1);
+        module.setOrderIndex(0);
+        List<Module> listNew = new ArrayList<>();
+        listNew.add(module);
+        PageInfo<Module> pageInfo = new PageInfo<>(listNew);
         return ResultUtil.success(null, pageInfo);
     }
 
     @Override
     public ResultBase search(String queryKey, Integer moduleId, Integer status, Pageable pageable) {
         PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
-        List<Module> list = moduleMapper.search(queryKey, moduleId,status);
+        List<Module> list = moduleMapper.search(queryKey, moduleId, status);
         PageInfo<Module> pageInfo = new PageInfo<>(list);
         return ResultUtil.success(null, pageInfo);
     }
@@ -107,18 +124,73 @@ public class ModuleServiceImpl implements ModuleService {
         //批量添加到数据库中
         List<ModulePermission> lists = new ArrayList<>();
         permissions.forEach(permissionsid -> {
-            ModulePermission roleP = new ModulePermission();
-            roleP.setPermissionId(permissionsid);
-            roleP.setModuleId(moduleId);
-            lists.add(roleP);
+            if (permissionsid > 0) {
+                ModulePermission roleP = new ModulePermission();
+                roleP.setPermissionId(permissionsid);
+                roleP.setModuleId(moduleId);
+                lists.add(roleP);
+            }
+
         });
-        modulePermissionMapper.addBatch(lists);
-        //更新Module表中roleId的权限数
-        Module module = new Module();
-        module.setId(moduleId);
-        module.setPermissionNum(permissions.size());
-        moduleMapper.edi(module);
+        if (lists.size() > 0) {
+            modulePermissionMapper.addBatch(lists);
+            //更新Module表中roleId的权限数
+            Module module = new Module();
+            module.setId(moduleId);
+            module.setPermissionNum(permissions.size());
+            moduleMapper.edi(module);
+        } else {
+            modulePermissionMapper.del(moduleId);
+        }
         return ResultUtil.success(null, permissions);
 
+    }
+
+    @Override
+    public ResultBase navigationBar(Integer roleid) {
+        //循环删除
+        List<Module> list = moduleMapper.list(0);
+        //获取用户权限
+        List<Integer> userModuleIds = rolePermissionMapper.selectByPermission(roleid);
+        if (userModuleIds.size() == 0) {
+            return ResultUtil.success("暂无权限,请联系管理员 ", null);
+        } else {
+            boolean contains = userModuleIds.contains(4);
+            if (!contains) {
+                userModuleIds.add(4);
+            }
+        }
+        int size = list.size();
+        for (int i = size - 1; i >= 0; i--) {
+            Module module = list.get(i);
+            module.setPermissions(null);
+            List<Module> childrens = module.getChildren();
+            if (childrens.size() > 0) {
+                int schildrenSize = childrens.size();
+                for (int x = schildrenSize - 1; x >= 0; x--) {
+                    Module moduleOdl = childrens.get(x);
+                    moduleOdl.setPermissions(null);
+                    Integer id = moduleOdl.getId();
+                    if (!userModuleIds.contains(id)) {
+                        childrens.remove(x);
+                    }
+                }
+            }
+
+            Integer id = module.getId();
+            if (!userModuleIds.contains(id)) {
+                list.remove(i);
+            } else {
+                @NotNull(message = "type is notnull") String code = module.getCode();
+                if ("FM_XTGL".equals(code)) {
+                    List<Module> children = module.getChildren();
+                    if (children.size() == 0) {
+                        list.remove(i);
+
+                    }
+                }
+            }
+        }
+        return ResultUtil.success("", list);
     }
 }

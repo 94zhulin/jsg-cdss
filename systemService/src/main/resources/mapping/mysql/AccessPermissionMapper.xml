@@ -9,6 +9,7 @@
         <result property="isExpired" column="is_expired"/>
         <result property="authIpList" column="auth_ip_list"/>
         <result property="expiredDate" column="expired_date" javaType="java.util.Date"/>
+        <result property="expiredDateStr" column="expiredDateStr"/>
         <result property="status" column="status"/>
         <result property="createTime" column="create_time" javaType="java.util.Date"/>
         <result property="updateTime" column="update_time" javaType="java.util.Date"/>
@@ -76,10 +77,10 @@
     </update>
 
     <select id="list" resultMap="SysAccessAuthMap">
-        SELECT * from sys_access_auth
+        SELECT t1.* ,DATE_FORMAT(t1.expired_date,'%Y-%m-%d') as expiredDateStr from sys_access_auth t1
         where 1=1
         <if test="queryKey != null">
-            AND concat(app_name,app_code) like ('%' #{queryKey} '%')
+            AND concat(ifnull(app_name,''),ifnull(app_code,'')) like ('%' #{queryKey} '%')
         </if>
         <if test="status != null">
             AND status =#{status}

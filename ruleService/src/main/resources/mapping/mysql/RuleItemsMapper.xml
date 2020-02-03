@@ -9,7 +9,9 @@
         <result column="klg_catalog_id" jdbcType="INTEGER" property="klgCatalogId"/>
         <result column="klg_item_code" jdbcType="VARCHAR" property="klgItemCode"/>
         <result column="klg_item_name" jdbcType="VARCHAR" property="klgItemName"/>
-        <result column="klg_item_propName" jdbcType="VARCHAR" property="klgItemPropname"/>
+        <result column="klg_item_propName" jdbcType="VARCHAR" property="klgItemPropName"/>
+        <result column="klg_item_propValue" jdbcType="VARCHAR" property="klgItemPropValue"/>
+
         <result column="klg_item_valueType" jdbcType="INTEGER" property="klgItemValuetype"/>
         <result column="operator" jdbcType="INTEGER" property="operator"/>
         <result column="op_index" jdbcType="INTEGER" property="opIndex"/>
@@ -24,13 +26,13 @@
     where rule_id = #{id}
     </delete>
     <insert id="add" parameterType="com.jsg.entity.RuleItems" useGeneratedKeys="true" keyProperty="id">
-    insert into rule_items (id, rule_id, rule_item_type, 
+    insert into rule_items ( rule_id, rule_item_type,
       condition_type, klg_catalog_id, klg_item_code,klg_item_name,
-      klg_item_propName, klg_item_valueType, `operator`, 
+      klg_item_propName,klg_item_propValue, klg_item_valueType, `operator`,
       op_index)
-    values (#{id,jdbcType=INTEGER}, #{ruleId,jdbcType=INTEGER}, #{ruleItemType,jdbcType=INTEGER}, 
+    values ( #{ruleId,jdbcType=INTEGER}, #{ruleItemType,jdbcType=INTEGER},
       #{conditionType,jdbcType=INTEGER}, #{klgCatalogId,jdbcType=INTEGER}, #{klgItemCode,jdbcType=VARCHAR},#{klgItemName},
-      #{klgItemPropname,jdbcType=VARCHAR}, #{klgItemValuetype,jdbcType=INTEGER}, #{operator,jdbcType=INTEGER}, 
+      #{klgItemPropName,jdbcType=VARCHAR},   #{klgItemPropValue,jdbcType=VARCHAR}, #{klgItemValuetype,jdbcType=INTEGER}, #{operator,jdbcType=INTEGER},
       #{opIndex,jdbcType=INTEGER})
   </insert>
     <insert id="insertSelective" parameterType="com.jsg.entity.RuleItems">
@@ -54,7 +56,7 @@
             <if test="klgItemCode != null">
                 klg_item_code,
             </if>
-            <if test="klgItemPropname != null">
+            <if test="klgItemPropName != null">
                 klg_item_propName,
             </if>
             <if test="klgItemValuetype != null">
@@ -86,8 +88,8 @@
             <if test="klgItemCode != null">
                 #{klgItemCode,jdbcType=INTEGER},
             </if>
-            <if test="klgItemPropname != null">
-                #{klgItemPropname,jdbcType=VARCHAR},
+            <if test="klgItemPropName != null">
+                #{klgItemPropName,jdbcType=VARCHAR},
             </if>
             <if test="klgItemValuetype != null">
                 #{klgItemValuetype,jdbcType=INTEGER},
@@ -102,15 +104,24 @@
     </insert>
 
     <select id="selectItems" resultMap="BaseResultMap">
-SELECT
-	*
-FROM
-	rule_items t1
-WHERE
-	1 = 1
-AND t1.rule_id =#{ruleId}
-and t1.rule_item_type = #{itemType}
-and t1.condition_type = #{conditionType}
+        SELECT
+        *
+        FROM
+        rule_items t1
+        WHERE
+        1 = 1
+        <if test="ruleId != null">
+            AND t1.rule_id =#{ruleId}
+        </if>
+
+        <if test="itemType != null">
+            and t1.rule_item_type = #{itemType}
+        </if>
+
+        <if test="conditionType != null">
+            and t1.condition_type = #{conditionType}
+        </if>
+
     </select>
     <select id="selectItemsByOther" resultMap="BaseResultMap">
         SELECT

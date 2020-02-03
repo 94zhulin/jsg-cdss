@@ -25,4 +25,6 @@ public interface ModuleService {
 
     ResultBase distributionPermissions(Integer moduleId, List<Integer> permissions);
 
+    ResultBase navigationBar(Integer roleid);
+    
 }

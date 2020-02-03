@@ -254,13 +254,11 @@
         <!-- Service -->
         <module>testAService</module>
         <module>testBService</module>
-        <module>ssoService</module>
         <module>loginService</module>
         <module>qualificationService</module>
         <module>generalService</module>
         <module>klgbaseService</module>
         <module>ruleService</module>
-		<module>droolsService</module>
         <!--cloud-->
         <module>registry</module>
         <module>proxy</module>

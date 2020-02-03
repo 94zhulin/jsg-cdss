@@ -52,7 +52,7 @@ public class RuleCatalog {
     @ApiModelProperty(position = 4, value = "修改时间", readOnly = true)
     private Date updateTime;
     @ApiModelProperty(position = 8, value = "创建人", required = true)
-    private Integer createUserid;
+    private Integer createUserId;
 
     @ApiModelProperty(position = 8, value = "修改人", required = true)
     private Integer updateUserid;

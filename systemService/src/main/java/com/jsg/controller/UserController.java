@@ -1,6 +1,5 @@
 package com.jsg.controller;
 
-import com.jsg.aop.AuthToken;
 import com.jsg.base.result.ResultBase;
 import com.jsg.entity.Pageable;
 import com.jsg.entity.User;
@@ -12,10 +11,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
@@ -34,7 +30,7 @@ public class UserController {
 
 
     @ApiOperation(value = "添加用户")
-    @AuthToken("XTGL_USER_ADD")
+    // @AuthToken("XTGL_USER_ADD")
     @PostMapping(value = "/add", consumes = APPLICATION_JSON_UTF8_VALUE, produces = APPLICATION_JSON_UTF8_VALUE)
     public ResultBase add(@RequestBody @Validated User user) {
         return userService.add(user);
@@ -47,7 +43,7 @@ public class UserController {
             @ApiImplicitParam(name = "status", value = "是否启用", dataType = "int")
     }
     )
-    @AuthToken("XTGL_USER_VIEW")
+    // @AuthToken("XTGL_USER_VIEW")
     @PostMapping(value = "/list", produces = APPLICATION_JSON_UTF8_VALUE)
     public ResultBase list(String queryKey, Integer status, Pageable pageable) {
         return userService.list(queryKey, status, pageable);
@@ -56,17 +52,25 @@ public class UserController {
 
     @ApiOperation(value = "删除用户")
     @ApiImplicitParam(name = "userId", value = "用户id", dataType = "int")
-    @AuthToken("XTGL_USER_DELETE")
+    // @AuthToken("XTGL_USER_DELETE")
     @PostMapping(value = "/del", produces = APPLICATION_JSON_UTF8_VALUE)
     public ResultBase del(Integer userId) {
         return userService.del(userId);
     }
 
-    @ApiOperation(value = "编辑用户/用户授权")
-    @AuthToken("XTGL_USER_EDIT")
+    @ApiOperation(value = "编辑用户/")
+    // @AuthToken("XTGL_USER_EDIT")
     @PostMapping(value = "/edi", produces = APPLICATION_JSON_UTF8_VALUE)
     public ResultBase edi(@RequestBody User user) {
         return userService.edi(user);
+    }
+
+
+    @ApiOperation(value = "用户授权")
+    // @AuthToken("XTGL_USER_EDIT")
+    @PostMapping(value = "/authorization/{id}/{roleId}", produces = APPLICATION_JSON_UTF8_VALUE)
+    public ResultBase authorization(@PathVariable("id") Integer id, @PathVariable("roleId") Integer roleId) {
+        return userService.authorization(id, roleId);
     }
 
 }

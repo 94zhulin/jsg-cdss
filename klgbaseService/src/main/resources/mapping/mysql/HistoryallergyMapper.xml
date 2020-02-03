@@ -88,7 +88,7 @@ values (
         select * from klgbase_historyallergy t1
         WHERE t1.catalog_id = #{catalogId}
         <if test="queryKey != null ">
-            AND concat(name,code) like ('%' #{queryKey} '%')
+            AND concat(ifnull(name,''),ifnull(code,'')) like ('%' #{queryKey} '%')
         </if>
 
     </select>
@@ -96,6 +96,6 @@ values (
 
     <select id="listByName" resultMap="KlgbaseHistoryallergyMap">
         select * from klgbase_historyallergy t1
-        WHERE  1=1 and   concat(name,code) like ('%' #{queryKey} '%')
+        WHERE  1=1 and   concat(ifnull(name,''),ifnull(code,'')) like ('%' #{queryKey} '%')
     </select>
 </mapper>

@@ -12,4 +12,6 @@ public interface RolePermissionMapper {
 
     void addBatch(List<RolePermission> lists);
 
+    List<Integer> selectByPermission(@Param("roleId") Integer roleId);
+
 }

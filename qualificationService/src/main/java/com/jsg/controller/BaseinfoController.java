@@ -2,9 +2,9 @@ package com.jsg.controller;
 
 import com.jsg.base.result.ResultBase;
 import com.jsg.entity.Pageable;
-import com.jsg.entity.pojo.Patients;
 import com.jsg.entity.Qualifications;
 import com.jsg.entity.Zzs;
+import com.jsg.entity.pojo.Patients;
 import com.jsg.service.BaseinfoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -93,12 +93,12 @@ public class BaseinfoController {
     @ApiOperation(value = "资质规则关联列表")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "staffId", value = "人员id", dataType = "int"),
-            @ApiImplicitParam(name = "qualificationId", value = "资质id", dataType = "int"),
+            @ApiImplicitParam(name = "catalogCode", value = "资质分类code  (一般资质,特殊资质的code字段)", dataType = "string"),
             @ApiImplicitParam(name = "queryKey", value = "属性名", dataType = "string"),
     })
     @PostMapping(value = "list/qualification-rules", produces = APPLICATION_JSON_UTF8_VALUE)
-    public ResultBase listByassociationListQualification(String queryKey, Integer staffId, Integer qualificationId, Pageable pageable) {
-        return baseinfoService.listByassociationListQualification(queryKey, staffId, qualificationId, pageable);
+    public ResultBase listByassociationListQualification(String queryKey, Integer staffId, String catalogCode, Pageable pageable) {
+        return baseinfoService.listByassociationListQualification(queryKey, staffId, catalogCode, pageable);
     }
 
 

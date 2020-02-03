@@ -56,7 +56,7 @@ public class UserGenera {
     /**
      * 创建人
      */
-    private Integer createUserid;
+    private Integer createUserId;
 
     /**
      * 修改人

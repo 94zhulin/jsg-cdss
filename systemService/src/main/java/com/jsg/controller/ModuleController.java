@@ -85,5 +85,10 @@ public class ModuleController {
     }
 
 
+    @ApiOperation(value = "用户导航栏")
+    @PostMapping(value = "/navigation-bar/{roleid}", produces = APPLICATION_JSON_UTF8_VALUE)
+    public ResultBase navigationBar(@PathVariable("roleid") Integer roleid) {
+        return moduleService.navigationBar(roleid);
+    }
 
 }

@@ -54,6 +54,9 @@ public class Inspect {
     @ApiModelProperty(position = 8, value = "阳性标识：来自字典定义（多个值用逗号分隔）", readOnly = true)
     private String yxFlagCode_to = "阳性标识";
 
+    @ApiModelProperty(position = 8, value = "阳性标识：来自字典定义（多个值用逗号分隔）", required = true)
+    private String yxFlagName;
+
     @ApiModelProperty(position = 9, value = "适应症", required = true)
     private String syz;
     @ApiModelProperty(position = 9, value = "适应症", readOnly = true)

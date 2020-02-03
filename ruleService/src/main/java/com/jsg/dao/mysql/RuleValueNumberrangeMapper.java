@@ -7,9 +7,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RuleValueNumberrangeMapper {
 
-    void add(RuleValueNumberrange range);
+    int add(RuleValueNumberrange range);
 
-    void delByRuleId(@Param("id") Integer id);
+    int delByRuleId(@Param("id") Integer id);
 
     RuleValueNumberrange selectByItemId(@Param("itemId")Integer itemId);
 }

@@ -8,10 +8,7 @@ import com.jsg.dao.mysql.PermissionMapper;
 import com.jsg.dao.mysql.RoleMapper;
 import com.jsg.dao.mysql.RolePermissionMapper;
 import com.jsg.dao.mysql.UserMapper;
-import com.jsg.entity.Pageable;
-import com.jsg.entity.Role;
-import com.jsg.entity.RolePermission;
-import com.jsg.entity.User;
+import com.jsg.entity.*;
 import com.jsg.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -103,7 +100,19 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public ResultBase permissions(Integer roleId) {
-        return ResultUtil.success(null, permissionMapper.selectRolePermissions(roleId));
+        List<Permission> permissions = permissionMapper.selectRolePermissions(roleId);
+        if (permissions.size() >= 1) {
+            Permission permission = permissions.get(0);
+            if (permission == null) {
+                return ResultUtil.success(null, null);
+            } else {
+                return ResultUtil.success(null, permissions);
+            }
+
+
+        }
+        return ResultUtil.success(null, null);
+
 
     }
 
@@ -114,17 +123,25 @@ public class RoleServiceImpl implements RoleService {
         //批量添加到数据库中
         List<RolePermission> lists = new ArrayList<>();
         permissions.forEach(permissionsid -> {
-            RolePermission roleP = new RolePermission();
-            roleP.setPermissionId(permissionsid);
-            roleP.setRoleId(roleId);
-            lists.add(roleP);
+            if (permissionsid > 0) {
+                RolePermission roleP = new RolePermission();
+                roleP.setPermissionId(permissionsid);
+                roleP.setRoleId(roleId);
+                lists.add(roleP);
+            }
+
         });
-        rolePermissionMapper.addBatch(lists);
-        //更新role表中roleId的权限数
-        Role role = new Role();
-        role.setId(roleId);
-        role.setPermissionNum(permissions.size());
-        roleMapper.edi(role);
+        if (lists.size() > 0) {
+            rolePermissionMapper.addBatch(lists);
+            //更新role表中roleId的权限数
+            Role role = new Role();
+            role.setId(roleId);
+            role.setPermissionNum(lists.size());
+            roleMapper.edi(role);
+        } else {
+            rolePermissionMapper.del(roleId);
+        }
+
         return ResultUtil.success(null, permissions);
     }
 }

@@ -1,7 +1,6 @@
 package com.jsg.dao.mysql;
 
 import com.jsg.entity.AccessAuth;
-import com.jsg.entity.Module;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -17,7 +16,7 @@ public interface AccessPermissionsMapper {
 
     void add(AccessAuth accessAuth);
 
-    List<Module> list(@Param("queryKey") String queryKey, @Param("status") Integer status);
+    List<AccessAuth> list(@Param("queryKey") String queryKey, @Param("status") Integer status);
 
     int del(@Param("accessAuthId") Integer accessAuthId);
 

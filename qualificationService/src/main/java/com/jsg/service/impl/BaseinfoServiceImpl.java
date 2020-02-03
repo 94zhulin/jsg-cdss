@@ -8,6 +8,7 @@ import com.jsg.dao.mysql.BaseinfoMapper;
 import com.jsg.dao.mysql.QualificationsMapper;
 import com.jsg.entity.Baseinfo;
 import com.jsg.entity.Pageable;
+import com.jsg.entity.QualificationRule;
 import com.jsg.entity.Qualifications;
 import com.jsg.entity.pojo.Patients;
 import com.jsg.service.BaseinfoService;
@@ -42,7 +43,7 @@ public class BaseinfoServiceImpl implements BaseinfoService {
     @Override
     public ResultBase list(String queryKey, Integer sex, String ksCode, Integer position, String zzName, Pageable pageable) {
         PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
-        List<Baseinfo> list = baseinfoMapper.list(queryKey, sex, ksCode, position, zzName);
+        List<Baseinfo> list = qualificationsMapper.list(queryKey, sex, ksCode, position, zzName);
         PageInfo<Baseinfo> pageInfo = new PageInfo<>(list);
         return ResultUtil.success(null, pageInfo);
     }
@@ -56,6 +57,35 @@ public class BaseinfoServiceImpl implements BaseinfoService {
 
     @Override
     public ResultBase add(Qualifications qualifications) {
+        @NotNull(message = "type is notnull") String catalogCode = qualifications.getCatalogCode();
+/*        人资-资质-一般资质	RZ-ZZ-YBZZ
+        人资-资质-特殊资质	RZ-ZZ-TSZZ
+        人资-资质-医疗技术资质	RZ-ZZ-YLJSZZ
+        人资-资质-其他资质	RZ-ZZ-QTZZ
+        人资-资质-手术资质	RZ-ZZ-SSZZ*/
+        Baseinfo info = new Baseinfo();
+        info.setId(qualifications.getStaffId());
+        switch (catalogCode) {
+            case "RZ-ZZ-YBZZ":
+                info.setHasYbZz(1);
+                break;
+            case "RZ-ZZ-TSZZ":
+                info.setHasTsZz(1);
+                break;
+            case "RZ-ZZ-YLJSZZ":
+                info.setHasYljsZz(1);
+                break;
+            case "RZ-ZZ-QTZZ":
+                info.setHasQtZz(1);
+                break;
+            case "RZ-ZZ-SSZZ":
+                info.setHasSsZz(1);
+                break;
+
+
+        }
+
+        baseinfoMapper.updateByPrimaryKeySelective(info);
         int a = qualificationsMapper.add(qualifications);
         return ResultUtil.success(null, qualifications);
     }
@@ -80,16 +110,46 @@ public class BaseinfoServiceImpl implements BaseinfoService {
 
     @Override
     public ResultBase del(Integer qualificationId) {
+        //查询 资质信息
+        Qualifications qualifications = qualificationsMapper.selectByOne(qualificationId);
+        @NotNull(message = "type is notnull") Integer staffId = qualifications.getStaffId();
+        @NotNull(message = "type is notnull") String catalogCode = qualifications.getCatalogCode();
         int flag = qualificationsMapper.del(qualificationId);
+        //用户是否多个相同的资质
+        List<Qualifications> lists = qualificationsMapper.selectByStaffIdAndCatalogCode(staffId, catalogCode);
+
+        if (lists.size() == 0) {
+            Baseinfo baseinfo = new Baseinfo();
+            baseinfo.setId(qualifications.getStaffId());
+            switch (catalogCode) {
+                case "RZ-ZZ-YBZZ":
+                    baseinfo.setHasYbZz(0);
+                    break;
+                case "RZ-ZZ-TSZZ":
+                    baseinfo.setHasTsZz(0);
+                    break;
+                case "RZ-ZZ-YLJSZZ":
+                    baseinfo.setHasYljsZz(0);
+                    break;
+                case "RZ-ZZ-QTZZ":
+                    baseinfo.setHasQtZz(0);
+                    break;
+                case "RZ-ZZ-SSZZ":
+                    baseinfo.setHasSsZz(0);
+                    break;
+            }
+            baseinfoMapper.updateByPrimaryKeySelective(baseinfo);
+        }
+
         return ResultUtil.success(null, flag);
     }
 
 
     @Override
-    public ResultBase listByassociationListQualification(String queryKey, Integer staffId, Integer qualificationId, Pageable pageable) {
+    public ResultBase listByassociationListQualification(String queryKey, Integer staffId, String catalogCode, Pageable pageable) {
         PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
-        List<Qualifications> list = qualificationsMapper.listByassociationListQualification(queryKey, staffId, qualificationId);
-        PageInfo<Qualifications> pageInfo = new PageInfo<>(list);
+        List<QualificationRule> list = qualificationsMapper.listByassociationListQualification(queryKey, staffId, catalogCode);
+        PageInfo<QualificationRule> pageInfo = new PageInfo<>(list);
         return ResultUtil.success(null, pageInfo);
     }
 

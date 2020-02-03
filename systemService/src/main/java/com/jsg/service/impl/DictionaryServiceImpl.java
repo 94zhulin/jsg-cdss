@@ -142,7 +142,7 @@ public class DictionaryServiceImpl implements DictionaryService {
 
 
     @Override
-    public ResultBase listDictionaryType(Integer dictionaryCatalogId,Pageable pageable) {
+    public ResultBase listDictionaryType(Integer dictionaryCatalogId, Pageable pageable) {
         PageHelper.startPage(pageable.getPageNumber(), pageable.getPageSize());
         if (dictionaryCatalogId == null) {
             dictionaryCatalogId = 1;
@@ -225,7 +225,12 @@ public class DictionaryServiceImpl implements DictionaryService {
                     DictionaryCatalog odlObje = dictionaryCatalogMapper.findOneByDictionaryCatalogId(source.getCatalogId());
                     Integer odlDictNum = odlObje.getDictNum();
                     odlDictNum--;
-                    odlObje.setDictNum(odlDictNum);
+                    if (odlDictNum < 0) {
+                        odlObje.setDictNum(0);
+                    } else {
+                        odlObje.setDictNum(odlDictNum);
+                    }
+
                     dictionaryCatalogMapper.ediDictionaryType(odlObje);
                 }
 

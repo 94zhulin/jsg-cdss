@@ -30,15 +30,16 @@ public class RuleItems {
 
 
     @ApiModelProperty(position = 5, value = " 知识库项目Code", required = true)
-    private String  klgItemCode;
+    private String klgItemCode;
 
     @ApiModelProperty(position = 5, value = " 知识库项目Name", required = true)
-    private String  klgItemName;
-
+    private String klgItemName;
 
 
     @ApiModelProperty(position = 6, value = " 知识库属性字段名", required = true)
-    private String klgItemPropname;
+    private String klgItemPropName;
+    @ApiModelProperty(position = 6, value = " 知识库属性字段名前端回显", required = true)
+    private String klgItemPropValue;
 
 
     @ApiModelProperty(position = 7, value = " 知识库属性值类型：1-布尔，2-数字，3-数字范围，4-日期，5-日期范围，6-文本，7-列表", required = true)

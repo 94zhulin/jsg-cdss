@@ -10,6 +10,7 @@
         <result property="bwCode" column="bw_code"/>
         <result property="jcTypeCode" column="jc_type_code"/>
         <result property="yxFlagCode" column="yx_flag_code"/>
+        <result property="yxFlagName" column="yxFlagName"/>
         <result property="syz" column="syz"/>
         <result property="jjz" column="jjz"/>
         <result column="jcqzb" jdbcType="LONGVARCHAR" property="jcqzb"/>
@@ -133,13 +134,18 @@ update_userId
     </select>
 
     <select id="list" resultMap="KlgbaseInspectMap">
-        select * from klgbase_inspect t1 where t1.catalog_id = #{catalogId}
+        SELECT
+        t1.* ,t2.`name` as yxFlagName
+        FROM
+        klgbase_inspect t1 left JOIN sys_dictionary t2 on t1.yx_flag_code = t2.`code`
+        WHERE
+        t1.catalog_id = #{catalogId}
         <if test="queryKey != null ">
-            AND concat(xm_code,xm_name) like ('%' #{queryKey} '%')
+            AND concat(ifnull(t1.xm_code,''),ifnull(t1.xm_name,'')) like ('%' #{queryKey} '%')
         </if>
 
         <if test="bw != null ">
-            AND concat(bw_code,bw_name) like ('%' #{bw} '%')
+            AND concat(ifnull(t1.bw_code,''),ifnull(t1.bw_name,'')) like ('%' #{bw} '%')
         </if>
 
         <if test="jcTypeCode != null ">
@@ -154,6 +160,6 @@ update_userId
 
     <select id="listByName" resultMap="KlgbaseInspectMap">
         select * from klgbase_inspect t1 where  1=1 and
-    concat(xm_code,xm_name) like ('%' #{queryKey} '%')
+    concat(ifnull(xm_code,''),ifnull(xm_name,'')) like ('%' #{queryKey} '%')
     </select>
 </mapper>

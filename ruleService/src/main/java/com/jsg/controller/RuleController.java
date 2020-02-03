@@ -87,7 +87,7 @@ public class RuleController {
     public ResultBase edlRule(@RequestBody @Validated RuleBase ruleBase) {
         ResultBase resultBase = new ResultBase();
         try {
-            resultBase = ruleService.addRule(ruleBase);
+            resultBase = ruleService.edlRule(ruleBase);
         } catch (PinyinException e) {
             e.printStackTrace();
             resultBase.setStatus(500);
@@ -125,9 +125,12 @@ public class RuleController {
 
     @ApiOperation(value = "规则历史列表")
     @PostMapping(value = "/rule-history", produces = APPLICATION_JSON_UTF8_VALUE)
-    @ApiImplicitParam(name = "ids", value = "相关联的版本规则ID", dataType = "int")
-    public ResultBase ruleHistory(String ids, Pageable pageable) {
-        return ruleService.ruleHistory(ids, pageable);
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "code", value = "当前规则code", dataType = "String"),
+            @ApiImplicitParam(name = "policyType", value = "决策类型：1-拦截；2-警告；3-建议", dataType = "int")
+    })
+    public ResultBase ruleHistory(String code, String policyType, Pageable pageable) {
+        return ruleService.ruleHistory(code, policyType, pageable);
     }
 
 
@@ -157,9 +160,16 @@ public class RuleController {
     }
 
     @ApiOperation(value = "规则详情")
-    @PostMapping(value = "/rule-details/{id}", consumes = APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = "/rule-details/{id}", produces = APPLICATION_JSON_UTF8_VALUE)
     public ResultBase ruleDetails(@PathVariable("id") Integer id) {
         return ruleService.ruleDetails(id);
+    }
+
+
+    @ApiOperation(value = "规则部署(ruleId:当前规则id  deploy_status:1-部署；0-取消部署) policy_type :'决策类型：1-拦截；2-警告；3-建议")
+    @PostMapping(value = "/rule-deployment/{ruleId}/{deploy_status}/{policy_type}", produces = APPLICATION_JSON_UTF8_VALUE)
+    public ResultBase ruleDeployment(@PathVariable("ruleId") Integer ruleId, @PathVariable("deploy_status") Integer deploy_status, @PathVariable("policy_type") Integer policy_type) {
+        return ruleService.ruleDeployment(ruleId, deploy_status, policy_type);
     }
 
 }

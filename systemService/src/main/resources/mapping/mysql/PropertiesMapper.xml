@@ -23,7 +23,7 @@
         FROM sys_properties
         WHERE 1=1
         <if test="queryKey != null">
-            AND concat(prop_name,prop_value) like ('%' #{queryKey} '%')
+            AND concat(ifnull(prop_name,''),ifnull(prop_value,'')) like ('%' #{queryKey} '%')
         </if>
         <if test="status != null">
             AND status =#{status}

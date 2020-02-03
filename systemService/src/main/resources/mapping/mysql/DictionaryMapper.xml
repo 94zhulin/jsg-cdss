@@ -87,21 +87,24 @@
 
 
     <select id="listDictionary" resultMap="SysDictionaryMap">
+
+
         SELECT
-        dic.*, catalog.`name` as catalogName
+        dic.*, catalog.`name` AS catalogName , catalog.parent_id as parentId
         FROM
         sys_dictionary dic
         LEFT JOIN sys_dictionary_catalog catalog ON dic.catalog_id = catalog.id
         WHERE
         1 = 1
+
         <if test="dictionaryCatalogId != null">
-            and dic.catalog_id = #{dictionaryCatalogId}
+            AND (dic.catalog_id = #{dictionaryCatalogId} or catalog.parent_id = #{dictionaryCatalogId})
         </if>
         <if test="status != null">
             and dic.status = #{status}
         </if>
         <if test="queryKey != null">
-            AND concat(dic.name,dic.code) like ('%' #{queryKey} '%')
+            AND concat(ifnull(dic.name,''),ifnull(dic.code,'')) like ('%' #{queryKey} '%')
         </if>
     </select>
 

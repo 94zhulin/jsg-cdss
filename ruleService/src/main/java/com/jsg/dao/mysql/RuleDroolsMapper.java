@@ -1,5 +1,6 @@
 package com.jsg.dao.mysql;
 
+import com.jsg.entity.Patients;
 import com.jsg.entity.RuleDrools;
 import com.jsg.entity.RuleItems;
 import org.apache.ibatis.annotations.Param;
@@ -25,6 +26,11 @@ public interface RuleDroolsMapper {
 
     List<RuleItems> selectByItemCode(@Param("ruleBaseid") Integer ruleBaseid, @Param("itemCode") String itemCode);
 
-    List<RuleDrools> selectRuleStrByCode(String itemCode);
+    List<RuleDrools> selectRuleStrByCode(@Param("itemCode") String itemCode);
+
+    void updateStatus(@Param("code") String code, @Param("policy_type") Integer policy_type);
+
+    List<Patients> listByYsCode(@Param("ysCode") String ysCode);
+
 
 }

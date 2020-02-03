@@ -37,6 +37,10 @@ public class Examine {
     @ApiModelProperty(position = 8, value = "     检验类别：来自字典定义", readOnly = true)
     private String jyTypeCode_to = "检验类别";
 
+    @ApiModelProperty(position = 8, value = "检验类别名称", readOnly = true)
+    private String jyTypeName;
+    @ApiModelProperty(position = 8, value = "结果剂量单位名称", readOnly = true)
+    private String jgjldwName;
 
     @ApiModelProperty(position = 9, value = "    采集部位", required = true)
     private String cjbw;
@@ -144,6 +148,14 @@ public class Examine {
     private Double endCkzYe;
     private String endCkzYe_to = "结束参考值(婴儿)";
 
+
+    @ApiModelProperty(position = 17, value = "'影响因素'", required = true)
+    private String yxys;
+    private String yxys_to = "影响因素";
+
+    @ApiModelProperty(position = 17, value = "''临床解读'", required = true)
+    private String lcjd;
+    private String lcjd_to = "临床解读";
     @ApiModelProperty(position = 18, value = "    状态：1-启用；0-停用", required = true)
     private Integer status;
     @ApiModelProperty(position = 19, value = "     创建时间", readOnly = true)

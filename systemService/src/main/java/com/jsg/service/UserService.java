@@ -17,4 +17,6 @@ public interface UserService {
 
 
     ResultBase del(Integer userId);
+
+    ResultBase authorization(Integer id, Integer roleId);
 }

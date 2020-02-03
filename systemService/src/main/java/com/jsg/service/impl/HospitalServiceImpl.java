@@ -45,8 +45,9 @@ public class HospitalServiceImpl implements HospitalService {
 
     @Override
     public ResultBase find(Integer hospitalId) {
-        List<Hospital> lists = hospitalMapper.find(hospitalId);
-        return ResultUtil.success(null, lists);
+        List<Hospital> lists = hospitalMapper.find();
+        Hospital hospital = lists.get(0);
+        return ResultUtil.success(null, hospital);
     }
 
     @Override
