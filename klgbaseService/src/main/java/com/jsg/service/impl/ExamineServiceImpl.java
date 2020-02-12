@@ -5,7 +5,9 @@ import com.github.pagehelper.PageInfo;
 import com.jsg.base.result.ResultBase;
 import com.jsg.base.result.ResultUtil;
 import com.jsg.dao.mysql.ExamineMapper;
+import com.jsg.dao.mysql.KlgbaseExamineCkfwMapper;
 import com.jsg.entity.Examine;
+import com.jsg.entity.KlgbaseExamineCkfw;
 import com.jsg.entity.Pageable;
 import com.jsg.service.ExamineService;
 import com.jsg.service.KnowledgeService;
@@ -26,6 +28,9 @@ public class ExamineServiceImpl implements ExamineService {
 
     @Autowired
     private KnowledgeService knowledgeService;
+
+    @Autowired
+    private KlgbaseExamineCkfwMapper examineCkfwMapper;
 
     @Value("${apiStatus.failure}")
     private Integer failure;
@@ -48,6 +53,11 @@ public class ExamineServiceImpl implements ExamineService {
             int opFlag = examineMapper.add(examine);
             if (opFlag > 0) {
                 knowledgeService.itemNumAdd(examine.getCatalogId());
+            }
+            List<KlgbaseExamineCkfw> rangeData = examine.getRangeData();
+            for (KlgbaseExamineCkfw ckfw : rangeData) {
+                ckfw.setJyxmId(examine.getId());
+                int insert = examineCkfwMapper.insert(ckfw);
             }
         }
         return resultBase;
@@ -72,6 +82,13 @@ public class ExamineServiceImpl implements ExamineService {
             int opFlag = examineMapper.edi(examine);
             if (examine.getId() != null) {
                 knowledgeService.itemNumAdd(examine.getCatalogId());
+                examineCkfwMapper.deleteByJyxmId(examine.getId());
+                List<KlgbaseExamineCkfw> rangeData = examine.getRangeData();
+                for (KlgbaseExamineCkfw ckfw : rangeData) {
+                    ckfw.setJyxmId(examine.getId());
+                    int insert = examineCkfwMapper.insert(ckfw);
+                }
+
             }
         }
         return resultBase;
@@ -82,6 +99,7 @@ public class ExamineServiceImpl implements ExamineService {
         int del = examineMapper.del(examineId);
         if (del > 0) {
             knowledgeService.itemNumSub(catalogId);
+            examineCkfwMapper.deleteByJyxmId(examineId);
         }
         return ResultUtil.success(null, del);
     }

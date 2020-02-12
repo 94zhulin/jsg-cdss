@@ -49,6 +49,8 @@ public class ExamineController {
         return examineService.list(catalogId , queryKey, xmlxCode, jyTypeCode, yblxCode, pageable);
     }
 
+
+
     @ApiOperation(value = "编辑检验")
     @PostMapping(value = "/edi", consumes = APPLICATION_JSON_UTF8_VALUE, produces = APPLICATION_JSON_UTF8_VALUE)
     public ResultBase edi(@RequestBody @Validated Examine examine) {
