@@ -175,22 +175,58 @@
 
 
     <select id="quickEntry" resultType="com.jsg.entity.QuickEntry">
+
 SELECT
 	t1.klgbase ,t2.rule,t3.qlf
 FROM
 	(
+SELECT
+	(tt1.c + tt2.c + tt3.c + tt5.c + tt6.c + tt7.c ) as klgbase  ,
+'a'
+FROM
+	(
 		SELECT
-			SUM(item_num) AS klgbase,
-			'a'
+			COUNT(*) AS c
 		FROM
-			klgbase_catalog
+			klgbase_diagnosis
+	) tt1
+LEFT JOIN (
+	SELECT
+		COUNT(*) AS c
+	FROM
+		klgbase_drug
+) tt2 ON 1 = 1
+LEFT JOIN (
+	SELECT
+		COUNT(*) AS c
+	FROM
+		klgbase_examine
+) tt3 ON 1 = 1
+LEFT JOIN (
+	SELECT
+		COUNT(*) AS c
+	FROM
+		klgbase_historyallergy
+) tt5 ON 1 = 1
+LEFT JOIN (
+	SELECT
+		COUNT(*) AS c
+	FROM
+		klgbase_inspect
+) tt6 ON 1 = 1
+LEFT JOIN (
+	SELECT
+		COUNT(*) AS c
+	FROM
+		klgbase_hzsx
+) tt7 on 1=1
 	) t1
 LEFT JOIN (
 	SELECT
-		SUM(rule_num) AS rule,
+		SUM(id) AS rule,
 		'a'
 	FROM
-		rule_catalog
+		rule_base
 ) t2 ON t1.a = t2.a
 LEFT JOIN (
 	SELECT
