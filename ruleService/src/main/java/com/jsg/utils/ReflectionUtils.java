@@ -34,9 +34,9 @@ public class ReflectionUtils {
                 //获取属性值
                 Object param = field.get(obj);
                 if (param != null) {
+                    String name = field.getName();
                     //获取属性
-                    patient.setName(field.getName());
-
+                    patient.setName(name);
                     if (param instanceof Integer) {
                         int value = ((Integer) param).intValue();
                         patient.setEndValueNumerical(value);

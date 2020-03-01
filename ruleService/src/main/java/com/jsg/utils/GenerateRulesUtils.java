@@ -24,7 +24,7 @@ public class GenerateRulesUtils {
         result.append("import java.util.*;\r\n");
         result.append("import java.lang.*;\r\n");
         result.append("dialect \"java\";\r\n");
-        result.append("global java.util.HashMap ruleexecutionResult ;\r\n");
+        result.append("global java.util.HashMap resultHashMap ;\r\n");
         result.append("\r\n");
 
         for (int s = 0; s < patientss.size(); s++) {
@@ -55,7 +55,7 @@ public class GenerateRulesUtils {
                             Integer type_To = patients_To.getConditionType();
                             if (type == type_To) {
                                 String s1 = PinyinHelper.convertToPinyinString(patients_To.getKlgItemName(), "_", PinyinFormat.WITHOUT_TONE);
-                                isOrRuleName.append("\t\truleexecutionResult.put(\"" + s1 + "\",true);\r\n");
+                                isOrRuleName.append("\t\tresultHashMap.put(\"" + s1 + "\",true);\r\n");
                                 isOr = true;
                             }
 
@@ -68,7 +68,7 @@ public class GenerateRulesUtils {
                             if (rootCompare_To != null) {
                                 if (type == type_To && rootCompare_To == 0) {
                                     String s1 = PinyinHelper.convertToPinyinString(patients_To.getKlgItemName(), "_", PinyinFormat.WITHOUT_TONE);
-                                    isOrRuleName.append("\t\truleexecutionResult.put(\"" + s1 + "\",true);\r\n");
+                                    isOrRuleName.append("\t\tresultHashMap.put(\"" + s1 + "\",true);\r\n");
                                     isOr = true;
                                 }
                             }
@@ -87,7 +87,7 @@ public class GenerateRulesUtils {
                         if (rootCompare_To != null) {
                             if (type == type_To && rootCompare_To == 0) {
                                 String s1 = PinyinHelper.convertToPinyinString(patients_To.getKlgItemName(), "_", PinyinFormat.WITHOUT_TONE);
-                                isOrRuleName.append("\t\truleexecutionResult.put(\"" + s1 + "\",true);\r\n");
+                                isOrRuleName.append("\t\tresultHashMap.put(\"" + s1 + "\",true);\r\n");
                                 isOr = true;
                             }
                         }
@@ -205,7 +205,7 @@ public class GenerateRulesUtils {
         if (isOr) {
             result.append(RuleName);
         }
-        result.append("\t\truleexecutionResult.put(drools.getRule().getName(),true);\r\n");
+        result.append("\t\tresultHashMap.put(drools.getRule().getName(),true);\r\n");
         result.append("\t\tSystem.out.println(\"The rule's name is '\" + drools.getRule().getName() + \"'\");\r\n");
         /*规则结束*/
         result.append("end\r\n");

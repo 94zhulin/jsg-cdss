@@ -3,8 +3,6 @@ package com.jsg.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.github.stuxuhai.jpinyin.PinyinException;
-import com.github.stuxuhai.jpinyin.PinyinFormat;
-import com.github.stuxuhai.jpinyin.PinyinHelper;
 import com.jsg.base.result.ResultBase;
 import com.jsg.base.result.ResultUtil;
 import com.jsg.dao.mysql.*;
@@ -16,6 +14,7 @@ import com.jsg.utils.ReflectionUtils;
 import org.drools.core.impl.InternalKnowledgeBase;
 import org.drools.core.impl.KnowledgeBaseFactory;
 import org.kie.api.io.ResourceType;
+import org.kie.api.runtime.Globals;
 import org.kie.api.runtime.KieSession;
 import org.kie.internal.builder.KnowledgeBuilder;
 import org.kie.internal.builder.KnowledgeBuilderFactory;
@@ -362,7 +361,7 @@ public class RuleServiceImpl implements RuleService {
 
     @Override
     public ResultBase operation(RuleBase ruleBase) {
-        KieSession kSession = null;
+      /*  KieSession kSession = null;
         try {
             // 从数据库根据code查规则
             //  List<RuleDrools> ruleDroolss = ruleDroolsMapper.selectRuleStrByCode(ruleBase.getCode());
@@ -377,8 +376,8 @@ public class RuleServiceImpl implements RuleService {
                 kBase.addPackages(kb.getKnowledgePackages());
                 // 执行规则
                 kSession = kBase.newKieSession();
-                HashMap<String, Boolean> ruleexecutionResult = new HashMap<>();
-                kSession.setGlobal("ruleexecutionResult", ruleexecutionResult);
+                HashMap<String, Boolean> resultHashMap = new HashMap<>();
+                kSession.setGlobal("resultHashMap", resultHashMap);
                 List<Patients> datas = new ArrayList<>();
                 datas.addAll(ruleBase.getHzPatients());
                 datas.addAll(ruleBase.getOtherPatients());
@@ -414,9 +413,9 @@ public class RuleServiceImpl implements RuleService {
                 }
                 int i = kSession.fireAllRules();
                 System.out.println("执行规则数量:" + i);
-                Set<String> keys = ruleexecutionResult.keySet();
+                Set<String> keys = resultHashMap.keySet();
                 for (String key : keys) {
-                    Boolean value = ruleexecutionResult.get(key);
+                    Boolean value = resultHashMap.get(key);
                     System.out.println("key：" + key + "---" + "value:" + value);
                 }
             }
@@ -426,7 +425,7 @@ public class RuleServiceImpl implements RuleService {
         } finally {
             if (null != kSession)
                 kSession.dispose();
-        }
+        }*/
         return null;
     }
 
@@ -503,30 +502,46 @@ public class RuleServiceImpl implements RuleService {
             }
             InternalKnowledgeBase kBase = KnowledgeBaseFactory.newKnowledgeBase();
             kBase.addPackages(kb.getKnowledgePackages());
+            // 执行规则
             kSession = kBase.newKieSession();
-            HashMap<String, Boolean> ruleexecutionResult = new HashMap<>();
-            kSession.setGlobal("ruleexecutionResult", ruleexecutionResult);
+         HashMap<String, Boolean> ruleexecutionResult = new HashMap<>();
+          kSession.setGlobal("ruleexecutionResult", ruleexecutionResult);
+
+
             kSession.insert(datas);
             int i = kSession.fireAllRules();
+            Globals globals = kSession.getGlobals();
+            Collection<String> globalKeys = globals.getGlobalKeys();
+            for (String str11 :globalKeys){
+                System.out.println(str11);
+            }
             System.out.println("Drools执行规则数量:" + i);
             int total = i + items.size();
             System.out.println("通过数据相加,总执行质量:" + total);
             //1-拦截；2-警告；3-建议；
             SysRuleaccessLog record = new SysRuleaccessLog();
-            if (total >= ruleCount) {
-                if (policyType == 1) {
-                    //拦截 = true, 符合拦截状态, 不在执行;
+            record.setResultName("暂无条件");
+            if (policyType == 1) {
+                //拦截 = true, 符合拦截状态, 不在执行;
+                if (total >= ruleCount) {
                     intercept = true;
                     record.setResultName("拦截");
-                } else if (policyType == 2) {
-                    //警告 = false 或true 都执行
+                }
+
+            } else if (policyType == 2) {
+                //警告 = false 或true 都执行
+                if (total >= ruleCount) {
                     warning = true;
                     record.setResultName("警告");
-                } else if (policyType == 3) {
-                    //  建议 = false 或true 都执行
+                }
+
+            } else if (policyType == 3) {
+                //  建议 = false 或true 都执行
+                if (total >= ruleCount) {
                     advice = true;
                     record.setResultName("建议");
                 }
+
             }
             record.setAccessTime(new Date());
             record.setAppCode("HIS");
@@ -535,6 +550,7 @@ public class RuleServiceImpl implements RuleService {
             record.setIp("1270.0.01");
             record.setRuleCatalogName("检查");
             record.setRuleName(ruleDrools.getName());
+            record.setRuleId(ruleDrools.getId());
             sysRuleaccessLogMapper.insert(record);
         }
         return ResultUtil.fail("未符合条件要求");
@@ -783,7 +799,7 @@ public class RuleServiceImpl implements RuleService {
         ruleDrools.setCreateTime(new Date());
         ruleDrools.setUpdateTime(new Date());
         ruleDrools.setUpdateUserid(ruleBase.getUpdateUserid());
-        ruleDrools.setCreateUserid(ruleBase.getCreateUserid());
+        ruleDrools.setCreateUserId(ruleBase.getCreateUserId());
         ruleDroolsMapper.insert(ruleDrools);
     }
 

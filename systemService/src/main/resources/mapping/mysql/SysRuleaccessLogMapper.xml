@@ -223,7 +223,7 @@ LEFT JOIN (
 	) t1
 LEFT JOIN (
 	SELECT
-		SUM(id) AS rule,
+		COUNT(id) AS rule,
 		'a'
 	FROM
 		rule_base

@@ -25,7 +25,7 @@ public class Patients {
     private Integer conditionType;
     @ApiModelProperty(position = 6, value = "进行运算的字段名")
     private String klgItemPropName; //
-
+    private String name;
 
     @ApiModelProperty(position = 6, value = "前端回显")
     private String klgItemPropValue; //
@@ -61,6 +61,4 @@ public class Patients {
     private double endValueNumerical;
     @ApiModelProperty(position = 22, value = "结束值")
     private List<String> endValueList;
-
-
 }

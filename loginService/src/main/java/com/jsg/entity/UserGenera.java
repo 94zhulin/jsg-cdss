@@ -53,10 +53,6 @@ public class UserGenera {
     private String ksName;
     private  RoleGenera role ;
 
-    /**
-     * 创建人
-     */
-    private Integer createUserId;
 
     /**
      * 修改人

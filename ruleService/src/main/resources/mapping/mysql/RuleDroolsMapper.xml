@@ -165,13 +165,13 @@ and t2.klg_item_code != #{itemCode}
 
     </select>
 
-    <select id="selectRuleStrByCode" parameterType="string" resultType="com.jsg.entity.RuleItems">
-SELECT
-	*
-FROM
-	rule_drools t1
-WHERE
-	t1.`code` = 'B超Code' -- 决策类型：1-拦截；2-警告；3-建议；
+    <select id="selectRuleStrByCode" parameterType="string" resultMap="BaseResultMap">
+    SELECT
+        *
+    FROM
+        rule_drools t1
+    WHERE
+        t1.`code` = #{itemCode} -- 决策类型：1-拦截；2-警告；3-建议；
 	ORDER BY t1.policy_type
     </select>
 
