@@ -10,21 +10,17 @@ import com.jsg.entity.*;
 import com.jsg.service.RuleService;
 import com.jsg.utils.DateUtils;
 import com.jsg.utils.GenerateRulesUtils;
+import com.jsg.utils.KnowledgeUtils;
 import com.jsg.utils.ReflectionUtils;
-import org.drools.core.impl.InternalKnowledgeBase;
-import org.drools.core.impl.KnowledgeBaseFactory;
-import org.kie.api.io.ResourceType;
-import org.kie.api.runtime.Globals;
-import org.kie.api.runtime.KieSession;
-import org.kie.internal.builder.KnowledgeBuilder;
-import org.kie.internal.builder.KnowledgeBuilderFactory;
-import org.kie.internal.io.ResourceFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author jeanson 进生
@@ -431,6 +427,13 @@ public class RuleServiceImpl implements RuleService {
 
     @Override
     public ResultBase operation1(HisBase hisBase) {
+        RuleDrools ruleDrools2 = new RuleDrools();
+        ruleDrools2.setFlag(true);
+        ruleDrools2.setCode(hisBase.getItemCode());
+        ruleDrools2.setPolicyType(2);
+        ruleDrools2.setFeedback("测试测试测试！！！！！！！！！！！！");
+        //   return ResultUtil.success(null, ruleDrools2);
+
         List<Patients> datas = new ArrayList<>();
         String itemCode = hisBase.getItemCode();
         List<RuleDrools> ruleDroolss = ruleDroolsMapper.selectRuleStrByCode(itemCode);
@@ -443,6 +446,7 @@ public class RuleServiceImpl implements RuleService {
         datas.addAll(ReflectionUtils.readAttributeValue(hisPatients));
         //项目类别 1 人资 2 患者 3药品 4诊断 5检查 6校验 7过敏史
         Integer itemType = hisBase.getItemType();
+        ruleDrools2.setFlag(false);
         switch (itemType) {
             case 3:
                 Drug drug = hisBase.getDrug();
@@ -466,7 +470,6 @@ public class RuleServiceImpl implements RuleService {
                 datas.addAll(ReflectionUtils.readAttributeValue(historyallergy));
                 break;
         }
-        KnowledgeBuilder kb = KnowledgeBuilderFactory.newKnowledgeBuilder();
         boolean flag = true;
         //拦截
         boolean intercept = false;
@@ -475,16 +478,19 @@ public class RuleServiceImpl implements RuleService {
         //建议
         boolean advice = false;
 
-        KieSession kSession = null;
+
         //TODO 拦截等级高的先执行
         for (RuleDrools ruleDrools : ruleDroolss) {
             if (intercept) {
+                ruleDrools.setFlag(false);
                 return ResultUtil.success(null, ruleDrools);
             }
             if (warning) {
+                ruleDrools.setFlag(true);
                 return ResultUtil.success(null, ruleDrools);
             }
             if (advice) {
+                ruleDrools.setFlag(false);
                 return ResultUtil.success(null, ruleDrools);
             }
             //规则id
@@ -495,28 +501,9 @@ public class RuleServiceImpl implements RuleService {
             //由于,比较复杂. 这个我们将项目类型为 3药品 4诊断 5检查 6校验 7过敏史 的条件单独拿出
             List<RuleItems> items = ruleDroolsMapper.selectByItemCode(ruleBaseid, itemCode);
             String str = ruleDrools.getStr();
-            try {
-                kb.add(ResourceFactory.newByteArrayResource(str.getBytes("utf-8")), ResourceType.DRL);
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-            InternalKnowledgeBase kBase = KnowledgeBaseFactory.newKnowledgeBase();
-            kBase.addPackages(kb.getKnowledgePackages());
-            // 执行规则
-            kSession = kBase.newKieSession();
-         HashMap<String, Boolean> ruleexecutionResult = new HashMap<>();
-          kSession.setGlobal("ruleexecutionResult", ruleexecutionResult);
-
-
-            kSession.insert(datas);
-            int i = kSession.fireAllRules();
-            Globals globals = kSession.getGlobals();
-            Collection<String> globalKeys = globals.getGlobalKeys();
-            for (String str11 :globalKeys){
-                System.out.println(str11);
-            }
-            System.out.println("Drools执行规则数量:" + i);
-            int total = i + items.size();
+            HashMap<String, Boolean> match = KnowledgeUtils.match(str, datas);
+            System.out.println("Drools执行规则数量:" + match.size());
+            int total = match.size();
             System.out.println("通过数据相加,总执行质量:" + total);
             //1-拦截；2-警告；3-建议；
             SysRuleaccessLog record = new SysRuleaccessLog();
@@ -553,7 +540,7 @@ public class RuleServiceImpl implements RuleService {
             record.setRuleId(ruleDrools.getId());
             sysRuleaccessLogMapper.insert(record);
         }
-        return ResultUtil.fail("未符合条件要求");
+        return ResultUtil.success(null, ruleDrools2);
     }
 
     @Override

@@ -18,6 +18,8 @@ public class RuleDrools {
     private String name;
 
     private String code;
+   // false his端不允许执行 true 可以执行
+    private boolean flag;
 
     /**
      * 决策类型：1-拦截；2-警告；3-建议；
