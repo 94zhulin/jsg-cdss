@@ -31,7 +31,7 @@ public class RuleValueNumber {
     /**
      * 数字值
      */
-    private Integer value;
+    private Double value;
 
 
 }

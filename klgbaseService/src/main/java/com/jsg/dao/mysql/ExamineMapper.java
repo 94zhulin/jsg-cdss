@@ -24,4 +24,6 @@ public interface ExamineMapper {
     int del(@Param("examineId") Integer examineId);
 
     List<Map<String, Object>> listByName(@Param("queryKey") String queryKey);
+
+    List<Examine> selectByXmCodes(@Param("xmCode")String xmCode ,@Param("queryKey")String  queryKey );
 }

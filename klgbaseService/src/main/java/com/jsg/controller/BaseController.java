@@ -5,7 +5,6 @@ package com.jsg.controller;
  * @date 2020/1/5 20:01
  */
 
-import com.jsg.aop.AuthToken;
 import com.jsg.base.result.ResultBase;
 import com.jsg.entity.Pageable;
 import com.jsg.service.KlgbaseService;
@@ -42,5 +41,19 @@ public class BaseController {
     public ResultBase list(String catalogCode, String queryKey, Pageable pageable) {
         return klgbaseService.list(catalogCode, queryKey, pageable);
     }
+
+
+
+
+/*    @ApiImplicitParams({
+            @ApiImplicitParam(name = "zdbm", value = "项目编码", dataType = "String"),
+            @ApiImplicitParam(name = "xmlx", value = "项目类别 1 人资 2 患者 3药品 4诊断 5检查 6校验 7过敏史", dataType = "String"),
+    })*/
+    @ApiOperation(value = "推荐项目")
+    @PostMapping(value = "/recommended-project", produces = APPLICATION_JSON_UTF8_VALUE)
+    public ResultBase RecommendedProject(String zdbm, String xmbm,String xmlx ,String queryKey ) {
+        return klgbaseService.RecommendedProject(zdbm, xmbm,xmlx,queryKey);
+    }
+
 
 }

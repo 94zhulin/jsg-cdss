@@ -205,4 +205,13 @@ LEFT JOIN lis_xmbm t3 on t2.lis_xmbm = t3.zbbm where  1=1
 and   concat(ifnull(t3.xmmc,''),ifnull(t3.xmdm,'')) like ('%' #{queryKey} '%')
     </select>
 
+    <select id="selectByXmCodes"  parameterType="string" resultMap="KlgbaseExamineMap" >
+select  * from klgbase_examine t1 where  t1.xm_code in (${xmCode})
+        <if test="queryKey !=null and queryKey !=''">
+            and   concat(ifnull(xm_code,''),ifnull(xm_name,'')) like ('%' #{queryKey} '%')
+
+        </if>
+        order by field(xm_code,${xmCode})
+    </select>
+
 </mapper>

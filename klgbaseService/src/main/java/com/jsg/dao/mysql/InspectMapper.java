@@ -24,4 +24,5 @@ public interface InspectMapper {
 
     List<Inspect> listByName(@Param("queryKey") String queryKey);
 
+    List<Inspect> selectByXmCodes(@Param("xmCode")String xmCode ,@Param("queryKey") String queryKey);
 }

@@ -216,7 +216,7 @@ GROUP BY t1.`id`
     <update id="isDel" parameterType="int">
         update rule_base
         <set>
-            is_delete = 0,
+            is_delete = 1,
             `deploy_status` = 0
 
         </set>

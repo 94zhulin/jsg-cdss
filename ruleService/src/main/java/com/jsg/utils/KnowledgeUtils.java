@@ -63,7 +63,7 @@ public class KnowledgeUtils {
 
     public static HashMap<String, Boolean> match(String str, List<Patients> data) {
         StatefulKnowledgeSession kSession = null;
-        HashMap<String, Boolean> ruleexecutionResult = new HashMap<>();
+        HashMap<String, Boolean> resultHashMap = new HashMap<>();
         try {
             KnowledgeBuilder kb = KnowledgeBuilderFactory.newKnowledgeBuilder();
             //装入规则，可以装入多个
@@ -76,7 +76,7 @@ public class KnowledgeUtils {
             KnowledgeBase kBase = KnowledgeBaseFactory.newKnowledgeBase();
             kBase.addKnowledgePackages(kb.getKnowledgePackages());
             kSession = kBase.newStatefulKnowledgeSession();
-            kSession.setGlobal("ruleexecutionResult", ruleexecutionResult);
+            kSession.setGlobal("resultHashMap", resultHashMap);
             for (Patients s : data) {
                 kSession.insert(s);
             }
@@ -87,7 +87,7 @@ public class KnowledgeUtils {
             if (kSession != null) {
                 kSession.dispose();
             }
-            return ruleexecutionResult;
+            return resultHashMap;
         }
 
     }

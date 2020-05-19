@@ -6,7 +6,7 @@
         <result column="rule_id" jdbcType="INTEGER" property="ruleId"/>
         <result column="rule_item_id" jdbcType="INTEGER" property="ruleItemId"/>
         <result column="operator" jdbcType="VARCHAR" property="operator"/>
-        <result column="value" jdbcType="INTEGER" property="value"/>
+        <result column="value" jdbcType="DOUBLE" property="value"/>
     </resultMap>
     <sql id="Base_Column_List">
     id, rule_id, rule_item_id, `operator`, `value`
@@ -21,7 +21,7 @@
     insert into rule_value_number (id, rule_id, rule_item_id, 
       `operator`, `value`)
     values (#{id,jdbcType=INTEGER}, #{ruleId,jdbcType=INTEGER}, #{ruleItemId,jdbcType=INTEGER}, 
-      #{operator,jdbcType=VARCHAR}, #{value,jdbcType=INTEGER})
+      #{operator,jdbcType=VARCHAR}, #{value,jdbcType=DOUBLE})
   </insert>
     <insert id="insertSelective" parameterType="com.jsg.entity.RuleValueNumber">
         insert into rule_value_number
@@ -56,7 +56,7 @@
                 #{operator,jdbcType=VARCHAR},
             </if>
             <if test="value != null">
-                #{value,jdbcType=INTEGER},
+                #{value,jdbcType=DOUBLE},
             </if>
         </trim>
     </insert>

@@ -162,4 +162,13 @@ update_userId
         select * from klgbase_inspect t1 where  1=1 and
     concat(ifnull(xm_code,''),ifnull(xm_name,'')) like ('%' #{queryKey} '%')
     </select>
+
+    <select id="selectByXmCodes"  parameterType="string" resultMap="KlgbaseInspectMap">
+   select  * from klgbase_inspect t1 where t1.xm_code in (${xmCode})
+   <if test="queryKey !=null and queryKey !=''">
+      and   concat(ifnull(xm_code,''),ifnull(xm_name,'')) like ('%' #{queryKey} '%')
+
+   </if>
+        order by field(xm_code,${xmCode})
+    </select>
 </mapper>

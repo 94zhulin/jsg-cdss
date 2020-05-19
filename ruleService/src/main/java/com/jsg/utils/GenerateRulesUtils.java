@@ -14,6 +14,7 @@ import java.util.List;
 public class GenerateRulesUtils {
 
 
+
     public static String generateRules(List<Patients> patientss) throws PinyinException {
         StringBuilder result = new StringBuilder();
         /*package部分*/
@@ -32,7 +33,8 @@ public class GenerateRulesUtils {
             Patients patient = patientss.get(s);
             Integer rootCompare = patient.getRootCompare();
             String ruleName = PinyinHelper.convertToPinyinString(patient.getKlgItemName(), "_", PinyinFormat.WITHOUT_TONE);
-            String name = patient.getKlgItemName();
+          //  String name = patient.getKlgItemName();
+            String name = patient.getKlgItemPropName();
             //   patient.setPinyin(name);
             String startValue = patient.getStartValue();
             String endValue = patient.getEndValue();
@@ -42,58 +44,107 @@ public class GenerateRulesUtils {
             //TODO 目前支持 上下5个or 的语句
             StringBuilder isOrRuleName = new StringBuilder();
 
-            if (rootCompare != null && rootCompare == 0) {
-                System.out.println("===========================");
-                for (int c = 0; c < 5; c++) {
-                    if (rootCompare == 0) {
-                        System.out.println("条件或 " + ruleName);
-                        int index = s + 1 + c;
-                        int index_To = s - 1 - c;
+            //TODO  针对患者信息,患者属性信息比较复杂
 
-                        if (index < patientss.size()) {
-                            Patients patients_To = patientss.get(index);
-                            Integer type_To = patients_To.getConditionType();
-                            if (type == type_To) {
-                                String s1 = PinyinHelper.convertToPinyinString(patients_To.getKlgItemName(), "_", PinyinFormat.WITHOUT_TONE);
+            if (2==type){
+                //TODO  A==A or B=B  ， rootCompare一般都是开头的条件才会是 rootCompare==null
+                if (rootCompare == null){
+                    //TODO 开始往下循环， 查询到有没有or条件， 遇到 and 条件结束循环
+                    for (int i = s;i<patientss.size();i++){
+                        int  index = i+1;
+                        Patients patients = patientss.get(index);
+                        Integer rootCompare_one = patients.getRootCompare();
+                        Integer conditionType = patients.getConditionType();
+                        //TODO 判断是否 为 or条件 ,并且共同是患者 属性
+                        if (rootCompare_one==0 && conditionType==2){
+                            //TODO  获取这个条件的规则名称
+                            String s1 = PinyinHelper.convertToPinyinString(patients.getKlgItemName(), "_", PinyinFormat.WITHOUT_TONE);
+                            isOrRuleName.append("\t\tresultHashMap.put(\"" + s1 + "\",true);\r\n");
+                            isOr = true;
+
+                         //TODO 遇到 and 就马上结束循环。
+                        }else {
+                            break;
+                        }
+                    }
+
+                    //TODO   rootCompare 不为null ， 有可能是 or ，and，有点复杂
+                }else {
+                    //TODO 如果当前是 and，那么 往下循环走  性别 （与年龄） （与性别）
+                    if (rootCompare==1){
+                        //TODO 开始往下循环， 查询到有没有or条件， 遇到 and 条件结束循环
+                        for (int i = s;i<patientss.size();i++){
+                            int  index = i+1;
+                            Patients patients = patientss.get(index);
+                            Integer rootCompare_one = patients.getRootCompare();
+                            Integer conditionType = patients.getConditionType();
+                            //TODO 判断是否 为 or条件 ,并且共同是患者 属性
+                            if (rootCompare_one==0 && conditionType==2){
+                                //TODO  获取这个条件的规则名称
+                                String s1 = PinyinHelper.convertToPinyinString(patients.getKlgItemName(), "_", PinyinFormat.WITHOUT_TONE);
                                 isOrRuleName.append("\t\tresultHashMap.put(\"" + s1 + "\",true);\r\n");
                                 isOr = true;
-                            }
 
+                                //TODO 遇到 and 就马上结束循环。
+                            }else {
+                                break;
+                            }
+                        }
+                    }else {
+                        //TODO 如果当前是 or，那么 往下循环走  性别 （or年龄） （or性别）
+                        for (int i = s;i<patientss.size();i++){
+                            int  index = i+1;
+                            Patients patients = patientss.get(index);
+                            Integer rootCompare_one = patients.getRootCompare();
+                            Integer conditionType = patients.getConditionType();
+                            //TODO 判断是否 为 or条件 ,并且共同是患者 属性
+                            if (rootCompare_one==0 && conditionType==2){
+                                //TODO  获取这个条件的规则名称
+                                String s1 = PinyinHelper.convertToPinyinString(patients.getKlgItemName(), "_", PinyinFormat.WITHOUT_TONE);
+                                isOrRuleName.append("\t\tresultHashMap.put(\"" + s1 + "\",true);\r\n");
+                                isOr = true;
+
+                                //TODO 遇到 and 就马上结束循环。
+                            }else {
+                                break;
+                            }
                         }
 
-                        if (index_To > -1) {
-                            Patients patients_To = patientss.get(index_To);
-                            Integer type_To = patients_To.getConditionType();
-                            Integer rootCompare_To = patients_To.getRootCompare();
-                            if (rootCompare_To != null) {
-                                if (type == type_To && rootCompare_To == 0) {
-                                    String s1 = PinyinHelper.convertToPinyinString(patients_To.getKlgItemName(), "_", PinyinFormat.WITHOUT_TONE);
+                        //TODO 如果当前是 or，那么 往下循环走  性别 （or年龄） （or性别）
+                        for (int i = s-1;i<s;i--){
+                            if(i>-1){
+                                Patients patients = patientss.get(i);
+                                Integer rootCompare_one = patients.getRootCompare();
+                                Integer conditionType = patients.getConditionType();
+                                //TODO 判断是否 为 or条件 ,并且共同是患者 属性
+                                if (rootCompare_one==0 && conditionType==2){
+                                    //TODO  获取这个条件的规则名称
+                                    String s1 = PinyinHelper.convertToPinyinString(patients.getKlgItemName(), "_", PinyinFormat.WITHOUT_TONE);
                                     isOrRuleName.append("\t\tresultHashMap.put(\"" + s1 + "\",true);\r\n");
                                     isOr = true;
+
+                                    //TODO 遇到 and 就马上结束循环。
+                                }else {
+                                    //TODO  获取这个条件的规则名称
+                                    String s1 = PinyinHelper.convertToPinyinString(patients.getKlgItemName(), "_", PinyinFormat.WITHOUT_TONE);
+                                    isOrRuleName.append("\t\tresultHashMap.put(\"" + s1 + "\",true);\r\n");
+                                    isOr = true;
+                                    break;
                                 }
                             }
                         }
                     }
                 }
 
-            } else {
-                //当前等于空 ,但是上级可能是or
-                for (int x = 0; x < 5; x++) {
-                    int index = s - 1 - x;
-                    if (index > -1) {
-                        Patients patients_To = patientss.get(index);
-                        Integer type_To = patients_To.getConditionType();
-                        Integer rootCompare_To = patients_To.getRootCompare();
-                        if (rootCompare_To != null) {
-                            if (type == type_To && rootCompare_To == 0) {
-                                String s1 = PinyinHelper.convertToPinyinString(patients_To.getKlgItemName(), "_", PinyinFormat.WITHOUT_TONE);
-                                isOrRuleName.append("\t\tresultHashMap.put(\"" + s1 + "\",true);\r\n");
-                                isOr = true;
-                            }
-                        }
-                    }
-                }
-            }
+              //TODO    4诊断 5检查 6校验
+            }/*else  if (type == 4 || type == 5 || type == 6){
+                //TODO  获取这个条件的规则名称
+                String s1 = PinyinHelper.convertToPinyinString(patients.getKlgItemName(), "_", PinyinFormat.WITHOUT_TONE);
+                isOrRuleName.append("\t\tresultHashMap.put(\"" + s1 + "\",true);\r\n");
+                isOr = true;
+
+            }*/
+
 
 
             //TODO 判断是否双条件

@@ -5,7 +5,7 @@ import lombok.Data;
 
 import java.util.Date;
 
-/**
+/**  检查表
  * @author jeanson 进生
  * @date 2019/10/17 9:54
  */

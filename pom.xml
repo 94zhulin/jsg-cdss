@@ -252,8 +252,8 @@
     <modules>
         <module>common</module>
         <!-- Service -->
-        <module>testAService</module>
-        <module>testBService</module>
+       <!-- <module>testAService</module>-->
+     <!--   <module>testBService</module>-->
         <module>loginService</module>
         <module>qualificationService</module>
         <module>generalService</module>

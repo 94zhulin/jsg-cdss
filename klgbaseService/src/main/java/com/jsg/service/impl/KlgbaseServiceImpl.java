@@ -39,6 +39,10 @@ public class KlgbaseServiceImpl implements KlgbaseService {
     @Autowired
     private CatalogMapper catalogMapper;
 
+    @Autowired
+    private KlgbabeRecommendedProMapper  recommendedProMapper;
+
+
     @Override
     public ResultBase list(String catalogCode, String queryKey, Pageable pageable) {
         if (catalogCode == null) {
@@ -91,5 +95,83 @@ public class KlgbaseServiceImpl implements KlgbaseService {
         }
 
         return success;
+    }
+
+    @Override
+    public ResultBase RecommendedProject(String zdbm,String xmbm, String xmlx,String  queryKey ) {
+         List<KlgbabeRecommendedPro> pros = recommendedProMapper.selectRecommendedProject(zdbm,xmlx);
+         StringBuffer tjbmStr = new StringBuffer();
+         tjbmStr.append("'"+xmbm+"'").append(",");
+         for (KlgbabeRecommendedPro pro:pros){
+             String tjbm = pro.getTjbm();
+             tjbmStr.append("'"+tjbm+"'").append(",");
+         }
+         if (tjbmStr.length()>0){
+             tjbmStr.subSequence(0,tjbmStr.length()-1);
+         }
+
+         if ("5".equals(xmlx)){
+             //TODO  先弄点价数据
+             tjbmStr.append("'ZH143"+"'").append(",").append("'ZH145"+"'");
+         }
+        if ("6".equals(xmlx)){
+            //TODO  先弄点价数据
+            tjbmStr.append("'RBC"+"'").append(",").append("'WBC"+"'");
+        }
+
+        SuspectedProject suspectedProject = new SuspectedProject ();
+        suspectedProject.setXmlb(xmlx);
+        StringBuffer titleOne = new StringBuffer("相似常见");
+        StringBuffer titleTo = new StringBuffer();
+        StringBuffer titleFive = new StringBuffer();
+        //TODO 项目类别 1 人资 2 患者 3药品 4诊断 5检查 6校验 7过敏史
+         switch (xmlx){
+             case "1":
+                 break;
+             case "2":
+                 break;
+             case "3":
+                 break;
+             case "4":
+                 break;
+             case "5":
+               List<Inspect> inspects  =  inspectMapper.selectByXmCodes(tjbmStr.toString(),queryKey);
+               suspectedProject.setDatas(inspects);
+                 titleOne.append("检查");
+                 titleTo.append("检查");
+                 titleFive.append("以上"+"检查"+"为院内常见"+"检查"+"，实际以医生判断为准");
+                 if (inspects.size()>0){
+                     Inspect inspect = inspects.get(0);
+                     String xmName = inspect.getXmName();
+                     String lcyy = inspect.getLcyy();
+                     suspectedProject.setTitleThree(xmName);
+                     suspectedProject.setTitleFour(lcyy);
+                 }
+                 break;
+             case "6":
+               List<Examine> examines  =  examineMapper.selectByXmCodes(tjbmStr.toString(),queryKey);
+               suspectedProject.setDatas(examines);
+                 titleOne.append("检验");
+                 titleTo.append("检验").append("解读");
+                 titleFive.append("以上"+"检验"+"为院内常见"+"检验"+"，实际以医生判断为准");
+                 if (examines.size()>0){
+                     Examine examine = examines.get(0);
+                     String xmName = examine.getXmName();
+                     String lcyy = examine.getLcyy();
+                     suspectedProject.setTitleThree(xmName);
+                     suspectedProject.setTitleFour(lcyy);
+                 }
+
+                 break;
+             case "7":
+                 break;
+
+         }
+        suspectedProject.setTitleOne(titleOne.toString());
+        suspectedProject.setTitleTo(titleTo.toString());
+        suspectedProject.setTitleFive(titleFive.toString());
+
+
+        return ResultUtil.success("查询成功",suspectedProject);
     }
 }

@@ -167,12 +167,14 @@ and t2.klg_item_code != #{itemCode}
 
     <select id="selectRuleStrByCode" parameterType="string" resultMap="BaseResultMap">
     SELECT
-        *
+        t2.*
     FROM
-        rule_drools t1
+       rule_base t1 left join  rule_drools t2 on t1.id =t2.rule_baseId
     WHERE
-        t1.`code` = #{itemCode} -- 决策类型：1-拦截；2-警告；3-建议；
-	ORDER BY t1.policy_type
+    t1.is_delete=0
+       and  t2.status =1
+        and  t2.`code` = #{itemCode} -- 决策类型：1-拦截；2-警告；3-建议；
+	ORDER BY t2.policy_type
     </select>
 
     <update id="updateStatus">

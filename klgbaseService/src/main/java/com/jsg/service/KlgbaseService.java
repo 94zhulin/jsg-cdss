@@ -10,4 +10,5 @@ import com.jsg.entity.Pageable;
 public interface KlgbaseService {
     ResultBase list(String catalogCode, String queryKey, Pageable pageable);
 
+    ResultBase RecommendedProject(String zdbm,String xmbm ,String xmlx,String  queryKey);
 }

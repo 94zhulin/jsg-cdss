@@ -15,6 +15,7 @@ import com.jsg.utils.ReflectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -181,8 +182,8 @@ public class RuleServiceImpl implements RuleService {
         int edi = catalogMapper.edi(catalog);
         return ResultUtil.success(null, catalog);
     }
-
     @Override
+    @Transactional  //事务的注解
     public ResultBase addRule(RuleBase ruleBase) throws PinyinException, UnsupportedEncodingException {
         //TODO 根据code 查询历史版本号
         int i1 = ruleBaseMapper.selectByVersion(ruleBase.getCode(), ruleBase.getPolicyType() + "");
@@ -430,8 +431,8 @@ public class RuleServiceImpl implements RuleService {
         RuleDrools ruleDrools2 = new RuleDrools();
         ruleDrools2.setFlag(true);
         ruleDrools2.setCode(hisBase.getItemCode());
-        ruleDrools2.setPolicyType(2);
-        ruleDrools2.setFeedback("测试测试测试！！！！！！！！！！！！");
+        ruleDrools2.setPolicyType(1);
+        ruleDrools2.setFeedback("数据无效");
         //   return ResultUtil.success(null, ruleDrools2);
 
         List<Patients> datas = new ArrayList<>();
@@ -443,11 +444,11 @@ public class RuleServiceImpl implements RuleService {
         datas.addAll(ruleDroolsMapper.listByYsCode(ysCode));
         //患者信息
         HisPatients hisPatients = hisBase.getHisPatients();
-        datas.addAll(ReflectionUtils.readAttributeValue(hisPatients));
+        datas.addAll(ReflectionUtils.readAttributeValueByHz(hisPatients));
         //项目类别 1 人资 2 患者 3药品 4诊断 5检查 6校验 7过敏史
         Integer itemType = hisBase.getItemType();
         ruleDrools2.setFlag(false);
-        switch (itemType) {
+/*        switch (itemType) {
             case 3:
                 Drug drug = hisBase.getDrug();
                 datas.addAll(ReflectionUtils.readAttributeValue(drug));
@@ -469,7 +470,17 @@ public class RuleServiceImpl implements RuleService {
                 Historyallergy historyallergy = hisBase.getHistoryallergy();
                 datas.addAll(ReflectionUtils.readAttributeValue(historyallergy));
                 break;
-        }
+        }*/
+        Drug drug = hisBase.getDrug();
+        datas.addAll(ReflectionUtils.readAttributeValue(drug));
+        Diagnosis diagnosis = hisBase.getDiagnosis();
+        datas.addAll(ReflectionUtils.readAttributeValue(diagnosis));
+        Inspect inspect = hisBase.getInspect();
+        datas.addAll(ReflectionUtils.readAttributeValue(inspect));
+        Examine examine = hisBase.getExamine();
+        datas.addAll(ReflectionUtils.readAttributeValue(examine));
+        Historyallergy historyallergy = hisBase.getHistoryallergy();
+        datas.addAll(ReflectionUtils.readAttributeValue(historyallergy));
         boolean flag = true;
         //拦截
         boolean intercept = false;
@@ -493,7 +504,8 @@ public class RuleServiceImpl implements RuleService {
                 ruleDrools.setFlag(false);
                 return ResultUtil.success(null, ruleDrools);
             }
-            //规则id
+            String feedback = ruleDrools.getFeedback();
+            //TODO 规则id
             Integer ruleBaseid = ruleDrools.getRuleBaseid();
             Integer ruleCount = ruleDrools.getCount();
             //1-拦截；2-警告；3-建议；
@@ -513,6 +525,8 @@ public class RuleServiceImpl implements RuleService {
                 if (total >= ruleCount) {
                     intercept = true;
                     record.setResultName("拦截");
+                    ruleDrools2.setFeedback(feedback);
+                    ruleDrools2.setPolicyType(policyType);
                 }
 
             } else if (policyType == 2) {
@@ -520,6 +534,8 @@ public class RuleServiceImpl implements RuleService {
                 if (total >= ruleCount) {
                     warning = true;
                     record.setResultName("警告");
+                    ruleDrools2.setFeedback(feedback);
+                    ruleDrools2.setPolicyType(policyType);
                 }
 
             } else if (policyType == 3) {
@@ -527,6 +543,8 @@ public class RuleServiceImpl implements RuleService {
                 if (total >= ruleCount) {
                     advice = true;
                     record.setResultName("建议");
+                    ruleDrools2.setFeedback(feedback);
+                    ruleDrools2.setPolicyType(policyType);
                 }
 
             }
@@ -539,6 +557,18 @@ public class RuleServiceImpl implements RuleService {
             record.setRuleName(ruleDrools.getName());
             record.setRuleId(ruleDrools.getId());
             sysRuleaccessLogMapper.insert(record);
+        }
+        if (intercept) {
+            ruleDrools2.setFlag(false);
+            return ResultUtil.success(null, ruleDrools2);
+        }
+        if (warning) {
+            ruleDrools2.setFlag(true);
+            return ResultUtil.success(null, ruleDrools2);
+        }
+        if (advice) {
+            ruleDrools2.setFlag(false);
+            return ResultUtil.success(null, ruleDrools2);
         }
         return ResultUtil.success(null, ruleDrools2);
     }
@@ -714,7 +744,7 @@ public class RuleServiceImpl implements RuleService {
                     number.setOperator(hzPatient.getEndOp());
                     number.setRuleId(ruleBase.getId());
                     number.setRuleItemId(item.getId());
-                    number.setValue(Integer.valueOf(hzPatient.getEndValue()));
+                    number.setValue(Double.valueOf(hzPatient.getEndValue()));
                     ruleValueNumberMapper.add(number);
                     break;
                 case 3:
@@ -786,7 +816,7 @@ public class RuleServiceImpl implements RuleService {
         ruleDrools.setCreateTime(new Date());
         ruleDrools.setUpdateTime(new Date());
         ruleDrools.setUpdateUserid(ruleBase.getUpdateUserid());
-        ruleDrools.setCreateUserId(ruleBase.getCreateUserId());
+        ruleDrools.setCreateUserId(ruleBase.getUpdateUserid());
         ruleDroolsMapper.insert(ruleDrools);
     }
 

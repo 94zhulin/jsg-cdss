@@ -112,6 +112,9 @@ public class KnowledgeServiceImpl implements KnowledgeService {
         Catalog catalog = catalogMapper.selectOneById(catalogId);
         Integer itemNum = catalog.getItemNum();
         itemNum--;
+        if (itemNum<0){
+            itemNum = 0;
+        }
         catalog.setId(catalogId);
         catalog.setItemNum(itemNum);
         int edi = catalogMapper.edi(catalog);
