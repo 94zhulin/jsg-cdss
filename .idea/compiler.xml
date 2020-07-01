@@ -7,18 +7,18 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="common" />
-        <module name="systemService" />
         <module name="generalService" />
+        <module name="config" />
         <module name="ruleService" />
         <module name="loginService" />
         <module name="nursing-service" />
         <module name="registry" />
+        <module name="systemService" />
         <module name="proxy" />
         <module name="txManager" />
-        <module name="config" />
-        <module name="klgbaseService" />
         <module name="qualificationService" />
+        <module name="klgbaseService" />
+        <module name="common" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
