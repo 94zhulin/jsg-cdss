@@ -31,6 +31,8 @@ public class UserController {
 
     @GetMapping("/getUser")
     public String  getUser () {
+
+        log.info(strUtil.getLogPrefix());
         return "---------------------";
     }
 
