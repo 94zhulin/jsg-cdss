@@ -27,6 +27,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 @Api(value = "/hzsx", tags = "患者属性表")
 @Slf4j
 public class HzsxController {
+
     @Autowired
     private HzsxService hzsxService;
 

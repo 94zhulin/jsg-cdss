@@ -28,6 +28,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 @Api(value = "/inspect", tags = "检查")
 @Slf4j
 public class InspectController {
+
     @Autowired
     private InspectService inspectService;
 

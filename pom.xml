@@ -252,13 +252,14 @@
     <modules>
         <module>common</module>
         <!-- Service -->
-       <!-- <module>testAService</module>-->
-     <!--   <module>testBService</module>-->
+        <module>nursing-service</module>
         <module>loginService</module>
-        <module>qualificationService</module>
         <module>generalService</module>
         <module>klgbaseService</module>
-        <module>ruleService</module>
+<!--    <module>testAService</module>-->
+<!--    <module>testBService</module>-->
+<!--    <module>qualificationService</module>-->
+<!--    <module>ruleService</module>-->
         <!--cloud-->
         <module>registry</module>
         <module>proxy</module>

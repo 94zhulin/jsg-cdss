@@ -13,6 +13,7 @@ import java.util.List;
  */
 @Repository
 public interface HzsxMapper {
+
     int del(@Param("hzsxId") Integer hzsxId);
 
     List<Hzsx> selectByCode(@Param("code") String code);

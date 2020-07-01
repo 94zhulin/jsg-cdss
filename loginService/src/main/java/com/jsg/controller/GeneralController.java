@@ -1,10 +1,5 @@
 package com.jsg.controller;
 
-/**
- * @author jeanson 进生
- * @date 2019/10/26 17:14
- */
-
 import com.jsg.base.result.ResultBase;
 import com.jsg.entity.UserGenera;
 import com.jsg.service.GeneralService;
@@ -24,20 +19,17 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
 /**
  * generla
- *
  * @author jeanson 进生
  * @date 2019/10/21 10:12
- */
+*/
 @RestController
 @RequestMapping("/login")
 @Api(value = "/login", tags = "通用的小接口")
 @Slf4j
 public class GeneralController {
 
-
     @Autowired
     private GeneralService generalService;
-
 
     @ApiOperation(value = "用户登陆")
     @ApiImplicitParams({
@@ -49,7 +41,6 @@ public class GeneralController {
         log.info("functionName:{}    Url:{}  parameter:{} ", "用户登陆", "/login", userName, password);
         return generalService.login(userName, password);
     }
-
 
     @ApiOperation(value = "修改用户密码")
     @ApiImplicitParams({
@@ -63,13 +54,11 @@ public class GeneralController {
         return generalService.edlPassword(userId, password, odlPassword);
     }
 
-
     @ApiOperation(value = "添加用户)")
     @PostMapping(value = "/add", consumes = APPLICATION_JSON_UTF8_VALUE, produces = APPLICATION_JSON_UTF8_VALUE)
     public ResultBase add(@RequestBody @Validated UserGenera user) {
         return generalService.add(user);
     }
-
 
     @ApiOperation(value = "根据id查询用户)")
     @ApiImplicitParam(name = "userId", value = "用户id", dataType = "int")
@@ -77,6 +66,5 @@ public class GeneralController {
     public ResultBase findUser(Integer userId) {
         return generalService.findUser(userId);
     }
-
 
 }

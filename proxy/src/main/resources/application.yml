@@ -39,6 +39,9 @@ zuul:
     login:
       path: /cdss/login-api/**
       serviceId: login
+    nursing:
+      path: /cdss/nursing-api/**
+      serviceId: nursing-service
       #rpc:
       #path: /rpc-api/**
       #serviceId: rpc

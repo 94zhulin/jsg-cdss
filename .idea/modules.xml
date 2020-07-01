@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/cdss.iml" filepath="$PROJECT_DIR$/cdss.iml" />
+      <module fileurl="file://$PROJECT_DIR$/common/common.iml" filepath="$PROJECT_DIR$/common/common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/config/config.iml" filepath="$PROJECT_DIR$/config/config.iml" />
+      <module fileurl="file://$PROJECT_DIR$/generalService/generalService.iml" filepath="$PROJECT_DIR$/generalService/generalService.iml" />
+      <module fileurl="file://$PROJECT_DIR$/klgbaseService/klgbaseService.iml" filepath="$PROJECT_DIR$/klgbaseService/klgbaseService.iml" />
+      <module fileurl="file://$PROJECT_DIR$/loginService/loginService.iml" filepath="$PROJECT_DIR$/loginService/loginService.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nursing-service/nursing-service.iml" filepath="$PROJECT_DIR$/nursing-service/nursing-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/proxy/proxy.iml" filepath="$PROJECT_DIR$/proxy/proxy.iml" />
+      <module fileurl="file://$PROJECT_DIR$/qualificationService/qualificationService.iml" filepath="$PROJECT_DIR$/qualificationService/qualificationService.iml" />
+      <module fileurl="file://$PROJECT_DIR$/registry/registry.iml" filepath="$PROJECT_DIR$/registry/registry.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ruleService/ruleService.iml" filepath="$PROJECT_DIR$/ruleService/ruleService.iml" />
+      <module fileurl="file://$PROJECT_DIR$/systemService/systemService.iml" filepath="$PROJECT_DIR$/systemService/systemService.iml" />
+      <module fileurl="file://$PROJECT_DIR$/txManager/txManager.iml" filepath="$PROJECT_DIR$/txManager/txManager.iml" />
+    </modules>
+  </component>
+</project>

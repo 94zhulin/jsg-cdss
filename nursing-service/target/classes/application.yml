@@ -1,0 +1,9 @@
+server:
+  port: 60110
+apiStatus:
+  failure: 999
+  exc: 500
+  success: 200
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/*.xml

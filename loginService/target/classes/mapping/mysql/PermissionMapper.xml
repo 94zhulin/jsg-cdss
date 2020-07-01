@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jsg.dao.mysql.PermissionMapper">
+    <resultMap id="SysPermissionMap" type="com.jsg.entity.PermissionGenera">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="code" column="code"/>
+        <result property="createTime" column="create_time" javaType="java.util.Date"/>
+        <result property="updateTime" column="update_time" javaType="java.util.Date"/>
+        <result property="createUserId" column="create_userId"/>
+        <result property="updateUserId" column="update_userId"/>
+    </resultMap>
+
+
+    <select id="selectRolePermissions" parameterType="int" resultMap="SysPermissionMap">
+
+SELECT
+	t2.*
+FROM
+	sys_role_permission t1
+LEFT JOIN sys_permission t2 ON t1.permission_id = t2.id
+WHERE
+	t1.role_id = #{roleId}  and t2.id is not NULL
+    </select>
+
+
+    <select id="selectModulePermissions" parameterType="int" resultMap="SysPermissionMap">
+
+SELECT
+	t2.*
+FROM
+	sys_module_permission t1
+LEFT JOIN sys_permission t2 ON t1.permission_id = t2.id
+WHERE
+	t1.module_id = #{moduleId}
+    </select>
+
+
+</mapper>

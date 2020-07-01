@@ -1,0 +1,38 @@
+spring:
+  datasource:
+    mysql:
+      jdbcUrl: jdbc:mysql://118.114.244.93:13306/cdss_dev?useUnicode=true&characterEncoding=utf-8&useSSL=true
+      username: root
+      password: root
+      # 使用druid数据源
+      type: com.alibaba.druid.pool.DruidDataSource
+      driverClassName: com.mysql.jdbc.Driver
+      initialSize: 10
+      minIdle: 10
+      maxIdle: 20
+      maxActive: 30
+      maxWait: 30000
+      validationQuery: SELECT 'x'
+      testWhileIdle: true
+      testOnBorrow: false
+      numTestsPerEvictionRun: 3
+      timeBetweenEvictionRunsMillis: 30000
+      minEvictableIdleTimeMillis: 1800000
+      #data:
+      #solr:
+      #host: http://192.168.198.129:8983/solr/demo_core
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+
+feign:
+  hystrix:
+    enabled: true #开启Hystrix以支持服务熔断
+
+mybatis:
+  mapper-locations: mapping/*.xml
+

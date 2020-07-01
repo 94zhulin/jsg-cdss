@@ -15,7 +15,6 @@ import java.util.List;
 @Repository
 public interface UserGeneralMapper {
 
-
     List<UserGenera> selectByName(@Param("username") String username);
 
     UserGenera selectOnebyId(@Param("userId") Integer userId);

@@ -1,3 +1,7 @@
+
+#启动顺序
+    registry(注册) -> config(配置) -> proxy(路由) -> 事务(txManager)
+
 # jsg-cdss
 
 #### 介绍

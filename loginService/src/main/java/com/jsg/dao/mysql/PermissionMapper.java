@@ -13,7 +13,6 @@ import java.util.List;
 @Repository
 public interface PermissionMapper {
 
-
     List<PermissionGenera> selectRolePermissions(@Param("roleId") Integer roleId);
 
     List<PermissionGenera> selectModulePermissions(@Param("moduleId") Integer moduleId);
