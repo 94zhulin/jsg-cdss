@@ -37,7 +37,7 @@
         <slf4j.version>1.7.21</slf4j.version>
         <rocketmq.version>3.2.6</rocketmq.version>
         <redis.version>2.9.0</redis.version>
-        <junit.version>4.12</junit.version>
+        <junit.version>4.13.1</junit.version>
         <!--<seata.version>0.6.1</seata.version>-->
         <codingapi.txlcn.version>5.0.2.RELEASE</codingapi.txlcn.version>
         <spring-cloud.version>Greenwich.SR1</spring-cloud.version>
