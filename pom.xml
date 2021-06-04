@@ -31,7 +31,7 @@
         <sharding.jdbc.core.version>1.5.4.1</sharding.jdbc.core.version>
         <alibaba.durid.version>1.1.8</alibaba.durid.version>
         <alibaba.durid.springboot.version>1.1.9</alibaba.durid.springboot.version>
-        <httpclient.version>4.5.2</httpclient.version>
+        <httpclient.version>4.5.13</httpclient.version>
         <commons.logging.version>1.2</commons.logging.version>
         <logback.version>1.1.7</logback.version>
         <slf4j.version>1.7.21</slf4j.version>
